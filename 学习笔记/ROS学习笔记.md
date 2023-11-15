@@ -579,11 +579,7 @@ rostopic pub [topic] [msg_type] [args]
 
 
 
-
-
-
-
-## ROS中发布者Publisher的编程实现
+## ROS中发布者Publisher的编程实现（C++）
 
 ### 1.必须包含的**头文件**
 
@@ -655,7 +651,7 @@ int main(int argc, char **argv)
 
 
 
-## ROS中订阅者Subscriber的编程实现
+## ROS中订阅者Subscriber的编程实现(C++)
 
 ## 1.必须包含的**头文件**
 
@@ -718,12 +714,6 @@ int main(int argc, char **argv)
 
 
 
-
-
-
-
-
-
 ## ROS变量初始化大体框架
 
 ```python
@@ -761,4 +751,41 @@ class ××
 ```
 
 
+
+# Python与C++编译区别
+
+## 话题订阅
+
+举例：
+
+- python下：
+
+```python
+from pix_driver_msgs.msg import GearReport
+def __init__(self): #前提
+self.sub_gear_report = rospy.Subscriber('/pix/gear_report', GearReport, self.gear_report_callback)
+def gear_report_callback(self, msg):
+```
+
+- C++下：
+
+```c++
+#include "pix_driver_msgs/GearReport.h"
+ros::Subscriber sub_gear_report; //前提
+ros::NodeHandle nh; //前提
+sub_gear_report= nh.subscribe("/pix/gear_report", 1, &ControlConverter::gear_report_callback,this);
+void ControlConverter::gear_report_callback(const pix_driver_msgs::GearReport::ConstPtr &msg)
+```
+
+- ==区别==：
+
+  - **消息类型**（GearReport）**放的位置不同**
+
+    -  原因：**在C++中**，当你使用`&ControlConverter::gear_report_callback`时，编译器知道这是一个`ControlConverter`类的成员函数，因此可以根据函数签名推断消息类型，因此在订阅主题时**可以省略消息类型**。
+
+      ​            **在python中**，由于动态类型和运行时类型推断的特性，需要**显式地提供消息类型**，即`GearReport`，以便在运行时进行正确的订阅。
+
+  - **ConstPtr的用法**
+
+    - 在ROS中， `ConstPtr`是一个**智能指针**类型，指向常量的消息对象。此处表示一个常量引用，该引用指向`pix_driver_msgs::GearReport`的消息类型。
 
