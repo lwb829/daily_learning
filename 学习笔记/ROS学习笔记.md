@@ -544,6 +544,35 @@ install(TARGETS ${PROJECT_NAME}_command_node
 
 
 
+## ROS中计算程序执行时间
+
+- 时间格式
+
+分为**时刻（Time）**和**持续时间（Duration）**，且分为秒（s）和纳秒（ns），换算关系为：`1nsec=1e-9sec`
+
+```c++
+int32 sec
+int32 nsec
+```
+
+- ros::Time::now()
+
+检索当前时间，是**时刻**时间
+
+- ros::Duration
+
+代表**持续的一段**时间，可以是复数
+
+- toSec()
+
+将“1 ros时间格式说明”中所表示的格式转为秒（s）
+
+- toNSec()
+
+将时间或时间戳转为纳秒（ns）
+
+
+
 ## 理解ROS节点
 
 只不过是ROS软件包中的一个**可执行文件**。ROS节点使用ROS客户端库与其他节点通信，节点可以发布或订阅话题，也可以提供或使用服务。

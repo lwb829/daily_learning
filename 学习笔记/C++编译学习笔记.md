@@ -167,6 +167,36 @@ static Pool<UrlTableProperties>* pool;
 
 
 
+## 基础数据类型
+
+- 基本分类：
+
+  - bool型
+  - 整型 （char型从本质上说，也是种整型类型，它是长度为1的整数，通常用来存放字符的ASCII码）
+  - 浮点型
+
+- int_t同类
+
+  是typedef定义的**表示标志**，是一种表示规范，是通过typedef给类型起的别名，而不是一种新的数据类型。
+
+  举例：
+
+  ```c++
+  typedef signed char             int8_t;
+  typedef short int               int16_t;
+  typedef int                     int32_t;
+  typedef long int                int64_t;
+  
+  typedef unsigned char           uint8_t;
+  typedef unsigned short int      uint16_t;
+  typedef unsigned int            uint32_t;
+  typedef unsigned long int       uint64_t;
+  ```
+
+  - 注意：**uint8_t实际是一个char**，输出uin8_t类型的变量**实际输出**的是其**对应的字符**，而不是真实数字。
+
+
+
 
 ## ==指针！==
 
@@ -260,6 +290,39 @@ class 类名
 
 
 
+### class中的拷贝构造函数（构造函数后）
+
+- 拷贝构造函数：
+
+  如果类中没有定义拷贝构造函数，编译器将提供一个拷贝构造函数，功能是把**已存在对象的成员变量赋值给新对象的成员变量**。
+
+  - **用一个已存在的对象创建新的对象**格式：
+
+  ```c++
+  类名 新对象名（已存在的对象名）;
+  类名 新对象名 = 已存在的对象名;
+  ```
+
+  - **拷贝构造函数**格式：
+
+  ```c++
+  类名（const 类名& 对象名）{……}
+  ```
+
+  - 特点：
+
+    - 必须为**公有**
+    - 函数名必须**与类名相同**
+    - 没有返回值  
+    - 如果类中定义了拷贝构造函数，编译器将不提供拷贝构造函数
+    - 拷贝构造函数可以重载，可以有默认参数
+
+    ```c++
+    类名（……,const 类名& 对象名,……）{……}
+    ```
+
+
+
 ### 析构函数
 
 -  格式：
@@ -335,10 +398,6 @@ class 类名
 `ros::NodeHandle`是一个重要的类，它允许你与ROS系统进行通信。它提供了一个接口，用于**访问ROS的功能，例如创建发布者、订阅者、服务、参数等**。在C++中，可以通过创建 `ros::NodeHandle`对象来访问ROS的各种功能。
 
 `ros::NodeHandle` 的对象通常在ROS节点的构造函数中创建，然后在整个节点的生命周期中被用于与ROS系统进行通信。通过使用 `ros::NodeHandle` 对象，你的程序可以方便地与其他ROS节点进行消息交换和服务调用。
-
-
-
-
 
 
 
