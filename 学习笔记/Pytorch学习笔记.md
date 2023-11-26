@@ -147,6 +147,78 @@ dataloader = DataLoader(image_dataset, batch_size=32, shuffle=True)
 
 
 
+## Tensor数据类型与存储结构
+
+### 数据类型
+
+- 一共包括9种数据类型，3大类
+
+![img](https://img-blog.csdnimg.cn/2cff07b7ed0145deab79c096edb3e0d7.png)
+
+`torch.LongTensor`常用在深度学习中的标签值 ，比如分类任务中的类别标签0，1，2等；`torch.FloatTenso`r常用做深度学习中可学习参数或者输入数据的类型
+
+#### pytorch中的`type()`和`dtype`
+
+`tensor.type()`：返回的是数据所属的**Tensor类型**，如 `torch.LongTensor`等
+`tensor.dtype`：返回的是tensor**数据**自身的**类型**，如`torch.int8`, `torch.long`等
+
+举例：
+
+```python
+x = torch.tensor([1, 2])
+print(x.type()) # torch.LongTensor
+print(x.dtype)  # torch.int64
+
+
+y = torch.tensor([1., 2., 3.])
+print(y.dtype)  # torch.float32
+```
+
+**注意**：pytorch默认的整数是**int64**， 默认的浮点数是**float32**
+
+
+
+#### 张量创建
+
+举例：
+
+```python
+# 方式1：直接在后面用dtype定义tensor类型
+x = torch.tensor([1, 2, 3], dtype=torch.int8)
+print(x.dtype)  # torch.int8
+ 
+# 方式2: 参考上面数据类型表格中的最右侧Tensor type来新建不同类型的张量
+y = torch.CharTensor([1, 2, 3])
+print(y.dtype)  # torch.int8
+```
+
+**注意**：==`torch.tensor()`和`torch.Tensor()`新建张量的区别==
+
+1. `torch.Tensor()`本质是`torch.FloatTensor()`，新建的tensor是float类型的
+
+2.  `torch.tensor(data, dtype=None, device=None, requires_grad=False)` 可以根据dtype定义不同类型
+
+举例：
+
+```python
+x = torch.Tensor([1, 2])
+print(x.type()) # torch.FloatTensor
+y = torch.tensor([1, 2], dtype=torch.long)
+print(y.type())  # torch.LongTensor
+```
+
+
+
+### 存储结构
+
+- 头信息区 Tensor：保存张量的形状size，步长stride，数据类型int, char等信息
+- 存储区 Storage：保存真正的数据，Storage是在data之上的接口
+- 头信息区的占用内存较小，Storage为主要的占用内存
+
+![img](https://img-blog.csdnimg.cn/c13f6f5b39fb4f39821eb518531934c6.jpeg)
+
+
+
 ## Transforms的常规使用
 
 - 目的：对图像进行变换，即预处理，有助于更好地训练模型
@@ -187,6 +259,59 @@ dataloader = DataLoader(image_dataset, batch_size=32, shuffle=True)
     **神经网络的输入和输出**通常表示为`"Tensor"`对象，是因为神经网络的层和参数操作通常期望输入和输出是**多维数组**。
 
     `"Tensor"`对象具有自动求导（Autograd）功能，pytorch能够跟踪这些操作，构建计算图，并允许用户对图进行反向传播，从而自动计算梯度。
+
+
+
+### torch.reshape用法
+
+是 PyTorch 中用于**改变张量形状**的函数。它可以将一个张量重塑成新的形状，而不改变张量的数据。
+
+- 基本用法：
+
+  ```python
+  reshaped_tensor = torch.reshape(input_tensor, new_shape)
+  ```
+
+  其中：
+
+  - `input_tensor` 是要重塑的输入张量
+  - `new_shape` 是一个元组，表示目标形状
+
+  **注意**：修改的shape必须满足原来的tensor和reshape的tensor**元素个数相等**。比如原来tensor的shape为（2，2，3），元素个数为12，那么要进行reshape必须满足元素个数为12，如（4，3，1），（3，2，2）等等。
+
+- 举例：
+
+  ```python
+  import torch
+  
+  # 创建一个形状为 (2, 3) 的张量
+  original_tensor = torch.tensor([[1, 2, 3], [4, 5, 6]])
+  
+  # 使用 reshape 将其转换为形状为 (3, 2) 的张量
+  reshaped_tensor = torch.reshape(original_tensor, (3, 2))
+  
+  # 打印结果
+  print("Original Tensor:")
+  print(original_tensor)
+  
+  print("\nReshaped Tensor:")
+  print(reshaped_tensor)
+  ```
+
+  其结果为：
+
+  ```python
+  Original Tensor:
+  tensor([[1, 2, 3],
+          [4, 5, 6]])
+  
+  Reshaped Tensor:
+  tensor([[1, 2],
+          [3, 4],
+          [5, 6]])
+  ```
+
+  `original_tensor` 是一个形状为 (2, 3) 的张量，使用 `torch.reshape` 将其转换为形状为 (3, 2) 的张量。（**注意**：新张量的元素顺序与原始张量相同，只是形状发生了改变）
 
 
 
@@ -514,7 +639,6 @@ model = nn.Sequential(
     nn.ReLU(),  # ReLU 激活函数
     nn.Linear(hidden_size, output_size)   # 隐藏层到输出层的线性变换
 )
-
 ```
 
 该实例构建了一个简单的全连接神经网络，包含一个输入层、一个隐含层和一个输出层。
@@ -523,7 +647,7 @@ model = nn.Sequential(
 
 ### 第三步
 
-在 `forward` 方法中**定义模型的前向传播逻辑**。这是模型接收输入并生成输出的地方。
+在 `forward` 方法中**定义**模型的**前向传播逻辑**。这是模型接收输入并生成输出的地方。
 
 ```python
 class MyModel(nn.Module):
@@ -536,7 +660,7 @@ class MyModel(nn.Module):
     def forward(self, x):
         x = self.conv1(x)
         x = self.relu1(x)
-       # x = x.view(x.size(0), -1)
+        x = x.view(x.size(0), -1)
         x = self.linear1(x)
         return x
 ```
@@ -559,6 +683,136 @@ output = model(input_data)
 
 ### 损失函数（Loss）
 
+#### nn.L1loss
+
 - 目的：
   - 计算实际输出和目标之间的差距
   - 为我们更新输出提供一定的依据（反向传播） 
+
+- 基本原理：
+
+![image-20231126143541985](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231126143541985.png)
+
+#### nn.MSEloss(均方误差)
+
+- 基本原理：
+
+![image-20231126144731122](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231126144731122.png)
+
+ 
+
+### 反向传播（loss.backward）
+
+是用于计算梯度的关键步骤。梯度计算是训练神经网络的核心部分，它允许我们根据损失函数对模型参数进行优化。
+
+举例：
+
+```python
+import torch
+import torch.nn as nn
+
+# 示例：定义模型和损失函数
+model = nn.Linear(10, 1)  # 示例模型
+criterion = nn.MSELoss()  # 示例损失函数
+
+# 示例输入和目标
+input_data = torch.randn(1, 10)
+target = torch.randn(1, 1)
+
+# 计算损失
+output = model(input_data)
+loss = criterion(output, target)
+
+# 反向传播
+loss.backward()
+```
+
+
+
+## 优化器
+
+用于更新神经网络模型的参数，以**最小化损失函数**。PyTorch 提供了多种优化器，其中最常见的是随机梯度下降（SGD），还有诸如 Adam、RMSprop 等更先进的优化器。
+
+举例：
+
+```python
+import torch
+import torch.nn as nn
+import torch.optim as optim
+
+# 示例：定义模型和损失函数
+class SimpleModel(nn.Module):
+    def __init__(self):
+        super(SimpleModel, self).__init__()
+        self.fc = nn.Linear(10, 1)
+
+    def forward(self, x):
+        return self.fc(x)
+
+model = SimpleModel()
+criterion = nn.MSELoss()
+
+# 示例输入和目标
+input_data = torch.randn(1, 10)
+target = torch.randn(1, 1)
+
+# 示例优化器（使用随机梯度下降）
+optimizer = optim.SGD(model.parameters(), lr=0.01)
+
+# 训练循环
+for epoch in range(100):
+    # 前向传播
+    output = model(input_data)
+    loss = criterion(output, target)
+
+    # 反向传播
+    optimizer.zero_grad()  # 梯度清零
+    loss.backward()
+
+    # 参数更新
+    optimizer.step()
+```
+
+使用了一个简单的线性模型和均方误差损失（`nn.MSELoss`）。然后，我们选择了随机梯度下降优化器（`optim.SGD`），并在训练循环中使用了 `zero_grad()` 方法将梯度清零，`backward()` 方法进行反向传播，以及 `step()` 方法更新模型参数。
+
+
+
+## 模型的保存与读取
+
+### 保存
+
+1. **保存整个模型**
+
+   使用`torch.save`函数可以保存整个模型，包括模型的结构和参数
+
+   ```python
+   torch.save(model, 'model.pth')
+   ```
+
+   即将整个模型保存到名为 `model.pth` 的文件中。
+
+2. **保存模型参数（推荐）**
+
+   使用`model.state_dict()` 获取模型的参数字典，然后使用 `torch.save` 保存这个。
+
+   ```python
+   torch.save(model.state_dict(), 'model_params.pth')
+   ```
+
+
+
+### 读取
+
+1. 要加载保存的整个模型，可以使用 `torch.load` 函数，并将加载的结果分配给模型对象。
+
+   ```python
+   loaded_model = torch.load('model.pth')
+   ```
+
+2. 要加载保存的模型参数，需要**先创建一个与原始模型结构相同的模型**，然后使用 `load_state_dict` 方法加载参数。
+
+```python
+loaded_model = SimpleModel()
+loaded_model.load_state_dict(torch.load('model_params.pth'))
+```
+
