@@ -69,7 +69,79 @@ img.show #在系统默认的图像查看器中打开图像
 
 
 
+## OS模块
+
+### 导入
+
+`import os`用于导入名为 `os` 的模块。`os` 模块提供了与操作系统交互的功能，例如文件和目录操作、环境变量等。
+
+```python
+import os
+```
+
+
+
+### os.listdir()用法
+
+是 Python 中 `os` 模块提供的一个函数，用于**返回指定目录中的文件和子目录列表**。
+
+举例：
+
+```python
+import os
+
+# 指定目录路径
+directory_path = "/path/to/directory"
+
+# 获取目录中的文件和子目录列表
+files_and_dirs = os.listdir(directory_path)
+
+# 打印文件和子目录列表
+print("Files and Directories:", files_and_dirs)
+```
+
+**注意**：返回的列表中只包含文件和目录的名称，不包含完整的路径。如果你需要完整路径，可以使用 `os.path.join(directory_path, file_or_dir)`
+
+
+
+### os.path.join()用法
+
+是 Python 中 `os.path` 模块提供的一个函数，**用于连接路径中的各个部分，并返回一个新的路径**。
+
+举例：
+
+```python
+import os
+
+# 连接路径
+path = os.path.join("folder", "subfolder", "file.txt")
+print(path)
+```
+
+`os.path.join` 将字符串 `"folder"、"subfolder"` 和 "file.txt" 连接在一起，根据当前操作系统的路径规则生成正确的路径。例如，如果运行在 Windows 上，生成的路径可能是 "folder\subfolder\file.txt"。
+
+
+
 ## 数据处理
+
+### 数据路径
+
+在python中，反斜杠有特殊的转义含义，例如 `\n` 表示换行。
+
+**注意**：如果你的路径中包含了反斜杠并且被误解释为转义字符，可能会导致`ValueError: embedded null character`这个错误。
+
+**解决方法**：使用**原始字符串**（raw string）来表示路径，即在字符串前面加上 `r`，即告诉python不要对反斜杠进行转义
+
+​	举例：
+
+```python
+train_root = r"E:\研一课程\视觉检测\图像增强作业\dataset\train"
+img_path = r"E:\研一课程\视觉检测\图像增强作业\dataset\train\GT\0.png"
+img = Image.open(img_path)
+img.show()
+```
+
+
 
 ### Dataset
 
@@ -78,7 +150,7 @@ img.show #在系统默认的图像查看器中打开图像
 - 如何获取每一个数据及其label
 - 告诉我们总共有多少数据 
 
-它定义了访问数据集的标准接口，包括 `__getitem__` 方法，用于按索引获取样本，以及 `__len__` 方法，用于获取数据集的大小。
+它定义了访问数据集的标准接口，包括 `__getitem__` 方法，用于按索引获取样本；以及 `__len__` 方法，用于获取数据集的大小。
 
 举例：
 
@@ -494,15 +566,9 @@ nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0)
 - `bias`：即是否要添加偏置参数作为可学习参数的一个，默认为True。
 - `padding_mode`：即padding的模式，默认采用零填充`zeros`。
 
-输出公式原理：
-
-![image-20231125150118240](C:\Users\83802\AppData\Roaming\Typora\typora-user-images\image-20231125150118240.png)
-
 
 
 #### 2.全连接层 (`nn.Linear`)
-
-![image-20231125132757109](C:\Users\83802\AppData\Roaming\Typora\typora-user-images\image-20231125132757109.png)
 
 常规用法：
 
@@ -540,7 +606,6 @@ nn.MaxPool2d(kernel_size, stride=None, padding=0)
 
 - `ceil_mode`：设置为 `True` 时，池化操作的输出大小计算使用 "ceil" 函数，否则默认为=`False`时，使用 "floor" 函数。
 
-  ![image-20231124210947165](C:\Users\83802\AppData\Roaming\Typora\typora-user-images\image-20231124210947165.png)
 
 举例：
 
@@ -572,13 +637,9 @@ output_data = maxpool_layer(input_data)
 
 - 是修正线性单元的激活函数，它将输入的所有负值都变为零，保持正值不变。
 
-![image-20231125112235402](C:\Users\83802\AppData\Roaming\Typora\typora-user-images\image-20231125112235402.png)
-
 - 通常不需要额外的初始化参数，因为 ReLU 激活函数没有可学习的参数。
 
 **注意**：ReLU激活函数中存在一个参数为`inplace`，为bool类型变量，通常取默认值`False`以保存原值
-
-![image-20231125124629284](C:\Users\83802\AppData\Roaming\Typora\typora-user-images\image-20231125124629284.png)
 
 举例：
 
@@ -603,8 +664,6 @@ output_data = relu(input_data)
 - 它是sigmoid函数的激活函数，它将输入值压缩到 (0, 1) 范围内。
 
 - 主要用于二分类问题，输出可以被解释为概率。在输出层的**二分类**问题中常用于将模型的输出映射到 (0, 1) 的范围。
-
-![image-20231125112708429](C:\Users\83802\AppData\Roaming\Typora\typora-user-images\image-20231125112708429.png)
 
 举例：
 
@@ -693,6 +752,8 @@ output = model(input_data)
 
 ![image-20231126143541985](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231126143541985.png)
 
+
+
 #### nn.MSEloss(均方误差)
 
 - 基本原理：
@@ -774,6 +835,12 @@ for epoch in range(100):
 ```
 
 使用了一个简单的线性模型和均方误差损失（`nn.MSELoss`）。然后，我们选择了随机梯度下降优化器（`optim.SGD`），并在训练循环中使用了 `zero_grad()` 方法将梯度清零，`backward()` 方法进行反向传播，以及 `step()` 方法更新模型参数。
+
+
+
+### Adam优化器
+
+Adam（Adaptive Moment Estimation）是一种**自适应学习率**的优化算法，它在梯度下降的基础上引入了动量和适应性学习率。
 
 
 
