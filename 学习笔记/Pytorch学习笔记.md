@@ -704,6 +704,36 @@ model = nn.Sequential(
 
 
 
+#### 6.nn.Dropout的使用
+
+是一种正则化技术，旨在**减少**神经网络的**过拟合**。过拟合是指模型在训练集上表现良好，但在未见过的数据上表现较差的情况。
+
+在神经网络中，每个神经元都与前一层的所有神经元相连接。`Dropout`通过在训练过程中随机将一些神经元的输出置零，从而减少神经元之间的依赖性，强制网络学习更加鲁棒和泛化性更强的特征。
+
+**注意**：只能用在训练部分而不能用在测试部分
+
+举例：
+
+```python
+import torch.nn as nn
+
+class MyModel(nn.Module):
+    def __init__(self):
+        super(MyModel, self).__init__()
+        self.fc1 = nn.Linear(in_features=100, out_features=50)
+        self.dropout = nn.Dropout(p=0.5)  # p是dropout的概率
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = nn.functional.relu(x)
+        x = self.dropout(x)  # 在训练时应用dropout
+        return x
+```
+
+`nn.Dropout`的概率（`p`）为0.5，这意味着在每个训练步骤中，每个神经元有50%的概率被临时关闭（输出被置零）。这有助于防止模型过度拟合训练数据，提高模型的泛化能力。
+
+
+
 ### 第三步
 
 在 `forward` 方法中**定义**模型的**前向传播逻辑**。这是模型接收输入并生成输出的地方。
@@ -731,6 +761,9 @@ class MyModel(nn.Module):
 **创建模型实例**，然后可以像调用函数一样调用该实例，传入输入数据进行前向传播。
 
 ```python
+#将模型切换到评估模式,通常会关闭一些特定于训练的操作，如nn.Dropout中的dropout
+model.eval()
+
 model = MyModel()
 input_data = torch.randn(1, 3, 32, 32)  # 一个大小为 (1, 3, 32, 32) 的输入张量
 output = model(input_data)
