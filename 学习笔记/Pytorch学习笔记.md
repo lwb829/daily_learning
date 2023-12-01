@@ -35,6 +35,7 @@ plt.figure(figsize=(7,5)) #图像的宽高,单位为英寸
 plt.plot(x,y,linewidth=5) #设置线条宽度
 plt.xlabel("x",fontsize=10) #设置字体大小
 plt.ylabel("y",fontsize=10)
+plt.savefig("××.png",bbox_inches='tight') #保存图像，并确保保存的图像没有被裁剪
 plt.show()
 
 #举例2
@@ -915,4 +916,35 @@ Adam（Adaptive Moment Estimation）是一种**自适应学习率**的优化算�
 loaded_model = SimpleModel()
 loaded_model.load_state_dict(torch.load('model_params.pth'))
 ```
+
+
+
+## tqdm库
+
+```python
+from tqdm import tqdm
+```
+
+在 Python 中导入了 `tqdm` 库中的 `tqdm` 函数。`tqdm` 是 "taqaddum" 的缩写，意为 "进展" 或 "前进"，它是一个用于在命令行界面中显示进度条的库。
+
+`tqdm` 主要用于在循环或迭代过程中**显示进度条**，以便用户能够清楚地看到程序的执行进度。这对于处理大量数据或执行耗时较长的任务时特别有用，因为用户可以实时了解到任务的完成程度。
+
+举例：
+
+```python
+from tqdm import tqdm
+import time
+
+# 创建一个包含100个元素的列表
+data = range(100)
+
+# 使用tqdm显示进度条
+for item in tqdm(data, desc='Processing'):
+    # 模拟处理每个元素的耗时操作
+    time.sleep(0.1)
+```
+
+`tqdm(data, desc='Processing')` 接受一个可迭代对象（这里是包含100个元素的列表）作为参数，并在循环中显示一个进度条。`desc` 参数用于指定进度条前面显示的描述性文本。
+
+
 
