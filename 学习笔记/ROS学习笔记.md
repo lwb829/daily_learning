@@ -1,5 +1,112 @@
 # ROS文件系统（可结合wiki官网）
 
+## ROS中的日志（log）消息
+
+### 日志系统
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/a932e3b530b240d3a63158be95b1dd48.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+日志 (`log`) 系统的功能是让程序生成一些日志消息，显示在屏幕上、发送到特定 `topic` 或者储存在特定 `log` 文件中，以方便调试、记录、报警等。
+
+
+
+### 日志消息
+
+在ROS中，**有一个特殊的话题叫作`/rosout`，它承载着所有节点的所有日志消息**。`/rosout`消息的类型是`rosgraph_msgs/Log`：
+
+![img](https://img-blog.csdnimg.cn/3ba0b5b5351040bd9cf03fca286b64a7.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+`rosgraph_msgs/Log`消息用来让各个节点发布日志消息，这样一来就能让网络上的任何一个人都看到。
+
+可以认为`/rosout`是一个加强版的`print()`：它不是向终端输出字符串，而是可以将字符串和元数据放到一个消息中，发送给网络上的任何一个人。
+
+
+
+### 日志等级
+
+`ROS`有5个日志记录标准级别，这些名称是输出信息的函数的一部分，他们遵循以下语法：
+
+```
+ROS_<LEVEL>[_<OTHER>]
+```
+
+日志消息按照**严重性由低到高**可以分为 5 级：
+
+- `DEBUG`
+- `INFO`
+- `WARN`
+- `ERROR`
+- `FATAL`
+
+每个消息级别用于不同的目的：
+
+- `DEBUG`(调试)：只在调试时用，此消息不出现在部署的应用中，仅用于测试；
+- `INFO`(信息)：标准消息，说明重要步骤或节点所正在执行的操作；
+- `WARN`(警告)：提醒一些错误、缺失或者不正常，但进程仍能运行；
+- `ERROR`(错误)：提示错误，尽管节点仍可在这里恢复，但对节点的行为设置了一定期望；
+- `FATAR`(致命)：这些消息通常表示阻止节点继续运行的错误。
+
+![img](https://img-blog.csdnimg.cn/d6042c3087ce4204a69cf63096bd137a.png)
+
+
+
+### 日志消息的生成
+
+由五个 C++ 宏来产生日志消息，每个宏对应一个级别：
+
+```c++
+ROS_DEBUG_STREAM(message);  
+ROS_INFO_STREAM(message);  
+ROS_WARN_STREAM(message);  
+ROS_ERROR_STREAM(message);  
+ROS_FATAL_STREAM(message);
+```
+
+其实这个宏的定义就把格式输出包含到里面，其中各个宏的参数`message`可以处理`C++`中标准输出流(`ostream`)中的各种表达式，比如：`std::cout`。这包括在 `int` 或者 `double` 这种基本数据类型上使用插入操作符(`<<`)，以及已经重载这个操作符的复合数据类型。
+
+我们经常也能看到不带`_STREAM`的消息，它们的区别如下：
+
+```c++
+ROS_INFO(“INFO message %d”,k);  // 相当于c中的printf;
+ROS_INFO_STREAM ( "INFO message." << k);  // 相当于c++中的cout;
+```
+
+
+
+### 日志消息的查看
+
+日志消息有三个不同的输出目的地，包括屏幕、`rosout topic`、`log` 文档。其中发布到 `rosout topic` 的 `msg` 类型是 `rosgraph_msgs/Log`。
+
+我们可以通过`rostopic echo /rosout` 来查看消息，也可以通过一个节点来订阅日志话题，还可以通过指令`rqt_console`来通过图形界面来显示日志消息：
+
+![在这里插入图片描述](https://img-blog.csdnimg.cn/67f4417b6a7b45dc90835b3aeca73587.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+
+
+### 日志级别设置
+
+**`ROS` 默认只处理 `INFO` 或者更高级别消息，`DEBUG` 级别的消息会被忽略**。
+
+`rqt`界面配置：
+
+```
+rosrun rqt_logger_level rqt_logger_level
+```
+
+```
+rosrun rqt_console rqt_console
+```
+
+会弹出两个窗口：
+
+![image-20231204194906543](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231204194906543.png)
+
+![image-20231204194938204](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231204194938204.png)
+
+图中列出了节点列表、日志记录器列表、日志级别列表。在图中操作与 `rosservice` 命令的效果一致。
+
+
+
 ## 创建ROS软件包
 
 ###catkin软件包组成
@@ -114,27 +221,28 @@ $ source devel/setup.bash //非常重要
 ####创建自定义msg类型功能包及后续连带操作（可参考http://wiki.ros.org/msg）
 
 可创建一个空的package单独存放msg类型文件，并在其中创建的msg文件夹下新建一个名为`××.msg`消息类型文件（比如`Test.msg`）
-.msg文件由两部分组成：**字段**和**常量**。字段是消息内部发送的数据，常量定义可用于解释这些字段的有用值（例如，整数值的类似枚举常量）。
+msg文件由两部分组成：**字段**和**常量**。字段是消息内部发送的数据，常量定义可用于解释这些字段的有用值（例如，整数值的类似枚举常量）。
 
 - **字段**：字段类型 字段名称
+
   - **字段类型**：
-  
-    int8取值范围是：-128 — 127
+
+    int8取值范围是：-128 ~ 127
 
     int16 意思是16位整数(16bit integer)，相当于short 占2个字节 -32768 — 32767
-  
+
     int32 意思是32位整数(32bit integer), 相当于 int 占4个字节 -2147483648 —2147483647
-  
+
     int64 意思是64位整数(64bit interger), 相当于 long long 占8个字节 -9223372036854775808 — 9223372036854775807  
-    
+
   - ![image-20231105223126645](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231105223126645.png)
-  
+
     
-  
+
   - **字段名称**：限制为字母字符，后跟字母数字和下划线的任意混合
-  
+
   - **标头**：**.msg文件的第一个字段为：Header header 必须添加，否则报错**
-  
+
 - 常量：常量类型 常量名称=常量值
 
 例如：int32 X=123；string FOO=foo 
@@ -546,6 +654,72 @@ install(TARGETS ${PROJECT_NAME}_command_node
 
 ## ROS中计算程序执行时间
 
+### 定时器
+
+#### 创建对象
+
+- 作用：按照一定频率调用回调函数
+
+- 一般用法：
+
+  ```c++
+  ros::NodeHandle nh;
+  ros::Timer timer = nh.createTimer(ros::Duration period, <callback>, bool oneshot = false);
+  ros::spin();
+  ```
+
+  其中：
+
+  - period：是调用定时器回调函数时间间隔。
+
+    举例：ros::Duration(0.1)，即每0.1秒执行一次回调函数
+
+  - callback：回调函数名
+
+  - oneshot：默认为false，表示是否只执行一次
+
+  **注意**：一定要用到spin函数
+
+
+
+#### 回调函数
+
+- 作用：提供当前定时器的时间信息
+
+- 一般用法：
+
+```c++
+void timerCallback(const ros::TimerEvent &e);
+```
+
+ros::TimerEvent结构体作为参数传入，它提供时间的相关信息，对于调试和配置非常有用
+
+- ros::TimerEvent结构体格式：
+
+  ```c++
+  struct TimerEvent
+  {
+    Time last_expected;                     
+    Time last_real;                        
+    Time current_expected;                  
+    Time current_real;                     
+    struct
+    {
+      WallDuration last_duration;         
+    } profile;
+  };
+  ```
+
+  -  ros::Time last_expected 上次回调期望发生的时间
+  -  ros::Time last_real 上次回调实际发生的时间
+  -  ros::Time current_expected 本次回调期待发生的时间
+  -  ros::Time current_real 本次回调实际发生的时间
+  -  ros::WallTime profile.last_duration 上次回调的时间间隔（结束时间-开始时间），是wall-clock时间
+
+
+
+### 其它
+
 - 时间格式
 
 分为**时刻（Time）**和**持续时间（Duration）**，且分为秒（s）和纳秒（ns），换算关系为：`1nsec=1e-9sec`
@@ -565,17 +739,17 @@ int32 nsec
 
 - toSec()
 
-将“1 ros时间格式说明”中所表示的格式转为秒（s）
+将“1 ros时间格式说明”中所表示的格式**转为秒**（s）
 
 - toNSec()
 
-将时间或时间戳转为纳秒（ns）
+将时间或时间戳**转为纳秒**（ns）
 
 
 
 ## 理解ROS节点
 
-只不过是ROS软件包中的一个**可执行文件**。ROS节点使用ROS客户端库与其他节点通信，节点可以发布或订阅话题，也可以提供或使用服务。
+节点是ROS软件包中的一个**可执行文件**。ROS节点使用ROS客户端库与其他节点通信，节点可以发布或订阅话题，也可以提供或使用服务。
 
 - roscore=ros+core，是运行所有ROS程序前首先要运行的命令（注：保证**有一个roscore在运行**就够了）
 - rospy = Python客户端库
@@ -659,6 +833,7 @@ int main(int argc, char **argv)
   return 0;
 }
 ```
+
 **总结：如何实现一个发布者**
 
 - 初始化ROS节点
@@ -676,13 +851,13 @@ int main(int argc, char **argv)
 
 当latch=true时，表示**消息将被持久化**，新的订阅者在连接到主题时会立即接收到最新的消息。
 
-***一般来说，对于静态地图为true，如果没有给出初始地图则为false。***
+**注意：*一般来说，对于静态地图为true，如果没有给出初始地图则为false。***
 
 
 
 ## ROS中订阅者Subscriber的编程实现(C++)
 
-## 1.必须包含的**头文件**
+### 1.必须包含的**头文件**
 
 `include "ros/ros.h"`
 
@@ -721,23 +896,109 @@ int main(int argc, char **argv)
 
 
 
+## roslaunch的用法
+
+### 使用roslaunch
+
+roslaunch可以用来**启动**定义在launch（启动）文件中的**节点**
+
+- 用法：
+
+```c++
+$ roslaunch [package] [filename.launch]
+```
+
+- 目的：
+
+通过XML文件实现多节点的配置和启动（**可自动启动ROS Master，即无需单独roscore**）
+
+- launch目录的创建：
+
+```c++
+$ mkdir launch
+$ cd launch
+```
 
 
 
+### launch文件基础解析
 
+```xml
+<launch>
 
+  <group ns="turtlesim1">
+    <node pkg="turtlesim" name="sim" type="turtlesim_node"/>
+  </group>
 
+  <group ns="turtlesim2">
+    <node pkg="turtlesim" name="sim" type="turtlesim_node"/>
+  </group>
 
+  <node pkg="turtlesim" name="mimic" type="mimic">
+    <remap from="input" to="turtlesim1/turtle1"/>
+    <remap from="output" to="turtlesim2/turtle1"/>
+  </node>
 
+</launch>
+```
 
+- 以`<launch>`开头（根元素）表明这是一个launch文件，作为**启动标签**，`</launch>`作为**结束标签**
 
+- `<group ns="turtlesim1">，<group ns="turtlesim2">`为创建的**分组**，并以命名空间（namespace）标签来区分
 
+- `<node>`作为**启动节点**
 
+  ```xml
+  <node pkg="package-name" type="executable-name" name="node-name"/>
+  ```
 
+  - pkg：节点所在的**功能包名称**
+  - type：节点的**可执行文件名称**
+  - name：节点**运行时的名称**
+  - output：控制某节点**打印到**当前**终端**
 
+- `<param>/<rosparam>`：设置**ROS系统运行中的参数**，存储**在参数服务器中**
 
+  ```xml
+  <param name="output_frame" value="odom"/>
+  ```
 
+  - name：参数名
+  - value：参数值
 
+- `<arg>`：launch文件**內部的局部变量**，仅限于**launch文件中**使用
+
+  ```xml
+  <arg name="arg-name" default="arg-value"/>
+  ```
+
+  - name：参数名
+  - value：参数值
+
+  **调用：**
+
+  ```xml
+  <param name="foo" default="$(arg arg-name)"/>
+  ```
+
+- `<include>`：**包含其它launch文件**，类似C语言中的头文件
+
+  ```xml
+   <include file=".../.../other.launch"/>
+  ```
+
+  - file：包含的其它launch文件路径
+
+  
+
+- `<remap>`：重映射ROS计算图资源的命名 
+
+  ```xml
+  <remap from="/turtlebot/cmd_vel" to="/cmd_vel" />
+  ```
+
+  - from：原命名
+  - to：映射之后的命名
 
 
 
@@ -781,6 +1042,144 @@ class ××
 
 
 
+## 客户端Client的编程实现
+
+### 主程序代码
+
+```c++
+#include "ros/ros.h"
+#include "beginner_tutorials/AddTwoInts.h"
+#include <cstdlib>
+
+int main(int argc, char **argv)
+{
+  ros::init(argc, argv, "add_two_ints_client");
+  if (argc != 3)
+  {
+    ROS_INFO("usage: add_two_ints_client X Y");
+    return 1;
+  }
+
+  ros::NodeHandle n;
+  //ros::ServiceClient对象的作用是在稍后调用服务
+  ros::ServiceClient client = n.serviceClient<beginner_tutorials::AddTwoInts>("add_two_ints");//为add_two_ints服务创建一个客户端
+  beginner_tutorials::AddTwoInts srv;
+  srv.request.a = atoll(argv[1]);
+  srv.request.b = atoll(argv[2]);
+  //实例化一个自动生成的服务类，并为它的request成员赋值。一个服务类包括2个成员变量：request和response，以及2个类定义：Request和Response
+  if (client.call(srv))//由于服务调用被阻塞，它将在调用完成后返回。如果服务调用成功，call()将返回true，并且srv.response中的值将是有效的。如果调用不成功，则call()将返回false且srv.response的值将不可用。
+  {
+    ROS_INFO("Sum: %ld", (long int)srv.response.sum);
+  }
+  else
+  {
+    ROS_ERROR("Failed to call service add_two_ints");
+    return 1;
+  }
+
+  return 0;
+}
+```
+
+**总结：如何实现一个客户端**
+
+- 初始化ROS节点
+- 创建一个Client实例
+- 发布服务请求数据
+- 等待Server处理之后的应答结果
+
+
+
+### 配置编译规则
+
+- 设置需要编译的代码和生成的可执行文件
+- 设置链接库
+
+在下面的代码添加如下命令：
+
+```cmake
+#   ${catkin_LIBRARIES}
+# )
+
+add_executable(add_two_ints_client src/add_two_ints_client.cpp)
+target_link_libraries(add_two_ints_client ${catkin_LIBRARIES})
+add_dependencies(add_two_ints_client beginner_tutorials_gencpp)
+
+#############
+## Install ##
+#############
+```
+
+
+
+## 服务端Server的编程实现
+
+### 主程序代码
+
+```c++
+#include "ros/ros.h"
+#include "beginner_tutorials/AddTwoInts.h"
+
+bool add(beginner_tutorials::AddTwoInts::Request  &req,
+         beginner_tutorials::AddTwoInts::Response &res)//提供了AddTwoInts服务，它接受srv文件中定义的请求（request）和响应（response）类型，并返回一个布尔值
+{
+  res.sum = req.a + req.b;
+  ROS_INFO("request: x=%ld, y=%ld", (long int)req.a, (long int)req.b);
+  ROS_INFO("sending back response: [%ld]", (long int)res.sum);
+  return true;
+}
+//两个整数被相加，和已经存储在了响应中。然后记录一些有关请求和响应的信息到日志中。完成后，服务返回true。
+
+int main(int argc, char **argv)
+{
+  ros::init(argc, argv, "add_two_ints_server");
+  ros::NodeHandle n;
+
+  ros::ServiceServer service = n.advertiseService("add_two_ints", add);
+  ROS_INFO("Ready to add two ints.");
+  ros::spin();
+
+  return 0;
+}
+```
+
+**总结：如何实现一个服务端**
+
+- 初始化ROS节点
+- 创建一个Server实例
+- 循环等待服务请求，进入回调函数
+- 在回调函数中完成服务功能的处理，并反馈应答数据
+
+
+
+### 配置编译规则
+
+- 设置需要编译的代码和生成的可执行文件
+- 设置链接库
+
+在下面的代码添加如下命令：
+
+```cmake
+#   ${catkin_LIBRARIES}
+# )
+
+add_executable(add_two_ints_server src/add_two_ints_server.cpp)
+target_link_libraries(add_two_ints_server ${catkin_LIBRARIES})
+add_dependencies(add_two_ints_server beginner_tutorials_gencpp)
+
+#############
+## Install ##
+#############
+```
+
+
+
+
+
+
+
+
+
 # Python与C++编译区别
 
 ## 话题订阅
@@ -810,7 +1209,7 @@ void ControlConverter::gear_report_callback(const pix_driver_msgs::GearReport::C
 
   - **消息类型**（GearReport）**放的位置不同**
 
-    -  原因：**在C++中**，当你使用`&ControlConverter::gear_report_callback`时，编译器知道这是一个`ControlConverter`类的成员函数，因此可以根据函数签名推断消息类型，因此在订阅主题时**可以省略消息类型**。
+    - 原因：**在C++中**，当你使用`&ControlConverter::gear_report_callback`时，编译器知道这是一个`ControlConverter`类的成员函数，因此可以根据函数签名推断消息类型，因此在订阅主题时**可以省略消息类型**。
 
       ​            **在python中**，由于动态类型和运行时类型推断的特性，需要**显式地提供消息类型**，即`GearReport`，以便在运行时进行正确的订阅。
 
