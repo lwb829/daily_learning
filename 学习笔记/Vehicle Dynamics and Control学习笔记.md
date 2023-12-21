@@ -1,6 +1,6 @@
 # Vehicle Dynamics and Control
 
-## Chapter 1  Introduction
+## Chapter 1  Introduction（介绍）
 
 ### 1.2  ACTIVE STABILITY CONTROL SYSTEMS（主动稳定控制系统）
 
@@ -12,7 +12,7 @@ roll over stability control 侧翻稳定性控制
 
 
 
-### 1.4  TECHNOLOGIES FOR ADDRESSING TRAFFIC CONGESTION
+### 1.4  TECHNOLOGIES FOR ADDRESSING TRAFFIC CONGESTION（解决交通拥堵的技术）
 
 #### 1.4.2 “Traffic-friendly” adaptive cruise control
 
@@ -28,9 +28,9 @@ roll over stability control 侧翻稳定性控制
 
 
 
-### 1.5  EMISSIONS AND FUEL ECONOMY
+### 1.5  EMISSIONS AND FUEL ECONOMY（排放与燃油经济性）
 
-#### 1.5.1 Hybrid electric vehicles（HEV）混合动力电动汽车
+#### 1.5.1 Hybrid electric vehicles（HEV）（混合动力电动汽车）
 
 - 优点：结合传统**内燃机**（ICE）和**电动机**，可以获得更大的续航里程，并减轻排放量，提高燃油经济性。
 
@@ -40,24 +40,94 @@ roll over stability control 侧翻稳定性控制
 
 
 
-## Chapter 2  Lateral Vehicle Dynamics 车辆横向动力学
+## Chapter 2  Lateral Vehicle Dynamics（车辆横向动力学）
 
-### 2.1 LATERAL SYSTEMS UNDER COMMERCIAL DEVELOPMENT
+### 2.1 LATERAL SYSTEMS UNDER COMMERCIAL DEVELOPMENT（商业发展中的横向系统）
 
 - 解决车道偏离事故的三种类型的横向系统：
 
-  - 车道偏离预警系统（LDWS）
+  - 车道偏离预警系统（**LDWS**）
 
-    利用AutoVue设备，识别道路和车道标记之间的区别，计算机将这些数据与车辆速度结合，预测车辆何时开始漂移到意外的变道，并提醒驾驶员进行纠正。
+    用一个由摄像头、车载电脑和软件组成，安装在挡风玻璃、仪表板或车顶上的AutoVue设备，来识别道路和车道标记之间的区别，计算机将这些数据与车辆速度结合，预测车辆何时开始漂移到意外的变道，当这种情况发生时发出声音提示，从而提醒驾驶员进行纠正。它在白天、夜晚的大多数环境条件下都可以有效运作。
 
-  - 车道保持系统（LKS）
+  - 车道保持系统（**LKS**）
 
     自动控制方向盘，使车辆保持在车道内，并在转弯时跟随车道行驶。
 
-  - 偏航稳定控制系统 （YSCS）
+    日产车推出的一种LKS，提供一种与驾驶员并行的自动转向。该系统只在“笔直”道路上运行(最终将指定最小半径)，并在规定的最低速度以上运行。前提是，在高速公路上连续行驶数小时后，司机会感到疲劳，因为他们不得不不断地轻微转向，以保持车辆在车道上。LKS试图通过提高直线公路的稳定性来减少这种疲劳。
 
+    该系统使用单个CCD摄像头来识别车道划分，一个转向执行器来控制前轮，以及一个电子控制单元。
+
+  - 偏航稳定控制系统 （**YSCS**）
+  
     三种对于偏航控制的稳定控制系统：
+  
+    - Differential Braking Systems（差速制动系统）：利用车辆上的ABS制动系统，在左右轮之间施加差速制动来控制偏航力矩 （详细见8.2）
+    - Steer-by-Wire Systems（线控转向系统）：修改驾驶员的转向角度输入，并为车轮增加一个校正转向角度 （详细见8.3）
+    - Active Torque Distribution Systems（主动扭矩分配系统）：利用主动差速器和全轮驱动技术来独立控制分配给每个车轮的驱动扭矩，从而提供牵引力和偏航力矩的主动控制 （详细见8.4）
 
-    - Differential Braking Systems（差速制动系统）：利用车辆上的ABS制动系统，在左右轮之间施加差速制动来控制偏航力矩
-    - Steer-by-Wire Systems（线控转向系统）：修改驾驶员的转向角度输入，并为车轮增加一个校正转向角度
-    - Active Torque Distribution Systems（主动扭矩分配系统）：利用主动差速器和全轮驱动技术来独立控制分配给每个车轮的驱动扭矩，从而提供牵引力和偏航力矩的主动控制
+
+
+### 2.2 KINEMATIC MODEL OF LATERAL VEHICLE MOTION（车辆横向运动学模型）
+
+车辆运动学模型把车辆完全视为刚体，主要考虑车辆的位姿（位置坐标、航向角），速度，前轮转角等关系，且不考虑任何影响运动的力的情况下，提供了车辆运动的数学描述。
+
+#### 自行车模型
+
+- 三个假设：
+
+  - 车辆在垂直方向的运动被忽略掉了，即我们描述的车辆是一个**二维平面上的运动物体**（可以等价与我们是站在天空中的俯视视角）
+  - 假设车辆的结构就像自行车一样，即车辆的前两个轮胎拥有相同的的角速度和转速等，同样后面的两个轮胎也是如此，那么**前后的轮胎就可以各用一个轮胎来描述**
+  - 假设车辆运动也和自行车一样，即**前轮胎控制车辆转角**
+
+##### 以后轴为中心
+
+- 首先在一个二维平面上描述一个车辆：
+
+  ![img](https://img-blog.csdn.net/20171202165342899?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQWRhbVNoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+$\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方向的角度，$v$是$\theta$方向的速度，$L$是车辆的轴距（前后轮胎的距离），$(x,y)$是车辆的坐标。
+
+下面是该车辆的自行车模型：
+
+![img](https://img-blog.csdn.net/20171202165432943?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvQWRhbVNoYW4=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast)
+
+运动学自行车模型假定车辆行如一辆自行车，整个的控制量可以简化为$(a,\delta_f)$。其中$a$是车辆的**加速度**，踩油门即为正加速度，踩刹车即为负加速度；$\delta_f$是**方向盘转角**，即假定这个方向盘转角就是**前轮胎当前的转角**。
+
+##### 以质心为中心（前轮驱动）
+
+![image-20231221192610754](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231221192610754.png)
+
+我们定义模型中的状态量，可以用四个状态量来描述车辆的当前状态：
+
+  - $x$：车辆当前的$x$坐标
+
+  - $y$：车辆当前的$y$坐标
+
+  - $\psi$：车辆当前的偏航角（**Y**$aw$方向的偏角，往往用弧度来描述，逆时针方向为正）
+
+  - $v$：车辆的速度
+
+其中$l_f$和$l_r$为前轮和后轮到车辆重心C的距离，前后车轮与车辆纵向夹角为滑动角$\delta_f$，$\delta_r$。AO，BO两条直线分别垂直于两个滚动车轮的方向，点O定义为这两条直线的AO和BO的交点，也是车辆的瞬时滚动中心，该中心与重心C连线的长度**R为车辆路径的半径**。**速度$v$垂直于直线OC**，且相对于车辆纵向夹角为滑动角$\beta$。
+
+==**各个状态量的更新公式如下：**==
+
+- $x_{t+1}=x_t+v_{t}\cos(\psi_{t}+\beta)dt$
+- $y_{t+1}=y_{t}+v_{t}\sin(\psi_{t}+\beta)dt$
+- $\psi_{t+1}=\psi_{t}+\frac{v_t}{l_r}\sin(\beta)dt$
+- $v_{t+1}=v_{t}+adt$
+- $\beta=\arctan\left(\frac{l_{r}\tan(\delta_f)+l_{f}\tan(\delta_r)}{l_f+l_r}\right)$=$\arctan\left(\frac{l_{r}}{l_f+l_r}\tan(\delta_f)\right)$ （见注意1）
+
+**注意**：
+
+1. 由于绝大多数的汽车后轮都不能够偏转，所以我们的自行车模型就假定后轮的转角控制输入$\delta_r$=0，即方向盘上的控制输入都反映到了前轮的转角上了。
+2. 我们假定车速较低，车辆路径半径变化缓慢，那么车辆的方向变化率（$\dot{\psi}$）肯定等于车辆的角速度，所以车辆的角速度为$\dot{\psi}=\frac{v}{R}$。
+3. $v_t{\sin{\beta}}$为t时刻的**线速度**，方向为沿着垂直车辆中轴线的方向，这部分方向的速度可以使其角度$\psi$改变
+
+
+
+#### 阿克曼转向几何模型
+
+一种为了解决交通工具转弯时，内外转向轮路径指向的圆心不同的几何学。
+
+实际上，前轮的左右转向角度并非完全相等，通常情况下，**内侧轮胎转角更大**。
