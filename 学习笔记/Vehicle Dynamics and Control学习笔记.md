@@ -72,17 +72,20 @@ roll over stability control 侧翻稳定性控制
 
 车辆运动学模型把车辆完全视为刚体，主要考虑车辆的位姿（位置坐标、航向角），速度，前轮转角等关系，且不考虑任何影响运动的力的情况下，提供了车辆运动的数学描述。
 
-#### 自行车模型
 
-- 三个假设：
+
+#### 自行车运动学模型
+
+- 四个假设：
 
   - 车辆在垂直方向的运动被忽略掉了，即我们描述的车辆是一个**二维平面上的运动物体**（可以等价与我们是站在天空中的俯视视角）
   - 假设车辆的结构就像自行车一样，即车辆的前两个轮胎拥有相同的的角速度和转速等，同样后面的两个轮胎也是如此，那么**前后的轮胎就可以各用一个轮胎来描述**
   - 假设车辆运动也和自行车一样，即**前轮胎控制车辆转角**
+  - 当车速较低时，车辆前后轮的方向与车辆前后轮当前的速度方向相同
 
 
 
-##### 以后轴为中心
+##### 基于后轴中心为原点的运动学模型
 
 - 首先在一个二维平面上描述一个车辆：
 
@@ -98,13 +101,13 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 
 
-##### 以质心为中心
+##### 基于车辆重心的运动学模型
 
 ![image-20231221192610754](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231221192610754.png)
 
 我们假定车速较低，车辆路径半径R变化缓慢，那么车辆的方向变化率（$\dot{\psi}$）肯定等于车辆的角速度，所以车辆的角速度为$\dot{\psi}=\frac{v}{R}$。
 
-在惯性坐标系**X-Y**下，可得到车辆运动学模型有三个输入：$\delta_f$，$\delta_r$，$V$
+在惯性坐标系**XY**下，可得到车辆运动学模型有三个输入：$\delta_f$，$\delta_r$，$V$
 
 1. $\dot{X}=V\cos(\psi+\beta)$
 2. $\dot{Y}=V\sin(\psi+\beta)$
@@ -113,7 +116,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 
 
-##### 前轮驱动模型（$\delta_r=0$）
+##### 基于车辆重心的==前轮驱动==运动学模型（$\delta_r=0$）
 
 ![img](https://pic3.zhimg.com/v2-90c5d4da07dea2cf033f18f21bc0bfba_r.jpg)我们定义模型中的状态量，可以用四个状态量来描述车辆的当前状态：
 
@@ -125,7 +128,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
   - $v$：车辆的速度
 
-其中$l_f$和$l_r$为前轮和后轮到车辆重心C的距离，前后车轮与车辆纵向夹角为滑动角$\delta_f$，$\delta_r$。AO，BO两条直线分别垂直于两个滚动车轮的方向，点O定义为这两条直线的AO和BO的交点，也是车辆的瞬时滚动中心，该中心与重心C连线的长度**R为车辆路径的半径**。**速度$v$垂直于直线OC**，且相对于车辆纵向夹角为**滑动角$\beta$**。
+其中$l_f$和$l_r$为前轮和后轮到车辆重心C的距离，前后车轮与车辆纵向夹角为**滑移角$\delta_f$，$\delta_r$**。AO，BO两条直线分别垂直于两个滚动车轮的方向，点O定义为这两条直线的AO和BO的交点，也是车辆的瞬时滚动中心，该中心与重心C连线的长度**R为车辆路径的半径**。**速度$v$垂直于直线OC**，且相对于车辆纵向夹角为**滑移角$\beta$**。
 
 ==**各个状态量的更新公式如下：**==
 
@@ -151,7 +154,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 ![image-20231222095229563](C:/Users/李文博/AppData/Roaming/Typora/typora-user-images/image-20231222095229563.png)
 
-当滑动角$\beta$很小时，有公式表述为：$\frac{\dot{\psi}}{v} \approx \frac{1}{R}=\frac{\delta}{L} $ 或者$\delta=\frac{L}{R}$
+当滑移角$\beta$很小时，有公式表述为：$\frac{\dot{\psi}}{v} \approx \frac{1}{R}=\frac{\delta}{L} $ 或者$\delta=\frac{L}{R}$
 
 由于内外侧轮胎的转向半径不同，因此有：$\delta_o=\frac{L}{R+\frac{l_w}{2}}$；$\delta_i=\frac{L}{R-\frac{l_w}{2}}$
 
@@ -164,4 +167,127 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 上图所示，这种差动转向可以通过梯形拉杆装置获得。
 
 依据阿克曼转向几何设计的车辆，沿着弯道转弯时，利用四连杆的相等曲柄使**内侧轮的转向角比外侧轮大约2~4度**，使四个轮子路径的圆心大致上交会于后轴的延长线上瞬时转向中心，让车辆可以顺畅的转弯。
+
+
+
+### 2.3 BICYCLE MODEL OF LATERAL VEHICLE DYNAMICS（车辆横向动力学的自行车模型）
+
+当**车速相对较高**时，则不能再假设车轮速度与车轮前轮方向一致，必须建立动力学模型。
+
+通过对**轮胎和路面之间的复杂相互作用**来描述车辆的运动。在动力模型中，我们需要考虑的力大致分为两种：
+
+- **纵向力**：使车辆前后移动的力
+
+- **侧向力**：使车辆横向移动的力
+
+**轮胎起到决定性作用**：纵向速度控制，通过控制轮胎转速实现；横向航向控制，通过控制轮胎转角实现。
+
+**注意：当滑移角较大时，轮胎模型则不是线性的了。**
+
+
+
+#### 受力分析
+
+车辆上的作用力沿三个不同的轴分布：
+
+- 纵轴上的力包括驱动力和制动力，以及滚动阻力和拖拽阻力作滚摆运动
+- 横轴上的力包括转向力、离心力和侧风力，汽车绕横轴作俯仰运动
+- 立轴上的力包括车辆上下振荡施加的力，汽车绕立轴作偏摆或转向运动
+
+
+
+##### 车辆受力模型
+
+![img](https://img-blog.csdnimg.cn/05ffb7985d20456dadf8d82cadf23905.png#pic_center)
+
+在单车模型假设的前提下，再做如下假设则为简单的动力学模型：
+
+- 只考虑纯侧偏轮胎特性，忽略轮胎力的纵横向耦合关系
+- 用单车模型来描述车辆的运动，不考虑载荷的左右转移
+- 忽略横纵向空气动力学
+
+
+
+##### 车辆动力学模型
+
+![img](https://img-blog.csdnimg.cn/eb49ca7075d345a7aa57d1d7ce28a2fe.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAMC0-b28=,size_20,color_FFFFFF,t_70,g_se,x_16)
+
+**OXY**为固定于地面的惯性坐标系，**oxy**为固定于车身的车辆坐标系
+
+车辆具有两个自由度（2自由度模型）：绕z轴的**横摆运动**；沿y轴的**横向运动**
+
+根据牛顿第二定律，分别沿x，y，z轴做受力分析：
+
+- x轴：$m\cdot a_x=F_{xf}+F_{xr}$
+
+- y轴：$m\cdot a_y=m\cdot \left( \ddot{y}+V_x\dot{\psi}\right)=F_{yf}+F_{yr}$ （见下）
+
+- ==z轴：$l_z\cdot \ddot{\psi}=l_f\cdot F_{yf}-l_r\cdot F_{yr}$ （力矩平衡）==
+
+其中$m$为整车质量，$l_z$为车辆绕z轴转动的转动惯量
+
+
+
+#### 横向动力学
+
+![img](https://img-blog.csdnimg.cn/c8670cba8d3440f5a4fa562bdf1f2997.png#pic_center)
+
+##### x、y轴方向公式
+
+x、y轴方向加速度$a_x$，$a_y$由两部分构成：$x$、$y$轴方向的相关**位移加速度**$\ddot{x}$、$\ddot{y}$和**向心加速度**$V_y\dot{\psi}$、$V_x\dot{\psi}$ (线速度×角速度)，即公式为：==$a_y=\ddot{y}+V_x\dot{\psi}$；$a_x=\ddot{x}-V_y\dot{\psi}$==
+
+
+
+##### 轮胎公式
+
+由于轮胎受到的横向压力，轮胎会有一个很小的滑移角，如下图所示：
+
+![img](https://img-blog.csdnimg.cn/4371979ec02f4a03b4971bf3c29ae35d.png)
+
+- 前轮/后轮滑移角
+  - 前轮：$\alpha_f=\delta-\theta_{Vf}$，其中$\delta$为前轮转角，$\theta_{Vf}$为前轮速度转角
+  - 后轮：$\alpha_r=-\theta_{Vr}$，其中$\theta_{Vr}$为后轮速度转角
+
+- 前轮/后轮横向轮胎力（与滑移角成正比）
+
+  - 前轮：==$F_{yf}=2C_{\alpha f} \left( \delta-\theta_{Vf}\right)$==
+  - 后轮：==$F_{yr}=2C_{\alpha r} \left( -\theta_{Vr}\right)$==
+
+  **注意**：$C_{\alpha f}$、$C_{\alpha r}$分别为前后轮的**侧偏刚度(cornering stiffness)**，且由于车辆前后各有**两个轮子**，所以受力要**乘以2**。
+
+- 前轮/后轮速度转角
+
+  - 前轮：$\tan \left(\theta_{V_{f}}\right)=\frac{V_{y}+l_{f} \dot{\psi}}{V_{x}} \stackrel{\dot{y}=V_y}{\longrightarrow}\frac{\dot{y}+l_{f} \dot{\psi}}{V_{x}} $
+  - 后轮：$\tan \left(\theta_{V_{r}}\right)=\frac{V_{y}-\ell_{r} \dot{\psi}}{V_{x}} \stackrel{\dot{y}=V_y}{\longrightarrow}\frac{\dot{y}-\ell_{r} \dot{\psi}}{V_{x}} $
+
+  其中$l_f$为前悬长度，$l_r$为后悬长度；$l_{f} \dot{\psi}$、$l_{r} \dot{\psi}$为车辆绕质心旋转的线速度，即为横向速度。
+
+
+
+##### 全局坐标系下公式
+
+1. ==$\dot{X}=v_x \cos (\delta_f) - v_y \sin (\delta_f)$==
+1. ==$\dot{Y}=v_x \sin (\delta_f) - v_y \cos (\delta_f)$==
+
+
+
+#### 考虑路堤角度
+
+若考虑路堤角度，则$y$轴受力分析应该改写为
+
+$m\cdot \left( \ddot{y}+V_x\dot{\psi}\right)=F_{yf}+F_{yr}+F_{bank}$ 
+
+其中$F_{bank}=mg\sin(\phi)$，$\phi$为路标约定的路堤角度，如下图所示
+
+![image-20231224210046371](C:/Users/李文博/AppData/Roaming/Typora/typora-user-images/image-20231224210046371.png)
+
+
+
+### 2.4 MOTION OF A PARTICLE RELATIVE TO A ROTATING FRAME（粒子相对于旋转框架的运动）
+
+
+
+
+
+
 
