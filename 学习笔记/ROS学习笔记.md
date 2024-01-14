@@ -143,8 +143,8 @@ $ catkin_init_workspace
 ###创建功能包
 
 ```c++
-$ cd ~/catkin_ws/src
-$ catkin_create_pkg <package_name> [depend1] [depend2] [depend3]//其中depend为依赖
+$ cd ~/catkin_ws/src //退回到src目录下
+$ catkin_create_pkg <package_name> [depend1] [depend2] [depend3] //其中depend为依赖
 ```
 
 例如：
@@ -157,7 +157,7 @@ $ catkin_create_pkg beginner_tutorials std_msgs rospy roscpp
 
 **所有源码**必须放入**功能包中**中进行编译，其中**src目录下一般放置cpp文件**之类的功能包代码的，**include目录下放置一些比如.h的头文件**
 
-*同一工作空间下，不能存在同名功能包*
+**注意**：同一工作空间下，不能存在同名功能包
 
 
 
