@@ -226,7 +226,7 @@ dataloader = DataLoader(image_dataset, batch_size=32, shuffle=True)
 
 - 一共包括9种数据类型，3大类
 
-![img](https://img-blog.csdnimg.cn/2cff07b7ed0145deab79c096edb3e0d7.png)
+![img](imgs/2cff07b7ed0145deab79c096edb3e0d7.png)
 
 `torch.LongTensor`常用在深度学习中的标签值 ，比如分类任务中的类别标签0，1，2等；`torch.FloatTenso`r常用做深度学习中可学习参数或者输入数据的类型
 
@@ -288,7 +288,7 @@ print(y.type())  # torch.LongTensor
 - 存储区 Storage：保存真正的数据，Storage是在data之上的接口
 - 头信息区的占用内存较小，Storage为主要的占用内存
 
-![img](https://img-blog.csdnimg.cn/c13f6f5b39fb4f39821eb518531934c6.jpeg)
+![img](imgs/c13f6f5b39fb4f39821eb518531934c6.jpeg)
 
 
 
@@ -816,7 +816,7 @@ output = model(input_data)
 
 - 基本原理：
 
-![image-20231126143541985](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231126143541985.png)
+![image-20231126143541985](imgs/image-20231126143541985.png)
 
 
 
@@ -824,7 +824,7 @@ output = model(input_data)
 
 - 基本原理：
 
-![image-20231126144731122](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231126144731122.png)
+![image-20231126144731122](imgs/image-20231126144731122.png)
 
  
 

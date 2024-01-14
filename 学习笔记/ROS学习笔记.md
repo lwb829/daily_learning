@@ -4,7 +4,7 @@
 
 ### 日志系统
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/a932e3b530b240d3a63158be95b1dd48.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
+![在这里插入图片描述](imgs/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 日志 (`log`) 系统的功能是让程序生成一些日志消息，显示在屏幕上、发送到特定 `topic` 或者储存在特定 `log` 文件中，以方便调试、记录、报警等。
 
@@ -14,7 +14,7 @@
 
 在ROS中，**有一个特殊的话题叫作`/rosout`，它承载着所有节点的所有日志消息**。`/rosout`消息的类型是`rosgraph_msgs/Log`：
 
-![img](https://img-blog.csdnimg.cn/3ba0b5b5351040bd9cf03fca286b64a7.png?x-oss-process=image/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
+![img](imgs/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 `rosgraph_msgs/Log`消息用来让各个节点发布日志消息，这样一来就能让网络上的任何一个人都看到。
 
@@ -46,7 +46,7 @@ ROS_<LEVEL>[_<OTHER>]
 - `ERROR`(错误)：提示错误，尽管节点仍可在这里恢复，但对节点的行为设置了一定期望；
 - `FATAR`(致命)：这些消息通常表示阻止节点继续运行的错误。
 
-![img](https://img-blog.csdnimg.cn/d6042c3087ce4204a69cf63096bd137a.png)
+![img](imgs/d6042c3087ce4204a69cf63096bd137a.png)
 
 
 
@@ -235,7 +235,7 @@ msg文件由两部分组成：**字段**和**常量**。字段是消息内部发
 
     int64 意思是64位整数(64bit interger), 相当于 long long 占8个字节 -9223372036854775808 — 9223372036854775807  
 
-  - ![image-20231105223126645](C:\Users\李文博\AppData\Roaming\Typora\typora-user-images\image-20231105223126645.png)
+  - ![image-20231105223126645](imgs/image-20231105223126645.png)
 
     
 

@@ -4,7 +4,7 @@
 
 ## SISO系统
 
-![image-20240112202158671](C:/Users/李文博/AppData/Roaming/Typora/typora-user-images/image-20240112202158671.png)
+![image-20240112202158671](imgs/image-20240112202158671.png)
 
 - 定义两个指标：
   1. 轨迹追踪角度：$\int_{0}^{t}e^2 \,dt$ ，值越小，系统跟踪能力越强。其中 $r$ 为参考值，$y$ 为输出，有 $e=y-r$
@@ -20,7 +20,7 @@
 
 ## MIMO系统
 
-![image-20240112203059367](C:/Users/李文博/AppData/Roaming/Typora/typora-user-images/image-20240112203059367.png)
+![image-20240112203059367](imgs/image-20240112203059367.png)
 
 此处的矩阵 $Q$，$R$ 为调节矩阵，$q_1,q_2,r_1,r_2$为系统的权重系数
 
@@ -42,7 +42,7 @@
 
 通过模型来预测系统在某一未来时间段内的表现来进行优化控制 ，多用于数位控制，故常采用离散型状态空间表达式：$X_{k+1}=AX_k+BU_k$
 
-![image-20240112210406727](C:/Users/李文博/AppData/Roaming/Typora/typora-user-images/image-20240112210406727.png)
+![image-20240112210406727](imgs/image-20240112210406727.png)
 
 三个步骤：
 
@@ -64,7 +64,7 @@
 
 状态方程：$x(k+1)=Ax(k)+Bu(k)$
 
-![be48ae3fd3e62361fa6f20deca4e897](C:/Users/李文博/Documents/WeChat Files/wxid_4snworp45n6p12/FileStorage/Temp/be48ae3fd3e62361fa6f20deca4e897.jpg)
+![be48ae3fd3e62361fa6f20deca4e897](imgs/be48ae3fd3e62361fa6f20deca4e897.jpg)
 
 
 
