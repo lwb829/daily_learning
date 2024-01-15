@@ -82,8 +82,6 @@ $l_w$为轮距，$L$为轴距，后轮两个轮胎转角始终为0$\degree$。
 
 - 模型：以**后轮中心为车辆中心**的“单车“运动学模型，具体公式可参考[【自动驾驶】车辆运动学模型-CSDN博客](https://blog.csdn.net/weixin_42301220/article/details/124747072?spm=1001.2014.3001.5501)
 
-==完整代码见".\代码\pure_pursuit_demo.py"==
-
-[pure_pursuit_demo.py]("E:\无人车项目\github仓库\lwb\学习笔记\代码\pure_pursuit_demo.py")
+完整代码见： [pure_pursuit_demo.py](代码\pure_pursuit_demo.py) 
 
 结果：![Figure_1](imgs/Figure_1.png)
