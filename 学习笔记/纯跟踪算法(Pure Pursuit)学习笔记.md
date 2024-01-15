@@ -84,4 +84,6 @@ $l_w$为轮距，$L$为轴距，后轮两个轮胎转角始终为0$\degree$。
 
 ==完整代码见".\代码\pure_pursuit_demo.py"==
 
+[pure_pursuit_demo.py]("E:\无人车项目\github仓库\lwb\学习笔记\代码\pure_pursuit_demo.py")
+
 结果：![Figure_1](imgs/Figure_1.png)
