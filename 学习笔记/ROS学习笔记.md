@@ -109,7 +109,7 @@ rosrun rqt_console rqt_console
 
 ## 创建ROS软件包
 
-###catkin软件包组成
+### catkin软件包组成
 
 一个包要想称为catkin软件包，必须符合以下要求：
 
@@ -209,7 +209,7 @@ $ catkin_make install
 
 
 
-####设置catkin环境变量
+#### 设置catkin环境变量
 
 ```c++
 $ source devel/setup.bash //非常重要
