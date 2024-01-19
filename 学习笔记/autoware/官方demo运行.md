@@ -1,4 +1,4 @@
-# autoware编译工作空间
+# 利用colcon编译autoware工作空间
 
 - 不带CUDA
 
@@ -12,7 +12,21 @@ colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
 AUTOWARE_COMPILE_WITH_CUDA=1 colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release
 ```
 
-  
+-   特殊后缀
+
+  - 选择某个包单独编译，例如
+
+  ```
+  (AUTOWARE_COMPILE_WITH_CUDA=1) colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-select lidar_localizer
+  ```
+
+  - 忽略某个包编译，例如
+
+  ```
+  (AUTOWARE_COMPILE_WITH_CUDA=1) colcon build --cmake-args -DCMAKE_BUILD_TYPE=Release --packages-ignore lanelet2_python
+  ```
+
+   
 
 # 官方demo运行
 
@@ -47,7 +61,7 @@ source install/setup.bash
    rviz
    ```
 
-   若不出现,则在File中手动加载rviz配置文件
+   若不出现，则在File中手动加载rviz配置文件
 
 4. 跑包
 
