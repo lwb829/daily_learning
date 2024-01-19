@@ -115,9 +115,10 @@ def main():
     # set reference trajectory
     refer_path = np.zeros((1000, 2))
     refer_path[:, 0] = np.linspace(0, 100, 1000)  # 直线
-    refer_path[:, 1] = np.full_like(refer_path[:, 0], 0.0)
-    # 2*np.sin(refer_path[:, 0]/3.0) + \
-    #     2.5*np.cos(refer_path[:, 0]/2.0)  # 生成正弦轨迹
+    refer_path[:, 1] = 2*np.sin(refer_path[:, 0]/3.0) + \
+         2.5*np.cos(refer_path[:, 0]/2.0)  # 生成正弦轨迹
+    # np.full_like(refer_path[:, 0], 0.0)
+     
     refer_path_psi = [math.atan2(refer_path[i+1, 1]-refer_path[i, 1], refer_path[i+1, 0]-refer_path[i, 0])
                     for i in range(len(refer_path)-1)]  # 参考轨迹上点的切线方向的角度,近似计算
 
@@ -152,9 +153,9 @@ def main():
         # plt.axis("equal")
         plt.grid(True)
         plt.pause(0.001)
-        camera.snap()
+    camera.snap()
     animation = camera.animate()
-    animation.save('E:/无人车项目/github仓库/lwb/学习笔记/代码/stanley.gif',fps=50,writer='pillow')
+    animation.save('E:/无人车项目/github仓库/lwb/学习笔记/代码/stanley_1.gif',fps=50,writer='pillow')
     plt.figure(2)
     plt.plot(refer_path[:, 0], refer_path[:, 1], '-.b', linewidth=1.0)
     plt.plot(x_, y_, 'r')

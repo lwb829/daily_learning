@@ -225,14 +225,14 @@ def main():
         # plt.axis("equal")
         plt.grid(True)
         plt.pause(0.001)
-
-        # camera.snap()
+        
         # 判断是否到达最后一个点
         if np.linalg.norm(robot_state[0:2]-goal) <= 0.1:
             print("reach goal")
             break
-    # animation = camera.animate()
-    # animation.save('trajectory.gif')
+    camera.snap()
+    animation = camera.animate()
+    animation.save('trajectory.gif')
 
 
 if __name__ == '__main__':
