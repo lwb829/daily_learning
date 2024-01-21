@@ -816,7 +816,7 @@ output = model(input_data)
 
 - 基本原理：
 
-![image-20231126143541985](imgs/image-20231126143541985.png)
+![image-20231126143541985](../imgs/image-20231126143541985.png)
 
 
 
@@ -824,7 +824,7 @@ output = model(input_data)
 
 - 基本原理：
 
-![image-20231126144731122](imgs/image-20231126144731122.png)
+![image-20231126144731122](../imgs/image-20231126144731122.png)
 
  
 

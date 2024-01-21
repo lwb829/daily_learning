@@ -14,7 +14,7 @@
 
 在ROS中，**有一个特殊的话题叫作`/rosout`，它承载着所有节点的所有日志消息**。`/rosout`消息的类型是`rosgraph_msgs/Log`：
 
-![img](imgs/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
+![img](../imgs/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 `rosgraph_msgs/Log`消息用来让各个节点发布日志消息，这样一来就能让网络上的任何一个人都看到。
 
@@ -46,7 +46,7 @@ ROS_<LEVEL>[_<OTHER>]
 - `ERROR`(错误)：提示错误，尽管节点仍可在这里恢复，但对节点的行为设置了一定期望；
 - `FATAR`(致命)：这些消息通常表示阻止节点继续运行的错误。
 
-![img](imgs/d6042c3087ce4204a69cf63096bd137a.png)
+![img](../imgs/d6042c3087ce4204a69cf63096bd137a.png)
 
 
 
@@ -235,7 +235,7 @@ msg文件由两部分组成：**字段**和**常量**。字段是消息内部发
 
     int64 意思是64位整数(64bit interger), 相当于 long long 占8个字节 -9223372036854775808 — 9223372036854775807  
 
-  - ![image-20231105223126645](imgs/image-20231105223126645.png)
+  - ![image-20231105223126645](../imgs/image-20231105223126645.png)
 
     
 
@@ -776,6 +776,8 @@ rostopic pub [topic] [msg_type] [args]
 
 更多内容可以参考[ROSwiki](http://wiki.ros.org/cn/ROS/Tutorials/UnderstandingTopics#ROS.2Bi92YmA-)
 
+
+
 ### ROS消息
 
 话题的通信是通过**节点间发送ROS消息**实现的
@@ -1000,7 +1002,13 @@ $ cd launch
   - from：原命名
   - to：映射之后的命名
 
+- 注释：
 
+  ```xml
+  <!-- ××× -->
+  ```
+
+其中×××为注释部分
 
 
 
@@ -1174,7 +1182,243 @@ add_dependencies(add_two_ints_server beginner_tutorials_gencpp)
 
 
 
+## ROS坐标管理系统—TF功能包
 
+tf tree定义了不同坐标系之间的平移和旋转的偏移量。
+
+案例：![image-20240121125706466](../imgs/image-20240121125706466.png)
+
+该机器人具有一个移动底座，其顶部安装有单个激光器。在提到机器人时，我们定义两个坐标系：一个对应于机器人底座的中心点，另一个对应于安装在底座顶部的激光器的中心点。我们将连接到移动底座的坐标系称为“base_link”（为了导航，将其放置在机器人的旋转中心很重要），我们将连接到激光器的坐标系称为“base_laser”。
+
+假设我们知道激光器安装在移动底座中心点前方 10 厘米和上方 20 厘米处。这给了我们一个将“base_link”坐标系与“base_laser”坐标系关联起来的平移偏移量。具体来说，我们知道要从“base_link”坐标系获取数据到“base_laser”坐标系，我们必须应用 (x: 0.1m, y: 0.0m, z: 0.2m) 的平移，并从“将“base_laser”坐标系转换为“base_link”坐标系，我们必须应用相反的平移（x：-0.1m，y：0.0m，z：-0.20m）。
+
+**我们可以使用tf定义“base_link”和“base_laser”之间的关系，并让它为我们管理两个坐标系之间的转换。**
+
+![image-20240121131041869](../imgs/image-20240121131041869.png)
+
+我们将创建两个节点，一个用于“base_link”坐标系，一个用于“base_laser”坐标系。
+
+**注意：我们首先需要决定哪个节点将是父节点，哪个节点将是子节点，因为tf 假设==所有转换都从父级移动到子级==。**
+
+这里我们**选择“base_link”坐标系作为父坐标系**，因为当其他部件/传感器添加到机器人中时，通过遍历“base_link”坐标系将它们与“base_laser”坐标系关联起来最有意义。
+
+这意味着与连接“base_link”和“base_laser”的边相关的变换应该是（x：0.1m，y：0.0m，z：0.2m）。设置此变换树后，将“base_laser”帧中接收的激光扫描转换为“base_link”帧就像调用 tf 库一样简单。
+
+
+
+### tf关系可视化
+
+- 语言可视化
+
+```
+rosrun tf view_frames
+```
+
+- 命令行可视化
+
+```
+rosrun tf tf_echo 坐标系1 坐标系2
+```
+
+- 地图可视化
+
+```
+rosrun rviz rviz -d ...
+```
+
+
+
+### 代码编写
+
+- 首先，我们将首先为源代码创建一个包，并为其指定一个简单的名称，例如“robot_setup_tf”。我们将依赖于roscpp、tf和Geometry_msgs。
+
+```
+catkin_create_pkg robots_setup_tf roscpp rospy tf Geometry_msgs
+```
+
+- 之后，我们需要创建一个节点来完成通过ROS广播base_laser→ base_link转换的工作。在刚刚创建的`robots_setup_tf`包中，并将以下代码粘贴到`src/tf_broadcaster.cpp`文件中。
+
+
+
+#### tf广播器代码
+
+```c++
+#include <ros/ros.h>
+#include <tf/transform_broadcaster.h>
+
+int main(int argc, char** argv){
+  ros::init(argc, argv, "robot_tf_publisher");
+  ros::NodeHandle n;
+
+  ros::Rate r(100);
+
+  tf::TransformBroadcaster broadcaster;
+
+  while(n.ok()){
+    broadcaster.sendTransform(
+      tf::StampedTransform(
+        tf::Transform(tf::Quaternion(0, 0, 0, 1), tf::Vector3(0.1, 0.0, 0.2)),
+        ros::Time::now(),"base_link", "base_laser"));
+    r.sleep();
+  }
+}
+```
+
+tf 包提供了`tf::TransformBroadcaster`的实现，创建一个`TransformBroadcaster`对象。
+
+`使用TransformBroadcaster`发送转换需要五个参数。首先，我们传入旋转变换，该变换由 btQuaternion 指定`，`用于需要在两个坐标系之间发生的任何旋转。在这种情况下，我们不想应用旋转，因此我们发送一个由俯仰、滚动和偏航值构造而成的`btQuaternion`，其值为零。其次，`btVector3`用于我们想要应用的任何翻译。然而，我们确实想要应用平移，因此我们创建了一个`btVector3`，对应于激光距机器人底座 10 厘米的 x 偏移和 20 厘米的 z 偏移。第三，我们需要为正在发布的转换提供一个时间戳，我们只需使用`ros::Time::now() 来`标记它。第四，我们需要传递我们正在创建的链接的父节点的名称，在本例中为“base_link”。第五，我们需要传递我们正在创建的链接的子节点的名称，在本例中为“base_laser”。
+
+- 如何实现一个tf广播器
+
+1. 定义tf广播器（TransformBroadcaster）
+2. 创建坐标变换值
+3. 发布坐标变换
+
+
+
+#### tf监听器代码
+
+我们创建了一个通过 ROS 发布`base_laser` → `base_link`转换的节点。现在，我们将编写一个节点，该节点将使用该变换来获取“base_laser”框架中的一个点，并将其转换为“base_link”框架中的一个点。
+
+在`robots_setup_tf包中，创建一个名为``src/tf_listener.cpp`的文件并粘贴以下内容：
+
+```c++
+#include <ros/ros.h>
+#include <geometry_msgs/PointStamped.h>
+#include <tf/transform_listener.h>
+
+void transformPoint(const tf::TransformListener& listener){
+  //我们将在base_laser坐标系中创建一个点，并将其转换为base_link坐标系
+  geometry_msgs::PointStamped laser_point;
+  laser_point.header.frame_id = "base_laser";
+
+  //我们将仅使用可用于我们的简单示例的最新转换
+  laser_point.header.stamp = ros::Time();
+
+  //只是空间中的任意点
+  laser_point.point.x = 1.0;
+  laser_point.point.y = 0.2;
+  laser_point.point.z = 0.0;
+
+  try{
+    geometry_msgs::PointStamped base_point;
+    listener.transformPoint("base_link", laser_point, base_point);
+
+    ROS_INFO("base_laser: (%.2f, %.2f. %.2f) -----> base_link: (%.2f, %.2f, %.2f) at time %.2f",
+        laser_point.point.x, laser_point.point.y, laser_point.point.z,
+        base_point.point.x, base_point.point.y, base_point.point.z, base_point.header.stamp.toSec());
+  }
+  catch(tf::TransformException& ex){
+    ROS_ERROR("Received an exception trying to transform a point from \"base_laser\" to \"base_link\": %s", ex.what());
+  }
+}
+
+int main(int argc, char** argv){
+  ros::init(argc, argv, "robot_tf_listener");
+  ros::NodeHandle n;
+
+  tf::TransformListener listener(ros::Duration(10));
+
+  //我们每秒变换一个点一次
+  ros::Timer timer = n.createTimer(ros::Duration(1.0), boost::bind(&transformPoint, boost::ref(listener)));
+
+  ros::spin();
+
+}
+```
+
+
+
+- 如何实现一个tf监听器
+
+1. 定义tf监听器（TransformListener）
+2. 查找坐标变换（waitForTransform,lookupTransform）
+
+
+
+#### 构建代码
+
+打开由`roscreate-pkg`自动生成的`CMakeLists.txt`文件，并将以下行添加到文件底部。
+
+```cmake
+add_executable(tf_broadcaster src/tf_broadcaster.cpp)
+add_executable(tf_listener src/tf_listener.cpp)
+target_link_libraries（tf_broadcaster ${catkin_LIBRARIES}）
+target_link_libraries（tf_listener ${catkin_LIBRARIES}）
+```
+
+
+
+#### 运行代码
+
+```
+roscore
+rosrun robots_setup_tf tf_broadcaster
+rosrun robots_setup_tf tf_listener
+```
+
+
+
+### tf的一些实用操作
+
+**在终端中直接执行下列命令：**
+
+- 使用`rostopic`查看话题，包含`/tf`与`/tf_static`, 前者是 TF 发布的话题，后者是 TF2 发布的话题，分别调用命令打印二者的话题消息
+
+  `rostopic echo /tf`: 当前会循环输出坐标系信息
+
+  `rostopic echo /tf_static`: 坐标系信息只有一次
+
+  **特别说明:TF的static_transform_publisher是假的静态TF(还是有频率,一些代码使用的时候还是会涉及到时间戳的问题),而TF2的static_transform_publisher才是真正的静态**
+
+  - 例如autoware中的runtime manager,其中默认的发布base_link_2_velodyne的方式是TF,有时候在仿真的时候会引起时间戳的报错.改称tf2的方式就好了:
+
+    ```
+    <!-- tf代表是tf1，tf1的静态发布static_transform_publisher其实是假的，默认按照10hz，或者可以设置 -->
+    <node pkg="tf" type="static_transform_publisher" name="base_link_to_localizer" args="$(arg x) $(arg y) $(arg z) $(arg yaw) $(arg pitch) $(arg roll) $(arg frame_id) $(arg child_frame_id) $(arg period_in_ms)"/>
+    ```
+
+    ```
+    <!-- 建议使用tf2，tf2的静态发布是真的。tf2的静态发布节点包在tf2_ros中 -->
+    <node pkg="tf2_ros"  type="static_transform_publisher" name="base_link_to_localizer" args="$(arg x) $(arg y) $(arg z) $(arg yaw) $(arg pitch) $(arg roll) $(arg frame_id) $(arg child_frame_id)" />
+    ```
+
+
+
+- `tf_monitor` ：将当前的坐标系转换关系打印到终端控制台
+
+  ```
+  rosrun tf tf_monitor
+  ```
+
+  
+
+- `tf_monitor <source_frame> <target_target>`：打印特定的坐标系关系
+
+  ```
+  rosrun tf tf_monitor /map /base_link
+  ```
+
+  
+
+- **`tf_echo <source_frame> <target_frame>` ：把特定的坐标系之间的平移旋转关系，打印到终端控制台**
+
+  ```
+  rosrun tf tf_echo /map /base_link
+  ```
+
+  
+
+- 在终端临时发布坐标系间的关系
+
+  ```
+  # TF2
+  rosrun tf2_ros static_transform_publisher 0 0 0 0 0 0 /base_link /laser
+  # TF
+  rosrun tf static_transform_publisher 0 0 0 0 0 0 /base_link /laser 100
+  ```
+
+  
 
 # Python与C++编译区别
 

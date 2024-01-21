@@ -4,11 +4,11 @@
 
 - [Git](学习笔记/基础/Git学习笔记.md)
 - [C++编译](学习笔记/基础/C++编译学习笔记.md)
-- [Pytorch](学习笔记基础//Pytorch学习笔记.md)
-- [ROS](学习笔记基础//ROS学习笔记.md)
-- [ubuntu](学习笔记基础//ubuntu基本命令学习笔记.md)
-- [CAN报文](学习笔记/基础/CAN学习笔记.md)
-- [rviz](学习笔记/基础/rviz学习笔记.md)
+- [Pytorch基础](学习笔记基础//Pytorch学习笔记.md)
+- [ROS基础](学习笔记基础//ROS学习笔记.md)
+- [ubuntu基础操作](学习笔记基础//ubuntu基本命令学习笔记.md)
+- [CAN报文（车辆底盘通信协议）](学习笔记/基础/CAN学习笔记.md)
+- [rviz基础](学习笔记/基础/rviz学习笔记.md)
 
 
 
@@ -30,4 +30,6 @@
 
 ## autoware
 
-- [通用仿真逻辑](学习笔记//autoware/官方demo运行.md)
+- [通用仿真逻辑（官方demo）](学习笔记/autoware/官方demo运行.md)
+- [建图模块](学习笔记/autoware/建图模块.md)
+
