@@ -74,9 +74,9 @@ CAN总线在发送数据时同时监测数据线的电平是否与发送数据�
 
 现在底盘中的通讯协议矩阵-CANA中报文的排列格式均为**Motorola Foward LSB格式**，即以低位**LSB为起始位**，高字节在前，低字节在后，每个字节内从bit0往bit7排，往低字节借位，例子如下：
 
-![img](imgs/dd477e2cc5aa4feba028e15ec080536d.png)
+![img](../imgs/dd477e2cc5aa4feba028e15ec080536d.png)
 
-![img](imgs/dc5391e393c744adae2c199a852edde5.png)
+![img](../imgs/dc5391e393c744adae2c199a852edde5.png)
 
 ## 编译总结
 
