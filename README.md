@@ -38,7 +38,7 @@
 
 
 
-## autoware
+## Autoware
 
 - [通用仿真逻辑（官方demo）](学习笔记/autoware/官方demo运行.md)
 
