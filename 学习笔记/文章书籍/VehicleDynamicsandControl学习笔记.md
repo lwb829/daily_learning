@@ -89,13 +89,13 @@ roll over stability control 侧翻稳定性控制
 
 - 首先在一个二维平面上描述一个车辆：
 
-  ![img](imgs/SouthEast)
+  ![img](../imgs/SouthEast)
 
 $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方向的角度，$v$是$\theta$方向的速度，$L$是车辆的轴距（前后轮胎的距离），$(x,y)$是车辆的坐标。
 
 下面是该车辆的自行车模型：
 
-![img](imgs/SouthEast1)
+![img](../imgs/SouthEast1)
 
 运动学自行车模型假定车辆行如一辆自行车，整个的控制量可以简化为$(a,\delta_f)$。其中$a$是车辆的**加速度**，踩油门即为正加速度，踩刹车即为负加速度；$\delta_f$是**方向盘转角**，即假定这个方向盘转角就是**前轮胎当前的转角**。
 
@@ -103,7 +103,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 ##### 基于车辆重心的运动学模型
 
-![image-20231221192610754](imgs/image-20231221192610754.png)
+![image-20231221192610754](../imgs/image-20231221192610754.png)
 
 我们假定车速较低，车辆路径半径R变化缓慢，那么车辆的方向变化率（$\dot{\psi}$）肯定等于车辆的角速度，所以车辆的角速度为$\dot{\psi}=\frac{v}{R}$。
 
@@ -118,7 +118,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 ##### 基于车辆重心的==前轮驱动==运动学模型（$\delta_r=0$）
 
-![img](imgs/v2-90c5d4da07dea2cf033f18f21bc0bfba_r.jpg)我们定义模型中的状态量，可以用四个状态量来描述车辆的当前状态：
+![img](../imgs/v2-90c5d4da07dea2cf033f18f21bc0bfba_r.jpg)我们定义模型中的状态量，可以用四个状态量来描述车辆的当前状态：
 
   - $x$：车辆当前的$x$坐标
 
@@ -152,7 +152,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 实际上，前轮的左右转向角度并非完全相等，通常情况下，**内侧轮胎转角更大**。如下图所示，$\delta_o$和$\delta_i$分别为外侧前轮和内侧前轮偏角，当车辆右转时，右侧轮胎为内侧轮胎，其转角$\delta_i$较左前轮胎转角$\delta_o$更大。**$l_w$为轮距，$L$为轴距，后轮两个轮胎转角始终为0$\degree$。**
 
-![image-20231222095229563](imgs/image-20231222095229563.png)
+![image-20231222095229563](../imgs/image-20231222095229563.png)
 
 当滑移角$\beta$很小时，有公式表述为：$\frac{\dot{\psi}}{v} \approx \frac{1}{R}=\frac{\delta}{L} $ 或者$\delta=\frac{L}{R}$
 
@@ -162,7 +162,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 **内外转角之差**为：$\Delta{\delta}=\delta_i-\delta_o=\frac{L}{R^2}l_w=\delta^2 \frac{l_w}{L}$，因此前两个前轮的转向角的差异$\Delta{\delta}$与平均转向角的平方$\delta^2$成正比
 
-![image-20231222103705370](imgs/image-20231222103705370.png)
+![image-20231222103705370](../imgs/image-20231222103705370.png)
 
 上图所示，这种差动转向可以通过梯形拉杆装置获得。
 
@@ -198,7 +198,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 ##### 车辆受力模型
 
-![img](imgs/05ffb7985d20456dadf8d82cadf23905.png)
+![img](../imgs/05ffb7985d20456dadf8d82cadf23905.png)
 
 在单车模型假设的前提下，再做如下假设则为简单的动力学模型：
 
@@ -210,7 +210,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 ##### 车辆动力学模型
 
-![img](imgs/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAMC0-b28=,size_20,color_FFFFFF,t_70,g_se,x_16)
+![img](../imgs/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAMC0-b28=,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 **OXY**为固定于地面的惯性坐标系，**oxy**为固定于车身的车辆坐标系
 
@@ -230,7 +230,7 @@ $\theta$为在**Y**$aw$方向的偏转角度，是相对于$x$轴的逆时针方
 
 #### 横向动力学
 
-![img](imgs/c8670cba8d3440f5a4fa562bdf1f2997.png)
+![img](../imgs/c8670cba8d3440f5a4fa562bdf1f2997.png)
 
 ##### x、y轴方向公式
 
@@ -242,7 +242,7 @@ x、y轴方向加速度$a_x$，$a_y$由两部分构成：$x$、$y$轴方向的�
 
 由于轮胎受到的横向压力，轮胎会有一个很小的滑移角，如下图所示：
 
-![img](imgs/4371979ec02f4a03b4971bf3c29ae35d.png)
+![img](../imgs/4371979ec02f4a03b4971bf3c29ae35d.png)
 
 - 前轮/后轮滑移角
   - 前轮：$\alpha_f=\delta-\theta_{Vf}$，其中$\delta$为前轮转角，$\theta_{Vf}$为前轮速度转角
@@ -279,7 +279,7 @@ $m\cdot \left( \ddot{y}+V_x\dot{\psi}\right)=F_{yf}+F_{yr}+F_{bank}$
 
 其中$F_{bank}=mg\sin(\phi)$，$\phi$为路标约定的路堤角度，如下图所示
 
-![image-20231224210046371](imgs/image-20231224210046371.png)
+![image-20231224210046371](../imgs/image-20231224210046371.png)
 
 
 

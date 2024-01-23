@@ -6,23 +6,21 @@
 
 - [C++编译](学习笔记/基础/C++编译学习笔记.md)
 
-- [Pytorch基础](学习笔记基础//Pytorch学习笔记.md)
+- [Pytorch基础](学习笔记/基础/Pytorch学习笔记.md)
 
-- [ROS基础](学习笔记基础//ROS学习笔记.md)
+- [ROS基础](学习笔记/基础/ROS学习笔记.md)
 
-- [ubuntu基础操作](学习笔记基础//ubuntu基本命令学习笔记.md)
+- [ubuntu基础命令](学习笔记/基础/ubuntu学习笔记.md)
 
 - [CAN报文（车辆底盘通信协议）](学习笔记/基础/CAN学习笔记.md)
 
   
 
-
-
 ## 车辆控制算法
 
 - [基于几何的车辆横向控制（Pure Pursuit / Stanley）](学习笔记/车辆控制算法/基于几何的车辆横向控制学习笔记.md)
 
-- [模型预测控制(MPC)](学习笔记/车辆控制算法/模型预测控制学习笔记.md)
+- [模型预测控制(MPC)](学习笔记/车辆控制算法/MPC控制学习笔记.md)
 
 - [车辆横向运动学模型](学习笔记/车辆控制算法/车辆横向运动学模型学习笔记.md)
 
@@ -34,7 +32,7 @@
 
 ## 文章书籍
 
-- [VehicleDynamicsandControl书籍](学习笔记/VehicleDynamicsandControl学习笔记.md)
+- [VehicleDynamicsandControl书籍](学习笔记/文章书籍/VehicleDynamicsandControl学习笔记.md)
 
 
 
@@ -52,7 +50,5 @@
 
 - [定位模块](学习笔记/autoware/定位模块.md)
 
-  
-  
-  
+- [感知模块](学习笔记/autoware/感知模块.md)
 
