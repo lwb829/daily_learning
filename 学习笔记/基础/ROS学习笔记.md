@@ -4,7 +4,7 @@
 
 ### 日志系统
 
-![在这里插入图片描述](imgs/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
+![在这里插入图片描述](../imgs/watermark,type_d3F5LXplbmhlaQ,shadow_50,text_Q1NETiBAQW1lbGllX3hpYW8=,size_20,color_FFFFFF,t_70,g_se,x_16)
 
 日志 (`log`) 系统的功能是让程序生成一些日志消息，显示在屏幕上、发送到特定 `topic` 或者储存在特定 `log` 文件中，以方便调试、记录、报警等。
 
