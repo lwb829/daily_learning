@@ -40,7 +40,7 @@
 
 - [通用仿真逻辑(官方demo)](学习笔记/autoware/官方demo运行.md)
 
-- [RuntimeManager(官方demo)](学习笔记/autoware/Runtime Manager.md)
+- [Runtime Manager(官方demo)](学习笔记/autoware/RuntimeManager.md)
 
 - [rviz基础](学习笔记/autoware/rviz.md)
 
