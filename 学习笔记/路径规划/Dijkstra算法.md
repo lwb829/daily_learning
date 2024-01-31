@@ -92,12 +92,12 @@
 
 采用二维数组来表示顶点之间相邻关系的矩阵
 
-![image-20240128161601866](../imgs/image-20240128161601866.png)
+<img src="../imgs/image-20240128161601866.png" alt="image-20240128161601866" style="zoom: 67%;" />
 
 
 
 ## 代码实现
 
-[Dijjstra的python实现](https://github.com/CHH3213/chhRobotics/tree/master/PathPlanning/Dijkstra)
+[Dijkstra的python实现](https://github.com/CHH3213/chhRobotics/tree/master/PathPlanning/Dijkstra)
 
 ![image-20240128165511446](../imgs/image-20240128165511446.png)
