@@ -1,8 +1,8 @@
 # OpenPlanner
 
-论文原文：[OpenPlanner论文](E:/无人车项目/github仓库/lwb/书籍论文/OpenPlanner.pdf)
+论文原文：[OpenPlanner.pdf](../../../书籍论文\OpenPlanner.pdf) 
 
-**OpenPlanner是在Autoware开源自动驾驶框架中的规划算法**，区别于相对简单的A*等
+**OpenPlanner是在 Autoware开源自动驾驶框架中的规划算法**，区别于相对简单的A*等
 
 OpenPlanner作为Autoware框架的一部分，Autoware是由名古屋大学开发的一个开源自动驾驶框架，其基于ROS，即Autoware是一系列ROS包的集合
 
