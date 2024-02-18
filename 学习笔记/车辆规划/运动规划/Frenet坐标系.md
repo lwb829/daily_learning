@@ -6,7 +6,7 @@
 
 
 1. [Frenet坐标系与Cartesian坐标系互转（一）：公式推导_frenet坐标系转换-CSDN博客](https://blog.csdn.net/u013468614/article/details/108748016)
-2. [Lattice算法之Frenet坐标系提出的背景（共9个系列视频）](https://www.bilibili.com/video/BV1A44y187RG/?spm_id_from=333.999.0.0&vd_source=3da170c3416f78cfe40e1a7ba3a4f5f9)
+2. [Lattice算法之Frenet坐标系提出的背景（共8个系列视频）](https://www.bilibili.com/video/BV1A44y187RG/?spm_id_from=333.999.0.0&vd_source=3da170c3416f78cfe40e1a7ba3a4f5f9)
 3.  [Apollo项目坐标系研究_flu坐标系-CSDN博客](https://blog.csdn.net/davidhopper/article/details/79162385)
 
 Frenet坐标系使用道路的中心线作为Base frame，使用参考线的切线向量和法线向量建立坐标系，**是一个动态的坐标系**。相比笛卡尔坐标系，Frenet坐标系简化了路径规划问题。
@@ -141,3 +141,4 @@ $$
 \left\{\begin{array}{lc}x_x= & x_r-l \sin \left(\theta_r\right) \\ y_x= & y_r+l \cos \left(\theta_r\right) \\ \theta_x= & \arctan \left(\frac{l^{\prime}}{1-k_r l}\right)+\theta_r \in[-\pi, \pi] \\ v_x= & \sqrt{\left[\dot{s}\left(1-k_r l\right)\right]^2+\left(\dot{s} l^{\prime}\right)^2} \\ a_x= & \ddot{s} \frac{1-k_r l}{\cos \left(\theta_x-\theta_r\right)}+\frac{\dot{s}^2}{\cos \left(\theta_x-\theta_r\right)}\left[l^{\prime}\left(k_x \frac{1-k_r l}{\cos \left(\theta_x-\theta_r\right)}-k_r\right)-\left(k_r^{\prime} l+k_r l^{\prime}\right)\right] \\ k_x= & \left(\left(l^{\prime \prime}+\left(k_r^{\prime} l+k_r l^{\prime}\right) \tan \left(\theta_x-\theta_r\right)\right) \frac{\cos ^2\left(\theta_x-\theta_r\right)}{1-k_r l}+k_r\right) \frac{\cos \left(\theta_x-\theta_r\right)}{1-k_r l}\end{array}\right.
 $$
 
+![image-20240218104407428](../../imgs/image-20240218104407428.png)
