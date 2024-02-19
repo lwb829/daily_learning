@@ -7,7 +7,8 @@
 
 1. [Frenet坐标系与Cartesian坐标系互转（一）：公式推导_frenet坐标系转换-CSDN博客](https://blog.csdn.net/u013468614/article/details/108748016)
 2. [Lattice算法之Frenet坐标系提出的背景（共8个系列视频）](https://www.bilibili.com/video/BV1A44y187RG/?spm_id_from=333.999.0.0&vd_source=3da170c3416f78cfe40e1a7ba3a4f5f9)
-3.  [Apollo项目坐标系研究_flu坐标系-CSDN博客](https://blog.csdn.net/davidhopper/article/details/79162385)
+3. [Apollo项目坐标系研究_flu坐标系-CSDN博客](https://blog.csdn.net/davidhopper/article/details/79162385)
+4. [Apollo坐标系转换代码](https://github.com/ApolloAuto/apollo/blob/master/modules/common/math/cartesian_frenet_conversion.cc)
 
 Frenet坐标系使用道路的中心线作为Base frame，使用参考线的切线向量和法线向量建立坐标系，**是一个动态的坐标系**。相比笛卡尔坐标系，Frenet坐标系简化了路径规划问题。
 
@@ -123,8 +124,6 @@ Frenet坐标系使用道路的中心线作为Base frame，使用参考线的切�
 
 ![笛卡尔转frenet7](../../imgs/笛卡尔转frenet7.png)
 
-
-
 ### 公式转换总结
 
 #### Cartesian转Frenet
@@ -142,3 +141,21 @@ $$
 $$
 
 ![image-20240218104407428](../../imgs/image-20240218104407428.png)
+
+
+
+### 代码实现
+
+#### 参考弘毅师兄的笔记
+
+将本目录下的[frenet2cartesian](frenet2cartesian)文件进行编译，**其中的src、include文件夹下的代码参考了apollo官方**，验证过可以正确完成坐标系间的转换
+
+```
+cd frene2cartesian
+mkdir build
+cd build
+cmake ..
+make
+./frenet2cartesian
+```
+

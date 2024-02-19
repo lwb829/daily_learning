@@ -102,6 +102,8 @@
 
 - [Frenet坐标系](学习笔记/车辆规划/运动规划/Frenet坐标系.md)
 
+- [EMPlanner](学习笔记/车辆规划/运动规划/EMPlanner.md)
+
 
 
 ## 其它
