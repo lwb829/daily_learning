@@ -74,7 +74,7 @@
 
 - [D*算法](学习笔记/车辆规划/路径规划/Dstar算法.md)
 
-- [Dubins&Reeds-Shepp曲线](学习笔记/车辆规划/路径规划/Dubins&Reeds Shepp曲线.md)
+- [Dubins&Reeds-Shepp曲线](学习笔记/车辆规划/路径规划/Dubins&Reeds-Shepp曲线.md)
 
 
 
