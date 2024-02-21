@@ -95,12 +95,12 @@ $$
 
 <img src="../../imgs/image-20240220212105150.png" alt="image-20240220212105150" style="zoom:67%;" />
 
-- 首先构造$C1$和$C2$的圆心$p1$到$p2$的向量$V_1=(x_2 − x_1,y_2 − y_1)$
+- 首先构造$C1$和$C2$的圆心$p1$到$p2$的向量 $V_1=(x_2 − x_1,y_2 − y_1)$
   $$
   D=\sqrt{\left(x_2-x_1\right)^2+\left(y_2-y_1\right)^2}
   $$
 
-- 构造$C1$和$C2$的**外切线切点**构成的向量$V_2=p_{o t 2}-p_{o t 1}$​
+- 构造$C1$和$C2$的**外切线切点**构成的向量 $V_2=p_{o t 2}-p_{o t 1}$​
 
   <img src="../../imgs/image-20240220214152956.png" alt="image-20240220214152956" style="zoom:80%;" />
 
@@ -140,10 +140,262 @@ $$
 
     将向量$(x,y)$绕原点逆时针旋转角度$\theta$，得到新向量：
     $$
-     \left[x * \cos{\theta}-y * \sin{\theta}，x * \sin{\theta}+y * \cos{\theta}\right] 
+    \left[x * \cos{\theta}-y * \sin{\theta}, * \sin{\theta}+y * \cos{\theta}\right]
     $$
 
 - 根据公式（2），计算出 $n$ 之后，就可以很方便的计算出外切线的切点 $p_{ot1}$ 和 $p_{ot2}$
 
-  例如，从$C1$的圆心出发，沿着向量$n$的方向，距离为$r1$的位置即为切点$p_{ot1}$，$p_{ot2}$亦然
+  例如，从$C1$的圆心出发，沿着向量$n$的方向，距离为$r1$的位置即为切点 $p_{ot1}$，$p_{ot2}$ 亦然
+
+
+
+#### 弧长计算
+
+弧长通过 $L=Rθ$ 计算，也就是$θ$计算，**此处不能简单的使用余弦定理计算，因为轨迹中需要的可能是长弧**，可通过 $atan2(v2)- atan2(v1)$ 计算，因其计算结果带正负，再结合轨迹的方向判断是否要加上或减去2π，来得到真实的角度θ，从而得到弧长
+
+<img src="../../imgs/image-20240221160720402.png" alt="image-20240221160720402" style="zoom: 80%;" />
+
+- 注意：`atan2(y, x)`函数，求的是$y/x$的反正切，即求$(x, y)$点和原点间的连线相当于x轴的转角。**相当于求$\vec{(x, y)}$​向量和x轴正方向的夹角**
+
+  ![image-20240221161945548](../../imgs/image-20240221161945548.png)
+
+**Dubins曲线的所有情况都是：弧长 （+ 切点间距离）**
+
+- 下面两种情况中，重点都是都是求出切点或交点，然后再按照上面的两小节内容求弧长或切点间距离
+
+
+
+#### 计算CSC类型的形式曲线
+
+> **RSR、LSL、RSL、LSR是CSC类型的行驶曲线**
+
+该类型曲线首先计算两个圆的切点，然后车辆沿着最小转弯半径构成的圆周行驶到第一个圆的切点，然后直行到第二个圆的切点，再沿着最小转弯半径构成的圆周行驶到目的地
+
+**下面我们以 $RSR$ 轨迹为例看看如何计算行驶曲线：**
+
+假设起点 $s=(x1,y1,θ1)$ 和终点 $g=(x2,y2,θ2)$，最小转弯半径为 $r_{min}$​。然后我们计算起点和终点的圆心
+
+- 起点的圆心为： 
+
+$$
+p_{c 1}=\left(x_1+r_{\min } * \cos \left(\theta_1-\pi / 2\right), y_1+r_{\min } * \sin \left(\theta_1-\pi / 2\right)\right)
+$$
+
+-  终点的圆心为：
+
+$$
+p_{c 2}=\left(x_2+r_{\min } * \cos \left(\theta_2-\pi / 2\right), y_2+r_{\min } * \sin \left(\theta_2-\pi / 2\right)\right)
+$$
+
+![dubins3](../../imgs/dubins3.png)
+
+- 得到起点和终点的圆心之后，可以利用上一小节的**基于向量的切点计算方法**，得到切点$p_{ot1}$和$p_{ot2}$。然后就可以得到车辆的行驶轨迹，该轨迹分为三段：$ Start$到 $p_{ot1}$ 的圆周弧；$p_{ot1}$和$p_{ot2}$的直线距离；$p_{ot2}$到$Goa$l的圆周弧；至此我们得到了RSR的行驶曲线
+
+<img src="../../imgs/dubins_csc.gif" alt="dubins_csc" style="zoom:50%;" />
+
+#### 计算CCC类型的形式曲线
+
+> **RLR、LRL是CCC类型的行驶曲线**
+
+如下图所示，$C1$和$C2$的圆心为$p1$和$p2$，$C3$是与$C1$和$C2$相切的圆，圆心为$p3$
+
+![image-20240221203310204](../../imgs/image-20240221203310204.png)
+
+和CSC情况一样，初始已知$s=(x1,y1,θ1)$和终点$g=(x2,y2,θ2)$，最小转弯半径为$r_{min}$
+
+**根据上图中的数学推导，可以先求得$p1, p2$点的坐标，然后再求得$p3$点的坐标**
+
+**然后计算$p_{t1}$和计算$p_{t2}$就变得很容易**：定义向量$V_2=p3−p1$，将向量缩放到$r_{min}$。 $$ V_2=\frac{V_2}{\left|V_2\right|} * r_{\min } $$ 最后可以得到交点$p_{t1}=p1+V_2$。按照同样的过程可以计算得到$pt2$
+
+然后就可以得到$Start$到$p_{ot1}$的圆周弧；$p_{ot1}$ 和 $p_{ot2}$的圆周弧；$p{ot2}$到$Goal$的圆周弧的三段轨迹组成的行驶曲线
+
+<img src="../../imgs/dubins_ccc.gif" alt="dubins_ccc" style="zoom:50%;" />
+
+
+
+## 3.Reeds Shepp曲线
+
+- 参考资料[自动驾驶运动规划-Reeds Shepp曲线 - 知乎 (zhihu.com)](https://zhuanlan.zhihu.com/p/122544884?utm_id=0)
+
+相比于Dubins Car只允许车辆前向运动，Reeds Shepp Car**既允许车辆向前运动，也允许车辆前后运动**
+
+<img src="../../imgs/reeds_shepp.gif" alt="reeds_shepp" style="zoom:50%;" />
+
+车辆运动模型仍然采用Simple Car Model，但增加对车辆运动方向的描述，运动方程如下： 
+$$
+ \begin{aligned} &\dot{x}=u_1 \cos \theta \\ &\dot{y}=u_1 \sin \theta \\ &\dot{\theta}=u_1 u_2 \end{aligned} 
+$$
+其中，$u_1 \in[-1,1]$，$u_2 \in\left[-\tan \phi_{\max }, \tan \phi_{\max }\right]$。
+
+- 注意：当$u_1=1$时，表示车辆向前运动；$u_1=−1$时，表示车辆向后运动。
+
+J Reeds和L Shepp证明Reeds Shepp Car从起点$q_I$到终点$q_G$的最短路径一定是下面的word的其中之一。word中的"|"表示车辆运动朝向由正向转为反向或者由反向转为正向： 
+
+![img](../../imgs/v2-8437744a556f666271a206ca8ec7a66b_r.jpg)
+
+每个word都由$L^+，L^−，R^+，R^−，S^+，S^−$这六种primitives组成，其中$L^+$表示车辆左转前进；$L^−$表示车辆左转后退；$R^+$表示车辆右转前进；$R^−$表示车辆右转后退；$S^+$表示车辆直行前进；$S^−$表示车辆直行后退。
+
+Reeds and Shepp曲线的word所有组合不超过48种，所有的组合一一枚举如下：
+
+![reeds_shepp1](../../imgs/reeds_shepp1.jpg)
+
+
+
+### Reeds-shepp计算优化
+
+#### 位置姿态统一化
+
+车辆的起点和终点的位置姿态是难以穷举的，所以一般在计算之前，会将车辆的姿态归一化：
+
+- 起始姿态：$q_I=(0,0,0)$
+- 目标姿态：$q_G=(x,y,ϕ)$；其中，$ϕ=θ2−θ1$
+- 车辆的转弯半径：$ r=1$
+
+假设车辆的初始姿态为$q_I=(x1,y1,θ1)$，目标姿态$q_G=(x2,y2,θ2)$，车辆的转向半径为$r = ρ$，如何实现姿态的归一化呢，**实际上归一化的过程就是向量的平移和旋转过程**
+
+<img src="../../imgs/image-20240221211752285.png" alt="image-20240221211752285" style="zoom:50%;" />
+
+首先将向量$\vec{q_I q_G}$平移到坐标原点$(0,0)$。平移$q_I$到$O(0, 0)$，平移向量为$(−x1,−y1)$；对$q_G$应用同样的平移向量:$q_G=[x2−x1,y2−y1]$，**最后得到平移后的向量：** 
+$$
+\vec{q_I q_G}=\left[\begin{array}{l} x_2-x_1 \\ y_2-y_1 \end{array}\right]=\left[\begin{array}{l} d_x \\ d_y \end{array}\right]
+$$
+ **应用旋转矩阵，将车辆的起点朝向转到x轴正向：** 
+$$
+\left[\begin{array}{cc} \cos \theta_1 & \sin \theta_1 \\ -\sin \theta_1 & \cos \theta_1 \end{array}\right]\left[\begin{array}{l} d_x \\ d_y \end{array}\right]=\left[\begin{array}{c} d_x \cos \theta_1+d_y \sin \theta_1 \\ -d_x \sin \theta_1+d_y \cos \theta_1 \end{array}\right]
+$$
+ 旋转之后，目标位置朝向更新为$ϕ=θ2−θ1$。
+
+将车辆转向半径缩放到1，于是最终得到车辆运动的起始姿态：
+$$
+ I=\left[\begin{array}{l} 0 \\ 0 \\ 0 \end{array}\right] 
+$$
+ 目标姿态： 
+$$
+G=\left[\begin{array}{c} x \\ y \\ \phi \end{array}\right]=\left[\begin{array}{c} \left(d_x \cos \theta_1+d_y \sin \theta_1\right) / \rho \\ \left(-d_x \sin \theta_1+d_y \cos \theta_1\right] / \rho \\ \theta 2-\theta_1 \end{array} \right]
+$$
+
+- 代码实现
+
+  ```c++
+  double x1 = s1->getX(), y1 = s1->getY(), th1 = s1->getYaw();
+  double x2 = s2->getX(), y2 = s2->getY(), th2 = s2->getYaw();
+  double dx = x2 - x1, dy = y2 - y1, c = cos(th1), s = sin(th1);
+  double x = c * dx + s * dy, y = -s * dx + c * dy, phi = th2 - th1;
+  
+  return ::reedsShepp(x / rho_, y / rho_, phi)
+  ```
+
+
+
+#### 利用对称关系降低求解复杂度
+
+Reeds Shepp曲线有48种组合，编程时一一编码计算比较麻烦，因此可以利用其对称性降低求解工作量
+
+以转向不同的$CSC$类型为例：
+
+它包含4种曲线类型：$L^+S^+R^+、L^−S^−R^−、R^+S^+L^+、R^−S^−R^−$
+
+我们只需要编码推导得到$L^+S^+R^+$的计算过程，**其它几种直接可以通过对称性关系得到车辆运动路径。 **
+
+给定车辆起始姿态$q_I=(160,160,0)$，目标姿态$q_G=(190,180,30)$，可以得到$L^+S^+R^+$的运动路径如下：
+
+```
+{ Steering: left	    Gear: forward	distance: 0.63 }
+{ Steering: straight	Gear: forward	distance: 4.02 }
+{ Steering: right	    Gear: forward	distance: 0.11 }
+```
+
+对应的效果如下：
+
+<img src="../../imgs/reeds_shepp3.gif" alt="reeds_shepp3" style="zoom:50%;" />
+
+下面在$L^+S^+R^+$的基础上，利用对称性求解$CSC$类型中其它几种路径的方法：
+
+
+
+##### timeflip对称性
+
+假设我们推导出从起始姿态$q_I(x1,y1,θ1)$达到目标姿态$(x2,y2,θ2)$的路径计算方法：
+
+`path = calc_path(x1, y1, θ1, x2, y2, θ2)`
+
+利用对称性，将目标Pose修改为$(−x2,y2,−θ2)$，代入同样的Path计算函数：
+
+`path = calc_path(x1, y1, θ1, -x2, y2, -θ2)`
+
+就得到从$(x1,y1,θ1)$到$(x2,y2,θ2)$的$L^−S^−R^−$类型的运动路径。
+
+计算出的$L^−S^−R^−$的车辆运动路径如下：
+
+```
+{ Steering: left	    Gear: backward	distance: -2.85 }
+{ Steering: straight	Gear: backward	distance: 4.02 }
+{ Steering: right	    Gear: backward	distance: -2.32 }
+```
+
+<img src="../../imgs/reeds_shepp4.gif" alt="reeds_shepp4" style="zoom: 33%;" />
+
+
+
+##### reflect对称性
+
+将目标姿态修改为$(x2,−y2,−θ2)$，代入同样的Path计算函数：
+
+`path = calc_path(x1, y1, θ1, x2, -y2, -θ2)`
+
+就得到从$(x1,y1,θ1)$到$(x2,y2,θ2)$的$R^+S^+L^+$类型的运动路径。
+
+计算出的$R^+S^+L^+$的车辆运动路径如下：
+
+```
+{ Steering: right	    Gear: forward	distance: -0.56 }
+{ Steering: straight	Gear: forward	distance: 5.28 }
+{ Steering: left	    Gear: forward	distance: -0.03 }
+```
+
+<img src="../../imgs/reeds_shepp5.gif" alt="reeds_shepp5" style="zoom: 33%;" />
+
+
+
+##### timeflip+reflect
+
+结合timeflip对称性和reflect对称性，将目标姿态修改为$(−x2,−y2,θ2)$，代入同样的Path计算函数：
+
+`path = calc_path(x1, y1, θ1, -x2, -y2, θ2)`
+
+就得到从$(x1,y1,θ1)$到$(x2,y2,θ2)$的$R^−S^−L^−$类型的运动路径。
+
+计算出的$R^−S^−L^−$​的车辆运动路径如下：
+
+```
+{ Steering: right	Gear: backward	distance: -1.86 }
+{ Steering: straight	Gear: backward	distance: 5.28 }
+{ Steering: left	Gear: backward	distance: -2.38 }
+```
+
+![reeds_shepp6](../../imgs/reeds_shepp6.gif)
+
+通过对称性，48种不同的Reeds Shepp曲线通过不超过12个函数就可以得到全部运动路径。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
