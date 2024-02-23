@@ -126,23 +126,127 @@ history
 
 ## rostopic用法
 
-用于查询话题具体内容
+rostopic包含rostopic命令行工具，用于显示有关ROS主题的调试信息，包括发布者，订阅者，发布率和ROS消息
 
-- 查看ROS正在发布的话题
+它还包含一个实验性Python库，用于动态获取有关主题的信息并与之交互
 
-  ```
-  rostopic list
-  ```
+```
+rostopic -h
+```
+
+用于查看ROS（Robot Operating System）中 `rostopic` 命令的帮助文档
+
+![image-20240223105012629](../imgs/image-20240223105012629.png)
+
+
+
+### 查看ROS正在发布的话题
+
+```
+rostopic list
+```
 
 结果示例：![img](../imgs/70-1706115123691-1.png)
 
-- 打印发布的消息内容
 
-  ```
-  rostopic echo +话题
-  ```
+
+### 显示发布的消息内容
+
+```
+rostopic echo /topic_name
+```
 
 结果示例：![img](../imgs/70-1706115224894-4.png)
+
+
+
+### 显示主题的发布率
+
+```
+rostopic hz /topic_name
+```
+
+默认情况下，报告的速率是rostopic运行整个时间的平均速率
+
+
+
+### 打印有关主题的信息
+
+```
+rostopic info /topic_name
+```
+
+输出包括该主题的发布者、订阅者、消息类型等内容
+
+
+
+### 查询指定主题的消息类型
+
+```
+rostopic type /topic_name
+```
+
+输出为该主题的消息类型，通常是一个ROS消息类型的完全限定名称，例如“std_msgs/String”
+
+然后可以查阅该消息类型的详细信息，包括消息的字段和数据类型
+
+```
+rosmsg show std_msgs/String
+```
+
+
+
+### 手动发布消息
+
+```
+rostopic pub [topic] [msg_type] [args]
+```
+
+- `[topic]`: 指定要发布消息的**主题名称**。
+- `[msg_type]`: 指定要发布的**消息类型**。这通常是一个ROS消息的完全限定名称，如`std_msgs/String`。
+- `[args]`: 指定消息的实际内容，这取决于消息类型。
+
+
+
+#### 基本模式（锁存模式）
+
+举例：假设一个名为‘/chatter’的主题，其消息类型为‘std_msgs/String’，则可以使用如下命令
+
+```
+rostopic pub /chatter std_msgs/String "hello, world"
+```
+
+意为：发布一个字符串消息 "hello, world" 到 `/chatter` 主题
+
+- 注意：启动rostopic后上线的所有新订阅者都将听到此消息
+
+  **可以随时按ctrl-C停止此操作**
+
+
+
+#### 一次模式
+
+示例如下：
+
+```
+rostopic pub -1 [topic] [msg_type] 
+```
+
+如果不想使用ctrl-C停止rostopic ，则可以一次模式发布。rostopic将使邮件锁定3秒钟，然后退出
+
+
+
+#### 速率模式
+
+示例如下：
+
+```
+rostopic pub -r 10(可改为其它) [topic][msg_type] 
+```
+
+此处‘r’为Rate频率，后面的数字‘10’表示发布消息的频率，以Hz为单位，即‘-r 10’指定了消息发布的速率为10次/秒
+
+使用管道输入或文件输入时，速率模式为默认(10hz)，所以此时为10
 
 
 

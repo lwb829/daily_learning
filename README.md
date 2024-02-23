@@ -14,7 +14,7 @@
 
 - [CAN报文(车辆底盘通信协议)](学习笔记/基础/CAN学习笔记.md)
 
-  
+
 
 ## 车辆控制算法
 
@@ -76,6 +76,8 @@
 
 - [Dubins&Reeds-Shepp曲线](学习笔记/车辆规划/路径规划/Dubins&Reeds-Shepp曲线.md)
 
+- [Hybrid_A*算法](学习笔记/车辆规划/路径规划/Hybrid_Astar.md)
+
 
 
 ### 决策规划
@@ -111,3 +113,5 @@
 ## 其它
 
 - [ubuntu录屏](学习笔记/其它/ubuntu录屏.md)
+
+- [CAN通信测试](学习笔记/其它/CAN通信测试.md)
