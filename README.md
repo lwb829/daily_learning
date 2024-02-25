@@ -113,5 +113,7 @@
 ## 其它
 
 - [ubuntu录屏](学习笔记/其它/ubuntu录屏.md)
-
 - [CAN通信测试](学习笔记/其它/CAN通信测试.md)
+
+- [Foxglove studio可视化工具](学习笔记/其它/foxglove.md)
+
