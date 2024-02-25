@@ -6,9 +6,7 @@
 
 以下为仿真过程
 
-<video src="../../imgs/hybrid_Astar-2024-02-25_16.38.19.mp4"></video>
-
-
+![hybrid_Astar-2024-02-25_16.38.19](../../imgs/hybrid_Astar-2024-02-25_16.38.19.gif)
 
 ### 搜索树展示
 
