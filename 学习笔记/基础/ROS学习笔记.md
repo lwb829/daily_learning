@@ -983,6 +983,14 @@ $ cd launch
   <param name="foo" default="$(arg arg-name)"/>
   ```
 
+- `<args>`：用于为一个节点指定命令行参数。这些参数会在启动节点时传递给它
+
+  例如，`<args>`标签可以用于指定节点的启动参数，如`-d`用于RViz加载配置文件，或者其他自定义参数
+  
+  ```xml
+  <node pkg="my_package" type="my_node" name="my_node" args="--param1 value1 --param2 value2"/>
+  ```
+  
 - `<include>`：**包含其它launch文件**，类似C语言中的头文件
 
   ```xml
@@ -991,7 +999,6 @@ $ cd launch
 
   - file：包含的其它launch文件路径
 
-  
 
 - `<remap>`：重映射ROS计算图资源的命名 
 
@@ -1418,7 +1425,16 @@ rosrun robots_setup_tf tf_listener
   rosrun tf static_transform_publisher 0 0 0 0 0 0 /base_link /laser 100
   ```
 
-  
+
+
+
+- ROS查看tf树
+
+  ```
+  rosrun rqt_tf_tree rqt_tf_tree
+  ```
+
+
 
 # Python与C++编译区别
 

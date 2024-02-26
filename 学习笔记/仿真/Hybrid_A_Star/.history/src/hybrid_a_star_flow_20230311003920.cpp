@@ -96,8 +96,10 @@ void HybridAStarFlow::Run() {
         unsigned int map_h = std::floor(current_costmap_ptr_->info.height / map_resolution);
         for (unsigned int w = 0; w < map_w; ++w) {
             for (unsigned int h = 0; h < map_h; ++h) {
-                auto x = static_cast<unsigned int> ((w + 0.5) * map_resolution / current_costmap_ptr_->info.resolution);
-                auto y = static_cast<unsigned int> ((h + 0.5) * map_resolution / current_costmap_ptr_->info.resolution);
+                auto x = static_cast<unsigned int> ((w + 0.5) * map_resolution
+                                                    / current_costmap_ptr_->info.resolution);
+                auto y = static_cast<unsigned int> ((h + 0.5) * map_resolution
+                                                    / current_costmap_ptr_->info.resolution);
 
                 if (current_costmap_ptr_->data[y * current_costmap_ptr_->info.width + x]) {
                     kinodynamic_astar_searcher_ptr_->SetObstacle(w, h);
@@ -159,7 +161,9 @@ void HybridAStarFlow::Run() {
                 q.setW(pose.pose.orientation.w);
                 transform.setRotation(q);
 
-                transform_broadcaster.sendTransform(tf::StampedTransform(transform,ros::Time::now(), "world","ground_link")
+                transform_broadcaster.sendTransform(tf::StampedTransform(transform,
+                                                                         ros::Time::now(), "world",
+                                                                         "ground_link")
                 );
 
                 ros::Duration(0.05).sleep();
@@ -215,7 +219,8 @@ void HybridAStarFlow::PublishPath(const VectorVec3d &path) {
     path_pub_.publish(nav_path);
 }
 
-void HybridAStarFlow::PublishVehiclePath(const VectorVec3d &path, double width, double length, unsigned int vehicle_interval = 5u) {
+void HybridAStarFlow::PublishVehiclePath(const VectorVec3d &path, double width,
+                                         double length, unsigned int vehicle_interval = 5u) {
     visualization_msgs::MarkerArray vehicle_array;
 
     for (unsigned int i = 0; i < path.size(); i += vehicle_interval) {

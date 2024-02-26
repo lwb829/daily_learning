@@ -32,7 +32,10 @@
 
 #include <iostream>
 
-HybridAStar::HybridAStar(double steering_angle, int steering_angle_discrete_num, double segment_length, int segment_length_discrete_num, double wheel_base, double steering_penalty, double reversing_penalty, double steering_change_penalty, double shot_distance, int grid_size_phi) {
+HybridAStar::HybridAStar(double steering_angle, int steering_angle_discrete_num, double segment_length,
+                         int segment_length_discrete_num, double wheel_base, double steering_penalty,
+                         double reversing_penalty, double steering_change_penalty, double shot_distance,
+                         int grid_size_phi) {
     wheel_base_ = wheel_base;
     segment_length_ = segment_length;
     steering_radian_ = steering_angle * M_PI / 180.0; // angle to radian
@@ -348,7 +351,8 @@ Vec2i HybridAStar::Coordinate2MapGridIndex(const Vec2d &pt) const {
     return grid_index;
 }
 
-void HybridAStar::GetNeighborNodes(const StateNode::Ptr &curr_node_ptr, std::vector<StateNode::Ptr> &neighbor_nodes) {
+void HybridAStar::GetNeighborNodes(const StateNode::Ptr &curr_node_ptr,
+                                   std::vector<StateNode::Ptr> &neighbor_nodes) {
     neighbor_nodes.clear();
 
     for (int i = -steering_discrete_num_; i <= steering_discrete_num_; ++i) {
@@ -410,7 +414,8 @@ void HybridAStar::GetNeighborNodes(const StateNode::Ptr &curr_node_ptr, std::vec
     }
 }
 
-void HybridAStar::DynamicModel(const double &step_size, const double &phi, double &x, double &y, double &theta) const {
+void HybridAStar::DynamicModel(const double &step_size, const double &phi,
+                               double &x, double &y, double &theta) const {
     x = x + step_size * std::cos(theta);
     y = y + step_size * std::sin(theta);
     theta = Mod2Pi(theta + step_size / wheel_base_ * std::tan(phi));

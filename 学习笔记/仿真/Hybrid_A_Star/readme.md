@@ -4,9 +4,19 @@
 
 [源码地址](https://github.com/zm0612/Hybrid_A_Star)
 
-以下为仿真过程
+以下为在某个地图中的Hybrid A*仿真过程
 
 ![hybrid_Astar-2024-02-25_16.38.19](../../imgs/hybrid_Astar-2024-02-25_16.38.19.gif)
+
+
+
+### 扩展节点的范围图示
+
+![hybrid_astar_extended_strategy](../../imgs/hybrid_astar_extended_strategy.png)
+
+在launch文件中，`steering_angle`设置了车轮的最大转向角为15度，根据代码中`GetNeighborNodes`函数的逻辑，节点的扩展范围是：朝前的左右15度范围，朝后的左右15度范围
+
+
 
 ### 搜索树展示
 
@@ -15,6 +25,8 @@
 ![image-20240225162859101](../../imgs/image-20240225162859101.png)
 
 - 绿色路径是规划的路径 `/searched_path` ，红色路径是加上车宽的路径`/vehicle_path`，黑色细线是搜索树`/searched_tree`
+
+  分别对应`hybrid_a_star_flow.cpp`中的`PublishPath`、`PublishVehiclePath`、`PublishSearchedTree`函数
 
 
 

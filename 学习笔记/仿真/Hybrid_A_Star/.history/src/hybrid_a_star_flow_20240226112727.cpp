@@ -215,7 +215,8 @@ void HybridAStarFlow::PublishPath(const VectorVec3d &path) {
     path_pub_.publish(nav_path);
 }
 
-void HybridAStarFlow::PublishVehiclePath(const VectorVec3d &path, double width, double length, unsigned int vehicle_interval = 5u) {
+void HybridAStarFlow::PublishVehiclePath(const VectorVec3d &path, double width,
+                                         double length, unsigned int vehicle_interval = 5u) {
     visualization_msgs::MarkerArray vehicle_array;
 
     for (unsigned int i = 0; i < path.size(); i += vehicle_interval) {

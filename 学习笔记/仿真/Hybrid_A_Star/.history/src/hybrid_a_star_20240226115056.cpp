@@ -410,7 +410,8 @@ void HybridAStar::GetNeighborNodes(const StateNode::Ptr &curr_node_ptr, std::vec
     }
 }
 
-void HybridAStar::DynamicModel(const double &step_size, const double &phi, double &x, double &y, double &theta) const {
+void HybridAStar::DynamicModel(const double &step_size, const double &phi,
+                               double &x, double &y, double &theta) const {
     x = x + step_size * std::cos(theta);
     y = y + step_size * std::sin(theta);
     theta = Mod2Pi(theta + step_size / wheel_base_ * std::tan(phi));
