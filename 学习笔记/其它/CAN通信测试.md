@@ -68,7 +68,7 @@ lwb829@lwb829:~/e_car_driver$ rostopic pub -r 50 /e_car_main/brake_command e_car
 
 <img src="../imgs/image-20240223192533601.png" alt="image-20240223192533601" style="zoom: 50%;" />
 
-可以看到，这里的每个输入均为0
+可以看到，这里的每个输入默认均为0
 
 
 
