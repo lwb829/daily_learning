@@ -10,7 +10,7 @@ See Wikipedia article (https://en.wikipedia.org/wiki/A*_search_algorithm)
 """
 
 import math
-import random
+
 import matplotlib.pyplot as plt
 
 show_animation = True
@@ -30,12 +30,12 @@ class AStarPlanner:
 
         self.resolution = resolution #网格分辨率,即每一个小网格的边长
         self.rr = rr #机器人半径
-        self.min_x, self.min_y = 0, 0 #坐标值
-        self.max_x, self.max_y = 0, 0 #坐标值
+        self.min_x, self.min_y = 0, 0
+        self.max_x, self.max_y = 0, 0
         self.obstacle_map = None #障碍物地图
         self.x_width, self.y_width = 0, 0 #初始化网格地图的宽度和高度
         self.motion = self.get_motion_model() #初始化运动模型
-        self.calc_obstacle_map(ox, oy) #计算障碍物地图,ox、oy为障碍物坐标列表
+        self.calc_obstacle_map(ox, oy) #计算障碍物地图,ox,oy为障碍物坐标列表
 
     class Node:
         def __init__(self, x, y, cost, parent_index):
@@ -65,7 +65,7 @@ class AStarPlanner:
         start_node = self.Node(self.calc_xy_index(sx, self.min_x), self.calc_xy_index(sy, self.min_y), 0.0, -1)
         goal_node = self.Node(self.calc_xy_index(gx, self.min_x), self.calc_xy_index(gy, self.min_y), 0.0, -1)
 
-        # 利用字典创建openlist和closelist集合,把起始节点'start_node'的索引放入openlist中
+        # openlist和closelist集合,把起始节点'start_node'的索引放入openlist中
         open_set, closed_set = dict(), dict()
         open_set[self.calc_grid_index(start_node)] = start_node
 
@@ -74,34 +74,33 @@ class AStarPlanner:
                 print("Open set is empty..")
                 break
 
-            # 找到具有最小总代价的节点的ID，并将该节点赋值给current
             c_id = min(open_set,key=lambda o: open_set[o].cost + self.calc_heuristic(goal_node, open_set[o]))
             current = open_set[c_id]
 
             # show graph
-            # if show_animation:  # pragma: no cover
-            #     plt.plot(self.calc_grid_position(current.x, self.min_x),
-            #              self.calc_grid_position(current.y, self.min_y), "xc") #蓝色交叉标记
-                
-                # 按下esc时退出程序
-            plt.gcf().canvas.mpl_connect('key_release_event',lambda event: [exit(0) if event.key == 'escape' else None])
-            if len(closed_set.keys()) % 10 == 0:
-                plt.pause(0.001)
+            if show_animation:  # pragma: no cover
+                plt.plot(self.calc_grid_position(current.x, self.min_x),
+                         self.calc_grid_position(current.y, self.min_y), "xc")
+                # for stopping simulation with the esc key.
+                plt.gcf().canvas.mpl_connect('key_release_event',
+                                             lambda event: [exit(
+                                                 0) if event.key == 'escape' else None])
+                if len(closed_set.keys()) % 10 == 0:
+                    plt.pause(0.001)
 
-            # 检查当前节点是否与目标节点位置相同
             if current.x == goal_node.x and current.y == goal_node.y:
                 print("Find goal")
                 goal_node.parent_index = current.parent_index
                 goal_node.cost = current.cost
                 break
 
-            # 从openlist中删除c_id节点
+            # Remove the item from the open set
             del open_set[c_id]
 
-            # 将c_id节点放入closelist中
+            # Add it to the closed set
             closed_set[c_id] = current
 
-            # 遍历每一种运动方式，获取周围的节点
+            # expand_grid search grid based on motion model
             for i, _ in enumerate(self.motion):
                 node = self.Node(current.x + self.motion[i][0],
                                  current.y + self.motion[i][1],
@@ -126,9 +125,8 @@ class AStarPlanner:
 
         return rx, ry
 
-    # 通过每个节点的父节点，从目标节点反向追溯到起始节点
     def calc_final_path(self, goal_node, closed_set):
-        # 将目标节点的实际坐标值加入到列表中
+        # generate final course
         rx, ry = [self.calc_grid_position(goal_node.x, self.min_x)], [
             self.calc_grid_position(goal_node.y, self.min_y)]
         parent_index = goal_node.parent_index
@@ -137,12 +135,12 @@ class AStarPlanner:
             rx.append(self.calc_grid_position(n.x, self.min_x))
             ry.append(self.calc_grid_position(n.y, self.min_y))
             parent_index = n.parent_index
+
         return rx, ry
 
-    # 启发函数
     @staticmethod
     def calc_heuristic(n1, n2):
-        w = 1.0  # 启发函数权重
+        w = 1.0  # weight of heuristic
         d = w * math.hypot(n1.x - n2.x, n1.y - n2.y)
         return d
 
@@ -162,11 +160,11 @@ class AStarPlanner:
     def calc_xy_index(self, position, min_pos):
         return round((position - min_pos) / self.resolution)
 
-    # 根据节点对象的x和y属性计算在网格地图中的索引:确定节点在y方向上的偏移量,乘以地图宽度;在加上节点在x方向上的偏移量,从而得到索引值
+    # 根据节点对象计算在网格地图中的索引:确定节点在y方向上的偏移量,乘以地图宽度;在加上节点在x方向上的偏移量,从而得到索引值
     def calc_grid_index(self, node):
         return (node.y - self.min_y) * self.x_width + (node.x - self.min_x)
 
-    # 验证节点是否在有效的网格地图范围内
+    # 
     def verify_node(self, node):
         px = self.calc_grid_position(node.x, self.min_x)
         py = self.calc_grid_position(node.y, self.min_y)
@@ -187,8 +185,7 @@ class AStarPlanner:
         return True
 
     def calc_obstacle_map(self, ox, oy):
-        
-        # 确定地图大小
+
         self.min_x = round(min(ox))
         self.min_y = round(min(oy))
         self.max_x = round(max(ox))
@@ -203,23 +200,22 @@ class AStarPlanner:
         print("x_width:", self.x_width)
         print("y_width:", self.y_width)
 
-        #初始化障碍物地图
+        # obstacle map generation
         self.obstacle_map = [[False for _ in range(self.y_width)]
-                             for _ in range(self.x_width)] #遍历每个元素并初始化为False，表示没有设置障碍物
+                             for _ in range(self.x_width)]
         for ix in range(self.x_width):
             x = self.calc_grid_position(ix, self.min_x)
             for iy in range(self.y_width):
                 y = self.calc_grid_position(iy, self.min_y)
                 for iox, ioy in zip(ox, oy):
-                    d = math.hypot(iox - x, ioy - y) #计算每一个障碍物位置与当前网格位置的欧式距离
+                    d = math.hypot(iox - x, ioy - y)
                     if d <= self.rr:
-                        self.obstacle_map[ix][iy] = True #若距离小于机器人半径，则标记为障碍物
+                        self.obstacle_map[ix][iy] = True
                         break
-    
-    #静态方法，创建一个运动模型列表，定义机器人可以采取的移动方式，包含增量(dx,dy)和移动代价cost 
-    @staticmethod 
+
+    @staticmethod
     def get_motion_model():
-        # 横竖向cost=1，斜向cost=根号2
+        # dx, dy, cost
         motion = [[1, 0, 1],
                   [0, 1, 1],
                   [-1, 0, 1],
@@ -238,29 +234,29 @@ def main():
     # start and goal position
     sx = 0.0  # [m]
     sy = 0.0  # [m]
-    gx = 99 # [m]
-    gy = 99 # [m]
+    gx = 50.0  # [m]
+    gy = 50.0  # [m]
     grid_size = 1.0  # [m]
-    robot_radius = 0.0  # [m]
+    robot_radius = 1.0  # [m]
 
     # set obstacle positions
     ox, oy = [], []
-    for i in range(0, 100):
+    for i in range(-10, 60):
         ox.append(i)
-        oy.append(0.0)
-    for i in range(0, 100):
-        ox.append(0.0)
+        oy.append(-10.0)
+    for i in range(-10, 60):
+        ox.append(60.0)
         oy.append(i)
-    for i in range(0, 99):
+    for i in range(-10, 61):
         ox.append(i)
-        oy.append(100.0)
-    for i in range(0, 99):
-        ox.append(100.0)
+        oy.append(60.0)
+    for i in range(-10, 61):
+        ox.append(-10.0)
         oy.append(i)
-    for i in range(-10, 23):
+    for i in range(-10, 40):
         ox.append(20.0)
         oy.append(i)
-    for i in range(0, 8):
+    for i in range(0, 40):
         ox.append(40.0)
         oy.append(60.0 - i)
 
@@ -276,9 +272,8 @@ def main():
 
     if show_animation:  # pragma: no cover
         plt.plot(rx, ry, "-r")
-        plt.pause(0.1)
+        plt.pause(0.001)
         plt.show()
-
 
 
 if __name__ == '__main__':

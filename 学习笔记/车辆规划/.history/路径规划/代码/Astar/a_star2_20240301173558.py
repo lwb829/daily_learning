@@ -79,14 +79,14 @@ class AStarPlanner:
             current = open_set[c_id]
 
             # show graph
-            # if show_animation:  # pragma: no cover
-            #     plt.plot(self.calc_grid_position(current.x, self.min_x),
-            #              self.calc_grid_position(current.y, self.min_y), "xc") #蓝色交叉标记
+            if show_animation:  # pragma: no cover
+                plt.plot(self.calc_grid_position(current.x, self.min_x),
+                         self.calc_grid_position(current.y, self.min_y), "xc") #蓝色交叉标记
                 
                 # 按下esc时退出程序
-            plt.gcf().canvas.mpl_connect('key_release_event',lambda event: [exit(0) if event.key == 'escape' else None])
-            if len(closed_set.keys()) % 10 == 0:
-                plt.pause(0.001)
+                plt.gcf().canvas.mpl_connect('key_release_event',lambda event: [exit(0) if event.key == 'escape' else None])
+                if len(closed_set.keys()) % 10 == 0:
+                    plt.pause(0.001)
 
             # 检查当前节点是否与目标节点位置相同
             if current.x == goal_node.x and current.y == goal_node.y:
@@ -235,41 +235,68 @@ class AStarPlanner:
 def main():
     print(__file__ + " start!!")
 
-    # start and goal position
-    sx = 0.0  # [m]
-    sy = 0.0  # [m]
-    gx = 99 # [m]
-    gy = 99 # [m]
-    grid_size = 1.0  # [m]
-    robot_radius = 0.0  # [m]
+    # # start and goal position
+    # sx = 0.0  # [m]
+    # sy = 0.0  # [m]
+    # gx = 50.0  # [m]
+    # gy = 50.0  # [m]
+    # grid_size = 1.0  # [m]
+    # robot_radius = 1.0  # [m]
 
-    # set obstacle positions
-    ox, oy = [], []
-    for i in range(0, 100):
-        ox.append(i)
-        oy.append(0.0)
-    for i in range(0, 100):
-        ox.append(0.0)
-        oy.append(i)
-    for i in range(0, 99):
-        ox.append(i)
-        oy.append(100.0)
-    for i in range(0, 99):
-        ox.append(100.0)
-        oy.append(i)
-    for i in range(-10, 23):
-        ox.append(20.0)
-        oy.append(i)
-    for i in range(0, 8):
-        ox.append(40.0)
-        oy.append(60.0 - i)
+    # # set obstacle positions
+    # ox, oy = [], []
+    # for i in range(-20, 60):
+    #     ox.append(i)
+    #     oy.append(-10.0)
+    # for i in range(-15, 60):
+    #     ox.append(60.0)
+    #     oy.append(i)
+    # for i in range(-10, 35):
+    #     ox.append(i)
+    #     oy.append(60.0)
+    # for i in range(-10, 74):
+    #     ox.append(-10.0)
+    #     oy.append(i)
+    # for i in range(-10, 23):
+    #     ox.append(20.0)
+    #     oy.append(i)
+    # for i in range(0, 8):
+    #     ox.append(40.0)
+    #     oy.append(60.0 - i)
 
-    if show_animation:  # pragma: no cover
-        plt.plot(ox, oy, ".k")
-        plt.plot(sx, sy, "og")
-        plt.plot(gx, gy, "xb")
+    # if show_animation:  # pragma: no cover
+    #     plt.plot(ox, oy, ".k")
+    #     plt.plot(sx, sy, "og")
+    #     plt.plot(gx, gy, "xb")
+    #     plt.grid(True)
+    #     plt.axis("equal")
+    
+    # Constants
+    map_width = 10.0  # Width of the map
+    map_height = 10.0  # Height of the map
+    obstacle_ratio = 0.2  # Ratio of obstacles in the map
+    grid_size = 1.0  # Grid size
+    robot_radius = 1.0  # Robot radius
+
+    # Start and goal positions
+    sx = 0.0  # Start position x
+    sy = 0.0  # Start position y
+    gx = map_width   # Goal position x
+    gy = map_height   # Goal position y
+
+    # Generate obstacles
+    num_obstacles = int(map_width * map_height * obstacle_ratio)
+    ox = [random.uniform(grid_size, map_width - grid_size)
+          for _ in range(num_obstacles)]
+    oy = [random.uniform(grid_size, map_height - grid_size)
+          for _ in range(num_obstacles)]
+
+    if show_animation:
+        plt.plot(ox, oy, ".k")  # Plot obstacles
+        plt.plot(sx, sy, "og")  # Plot start
+        plt.plot(gx, gy, "xb")  # Plot goal
         plt.grid(True)
-        plt.axis("equal")
+        plt.axis([0, map_width, 0, map_height])  # Set axis limits
 
     a_star = AStarPlanner(ox, oy, grid_size, robot_radius)
     rx, ry = a_star.planning(sx, sy, gx, gy)
@@ -278,7 +305,6 @@ def main():
         plt.plot(rx, ry, "-r")
         plt.pause(0.1)
         plt.show()
-
 
 
 if __name__ == '__main__':

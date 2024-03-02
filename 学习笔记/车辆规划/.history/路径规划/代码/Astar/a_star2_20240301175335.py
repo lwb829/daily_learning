@@ -79,14 +79,14 @@ class AStarPlanner:
             current = open_set[c_id]
 
             # show graph
-            # if show_animation:  # pragma: no cover
-            #     plt.plot(self.calc_grid_position(current.x, self.min_x),
-            #              self.calc_grid_position(current.y, self.min_y), "xc") #蓝色交叉标记
+            if show_animation:  # pragma: no cover
+                plt.plot(self.calc_grid_position(current.x, self.min_x),
+                         self.calc_grid_position(current.y, self.min_y), "xc") #蓝色交叉标记
                 
                 # 按下esc时退出程序
-            plt.gcf().canvas.mpl_connect('key_release_event',lambda event: [exit(0) if event.key == 'escape' else None])
-            if len(closed_set.keys()) % 10 == 0:
-                plt.pause(0.001)
+                plt.gcf().canvas.mpl_connect('key_release_event',lambda event: [exit(0) if event.key == 'escape' else None])
+                if len(closed_set.keys()) % 10 == 0:
+                    plt.pause(0.001)
 
             # 检查当前节点是否与目标节点位置相同
             if current.x == goal_node.x and current.y == goal_node.y:
@@ -238,24 +238,24 @@ def main():
     # start and goal position
     sx = 0.0  # [m]
     sy = 0.0  # [m]
-    gx = 99 # [m]
-    gy = 99 # [m]
+    gx = 50.0  # [m]
+    gy = 50.0  # [m]
     grid_size = 1.0  # [m]
-    robot_radius = 0.0  # [m]
+    robot_radius = 1.0  # [m]
 
     # set obstacle positions
     ox, oy = [], []
-    for i in range(0, 100):
+    for i in range(-20, 60):
         ox.append(i)
-        oy.append(0.0)
-    for i in range(0, 100):
-        ox.append(0.0)
+        oy.append(-10.0)
+    for i in range(-15, 60):
+        ox.append(60.0)
         oy.append(i)
-    for i in range(0, 99):
+    for i in range(-10, 35):
         ox.append(i)
-        oy.append(100.0)
-    for i in range(0, 99):
-        ox.append(100.0)
+        oy.append(60.0)
+    for i in range(-10, 74):
+        ox.append(-10.0)
         oy.append(i)
     for i in range(-10, 23):
         ox.append(20.0)

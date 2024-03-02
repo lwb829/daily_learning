@@ -84,9 +84,9 @@ class AStarPlanner:
             #              self.calc_grid_position(current.y, self.min_y), "xc") #蓝色交叉标记
                 
                 # 按下esc时退出程序
-            plt.gcf().canvas.mpl_connect('key_release_event',lambda event: [exit(0) if event.key == 'escape' else None])
-            if len(closed_set.keys()) % 10 == 0:
-                plt.pause(0.001)
+                plt.gcf().canvas.mpl_connect('key_release_event',lambda event: [exit(0) if event.key == 'escape' else None])
+                if len(closed_set.keys()) % 10 == 0:
+                    plt.pause(0.001)
 
             # 检查当前节点是否与目标节点位置相同
             if current.x == goal_node.x and current.y == goal_node.y:

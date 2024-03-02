@@ -10,7 +10,7 @@ See Wikipedia article (https://en.wikipedia.org/wiki/A*_search_algorithm)
 """
 
 import math
-import random
+
 import matplotlib.pyplot as plt
 
 show_animation = True
@@ -74,34 +74,33 @@ class AStarPlanner:
                 print("Open set is empty..")
                 break
 
-            # 找到具有最小总代价的节点的ID，并将该节点赋值给current
             c_id = min(open_set,key=lambda o: open_set[o].cost + self.calc_heuristic(goal_node, open_set[o]))
             current = open_set[c_id]
 
             # show graph
-            # if show_animation:  # pragma: no cover
-            #     plt.plot(self.calc_grid_position(current.x, self.min_x),
-            #              self.calc_grid_position(current.y, self.min_y), "xc") #蓝色交叉标记
-                
-                # 按下esc时退出程序
-            plt.gcf().canvas.mpl_connect('key_release_event',lambda event: [exit(0) if event.key == 'escape' else None])
-            if len(closed_set.keys()) % 10 == 0:
-                plt.pause(0.001)
+            if show_animation:  # pragma: no cover
+                plt.plot(self.calc_grid_position(current.x, self.min_x),
+                         self.calc_grid_position(current.y, self.min_y), "xc")
+                # for stopping simulation with the esc key.
+                plt.gcf().canvas.mpl_connect('key_release_event',
+                                             lambda event: [exit(
+                                                 0) if event.key == 'escape' else None])
+                if len(closed_set.keys()) % 10 == 0:
+                    plt.pause(0.001)
 
-            # 检查当前节点是否与目标节点位置相同
             if current.x == goal_node.x and current.y == goal_node.y:
                 print("Find goal")
                 goal_node.parent_index = current.parent_index
                 goal_node.cost = current.cost
                 break
 
-            # 从openlist中删除c_id节点
+            # Remove the item from the open set
             del open_set[c_id]
 
-            # 将c_id节点放入closelist中
+            # Add it to the closed set
             closed_set[c_id] = current
 
-            # 遍历每一种运动方式，获取周围的节点
+            # expand_grid search grid based on motion model
             for i, _ in enumerate(self.motion):
                 node = self.Node(current.x + self.motion[i][0],
                                  current.y + self.motion[i][1],
@@ -128,7 +127,7 @@ class AStarPlanner:
 
     # 通过每个节点的父节点，从目标节点反向追溯到起始节点
     def calc_final_path(self, goal_node, closed_set):
-        # 将目标节点的实际坐标值加入到列表中
+        # generate final course
         rx, ry = [self.calc_grid_position(goal_node.x, self.min_x)], [
             self.calc_grid_position(goal_node.y, self.min_y)]
         parent_index = goal_node.parent_index
@@ -137,6 +136,7 @@ class AStarPlanner:
             rx.append(self.calc_grid_position(n.x, self.min_x))
             ry.append(self.calc_grid_position(n.y, self.min_y))
             parent_index = n.parent_index
+
         return rx, ry
 
     # 启发函数
@@ -238,29 +238,29 @@ def main():
     # start and goal position
     sx = 0.0  # [m]
     sy = 0.0  # [m]
-    gx = 99 # [m]
-    gy = 99 # [m]
+    gx = 50.0  # [m]
+    gy = 50.0  # [m]
     grid_size = 1.0  # [m]
-    robot_radius = 0.0  # [m]
+    robot_radius = 1.0  # [m]
 
     # set obstacle positions
     ox, oy = [], []
-    for i in range(0, 100):
+    for i in range(-10, 60):
         ox.append(i)
-        oy.append(0.0)
-    for i in range(0, 100):
-        ox.append(0.0)
+        oy.append(-10.0)
+    for i in range(-10, 60):
+        ox.append(60.0)
         oy.append(i)
-    for i in range(0, 99):
+    for i in range(-10, 61):
         ox.append(i)
-        oy.append(100.0)
-    for i in range(0, 99):
-        ox.append(100.0)
+        oy.append(60.0)
+    for i in range(-10, 61):
+        ox.append(-10.0)
         oy.append(i)
-    for i in range(-10, 23):
+    for i in range(-10, 40):
         ox.append(20.0)
         oy.append(i)
-    for i in range(0, 8):
+    for i in range(0, 40):
         ox.append(40.0)
         oy.append(60.0 - i)
 
@@ -276,9 +276,8 @@ def main():
 
     if show_animation:  # pragma: no cover
         plt.plot(rx, ry, "-r")
-        plt.pause(0.1)
+        plt.pause(0.001)
         plt.show()
-
 
 
 if __name__ == '__main__':
