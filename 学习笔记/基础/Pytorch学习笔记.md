@@ -334,7 +334,8 @@ print(result)
   from torchvision import transforms 
   ```
 
-  ![image-20231122213723934](C:\Users\83802\AppData\Roaming\Typora\typora-user-images\image-20231122213723934.png)
+
+
 
 ### Transforms.ToTensor用法
 

@@ -1,4 +1,4 @@
-# CAN通信测试
+# CAN控制报文节点通信测试
 
 以下过程为车辆CAN通信的command node节点运行测试，主要是查看数据流是否流通（手动给输入能否得到输出）
 
@@ -24,7 +24,7 @@
 lwb829@lwb829:~/e_car_driver$ source devel/setup.bash 
 ```
 
-### 3.在同一终端中，运行command node节点
+### 3.在同一终端中，运行command node节点(rosrun命令)
 
 ```
 lwb829@lwb829:~/e_car_driver$ rosrun e_car_main e_car_main_command_node
