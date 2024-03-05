@@ -288,8 +288,6 @@ print(y.type())  # torch.LongTensor
 - 存储区 Storage：保存真正的数据，Storage是在data之上的接口
 - 头信息区的占用内存较小，Storage为主要的占用内存
 
-![img](imgs/c13f6f5b39fb4f39821eb518531934c6.jpeg)
-
 
 
 ### torch.cat拼接
