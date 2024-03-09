@@ -535,7 +535,7 @@ transformed_img = transform(img)
 
 
 
-## 神经网络的基本骨架—nn.Module的使用！！！
+## ==神经网络的基本骨架—nn.Module的使用！！！==
 
 `nn.Module` 是 PyTorch 中的一个基类，用于**定义神经网络模型**。它是构建深度学习模型的基础，所有的神经网络模型都应该继承自 `nn.Module`。
 
@@ -595,7 +595,7 @@ nn.Conv2d(in_channels, out_channels, kernel_size, stride=1, padding=0)
 - `padding`：卷积操作的**填充数**，表示在输入图像的边缘周围添加的零值像素数，默认为 0。（**注意**：通常在实际模型训练时，**令padding=1**）
 
 - `dilation`：该参数决定是否采用**空洞卷积**，**默认为1（不采用）**
-- `bias`：即是否要添加偏置参数作为可学习参数的一个，默认为True。
+- `bias`：即是否要添加偏置参数作为可学习参数的一个，默认为`True`。
 - `padding_mode`：即padding的模式，默认采用零填充`zeros`。
 
 
@@ -610,9 +610,9 @@ self.fc = nn.Linear(64 * 32 * 32, 10)
 
 其中：
 -  `nn.Linear(in_features, out_features, bias=True)`
-   -  `in_features`: 输入特征的数量，通常是上一层的**输出特征数量**。
-   -  `out_features`: 输出特征的数量，表示全连接层的**神经元数量**。
-   -   `bias`: 是否使用偏置项，默认为 `True`，表示全连接层的每个神经元都有一个偏置。
+   -  `in_features`: **输入特征的数量，通常是上一层的输出特征数量**
+   -  `out_features`: **输出特征的数量，表示全连接层的神经元数量**
+   -   `bias`: 是否使用偏置项，默认为 `True`，表示全连接层的每个神经元都有一个偏置
 
 
 

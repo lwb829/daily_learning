@@ -12,12 +12,12 @@
 
 - CAN笔记
 
-  ==补充路径？？？？==
+  切换到`EU..`目录下
 
   - 启动CAN
 
     ```
-    ./start
+    ./start.sh
     ```
 
   - 打印车辆CAN数据流
@@ -67,13 +67,13 @@
   其中，`msg` 是一个指向 `autoware_msgs::VehicleCmd` 类型对象的指针，所以`msg->ctrl_cmd.linear_velocity` 表示访问 `VehicleCmd` 对象中 `ctrl_cmd` 成员变量的 `linear_velocity` 属性
 
   **`msg` 是一个 `autoware_msgs::VehicleCmd` 类型的常量指针，因此使用 `->` 来访问它的成员，而不是使用 `.`。**
+
   
-  
-  
+
   3. **节点对应依赖**
-  
+
   在`CMakeLists.txt`文件中，**每一个节点对应的依赖需要即使添加，即`一个节点名称`对应`一个dependencies和一个libraries`**，示例如下：
-  
+
   ```cmake
   add_executable(${PROJECT_NAME}_command_node 
   src/ADCU_BrakeCmd_111.cc
@@ -93,9 +93,9 @@
   src/command_node.cc
   )
   ```
-  
+
   对应依赖为
-  
+
   ```cmake
   add_dependencies(${PROJECT_NAME}_command_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
   
@@ -104,17 +104,17 @@
      ${catkin_LIBRARIES}
    )
   ```
-  
+
   和
-  
+
   ```cmake
   add_executable(${PROJECT_NAME}_control_converter
   src/control_command_speed_exercise.cpp
   )
   ```
-  
+
   对应依赖为
-  
+
   ```cmake
   add_dependencies(${PROJECT_NAME}_control_converter ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
   
@@ -123,7 +123,7 @@
      ${catkin_LIBRARIES}
    )
   ```
-  
+
 
 
 
@@ -163,3 +163,58 @@
 
 
 # 2024.3.7
+
+## 遇到的问题
+
+单个报文信号成功显示对应/vehicle_cmd的输入，但是依然无法使能车辆自驾功能
+
+
+
+## 需要修改的地方
+
+控制报文信号字节传输逻辑出现问题，与原来PIX、龙马的逻辑不同，故代码也需要更新，不能仿照原来的去写
+
+
+
+**查询某报文信号字节传输是否正确小技巧**
+
+- 给定该报文信号输入值（十进制数），通过判断其**自身的二进制数 和 传入的二进制数 是否满足对应的起始位和长度关系**，从而确定字节、位传输是否正确
+
+
+
+# 2024.3.8
+
+## 遇到的问题
+
+测试了brake_cmd,drive_cmd,park_cmd,power_cmd,steer_cmd,body_cmd共6个主要报文信号，现在发现传输数据均为0，即数据无法传输给车辆
+
+
+
+## 需要修改的地方
+
+初步排查为command_node.cc节点中代码逻辑出现问题
+
+
+
+# 2024.3.9
+
+## 已完成内容
+
+通过手动输入/vehicle_cmd话题中的信号值，能够使得车辆进入自动驾驶模式，即在report部分读取到对应输入信息，说明5个active信号输入均正确
+
+给定steer转角开度，能够实现车辆前轮对应转向
+
+
+
+## 遇到的问题
+
+- 给定目标车辆前进速度设定，无法实现前进功能
+
+- 进入自动驾驶模式不稳定，有时候出现修改代码再改回来就无法进入自驾模式的情况
+
+
+
+## 需要修改的地方
+
+初步判断为park_enable信号应设置为0（False）
+

@@ -1,5 +1,137 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="968ff84d-01ea-49d2-b18d-103f9adc1e19" name="更改" comment="">
+      <change beforePath="$PROJECT_DIR$/../../README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../../README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/autoware.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/autoware.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../基础/Pytorch学习笔记.md" beforeDir="false" afterPath="$PROJECT_DIR$/../基础/Pytorch学习笔记.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../易咖清扫车/易咖清扫车CAN实车测试记录.md" beforeDir="false" afterPath="$PROJECT_DIR$/../易咖清扫车/易咖清扫车CAN实车测试记录.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/CarSim2019.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/LQR控制学习笔记.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/MPC控制学习笔记.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/三轮车模型/A_Steering_Stability_Control_for_A_Three-Wheeled_Autonomus_Electric_Vehicle.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/三轮车模型/Dynamic_model_of_three_wheeled_narrow_tilting_vehicle_and_corresponding_experiment_verification.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/三轮车模型/Dynamic_modeling_and_simulation_of_a_three-wheeled_electric_car.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/三轮车模型/Electric_three-wheelers_as_an_alternative_to_combustion-engined_autorickshaws_in_Dar_es_Salaam_-_Generation_of_a_standard_drive_cycle_Power_Train_modelling_and_simulation_of_the_energy_demand_of_.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/三轮车模型/Kinematics_and_Dynamics_Analysis_of_an_Autonomous_Three-wheeled_Bicycle_Modeling.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/三轮车模型/Mathematical_modelling_of_chassis_dynamics_of_electric_narrow_tilting_three_wheeled_vehicle.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117134837.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117134858.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117143434.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117143440.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117155840.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117155909.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117155930.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117155957.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117160041.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117160935.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117161012.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117161242.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240117161752.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240118224509.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240118225653.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240118225726.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240118225751.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240118225914.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240118225926.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240118230353.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/LQR_control_demo_20240118230504.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118142922.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118142944.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118143020.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118143047.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118143543.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118143620.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118144137.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118144209.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118144507.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118144947.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118145052.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118145416.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118145606.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118145650.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118145730.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150019.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150024.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150118.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150308.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150329.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150350.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150414.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150544.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118150626.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118151009.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118151111.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118151957.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118152014.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118152113.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118190158.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118225132.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118225140.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118225231.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/Stanley_control_demo_20240118225531.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115142202.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115142918.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115145516.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115153143.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115153224.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115160428.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115160740.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115161114.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115161149.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115161150.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115161432.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115161456.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115161804.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115161938.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240115162158.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240117134340.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240118224600.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240118224631.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240118224657.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.history/pure_pursuit_demo_20240118224840.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/sonarlint/issuestore/2/2/22a78c1628be6839e9f618a522132ec9e6ef9d90" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/sonarlint/issuestore/index.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/sonarlint/securityhotspotstore/2/2/22a78c1628be6839e9f618a522132ec9e6ef9d90" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/sonarlint/securityhotspotstore/index.pb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/.idea/代码.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/LQR_control_demo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/Stanley_control_demo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/lqr.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/lqr1.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/pure_pursuit.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/pure_pursuit_1.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/pure_pursuit_demo.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/stanley.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/代码/stanley_1.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/基于几何的车辆横向控制学习笔记.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/车辆横向动力学模型学习笔记.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/车辆横向运动学模型学习笔记.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../车辆控制算法/车辆纵向动力学模型学习笔记.md" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="2bJVTEYfNFqwEOggi8NBOm9X4Un" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -9,7 +141,31 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false"
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "E:/无人车项目/github仓库/lwb/学习笔记/深蓝学院预测规划/代码",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="默认任务">
+      <changelist id="968ff84d-01ea-49d2-b18d-103f9adc1e19" name="更改" comment="" />
+      <created>1709815213848</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1709815213848</updated>
+      <workItem from="1709815214903" duration="613000" />
+      <workItem from="1709994667471" duration="59000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
 </project>
