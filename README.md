@@ -68,9 +68,13 @@
 
 ## 深蓝学院预测规划
 
-- [CNN](学习笔记/深蓝学院预测规划/CNN.md)
+- 基础
+  - [CNN](学习笔记/深蓝学院预测规划/CNN.md)
 
-- [RNN](学习笔记/深蓝学院预测规划/RNN.md)
+  - [RNN](学习笔记/深蓝学院预测规划/RNN.md)
+  - [Embedding](学习笔记/深蓝学院预测规划/Embedding.md)
+  
+  - [Transformer](学习笔记/深蓝学院预测规划/Transformer.md)
 
 
 
