@@ -1,0 +1,10 @@
+
+dpython:S2208"GImport only needed names or import the module and then use its members.(ú£ú‚úÿÿÿÿ
+ipython:S117Q"MRename this parameter "K" to match the regular expression ^[_a-z][a-z0-9_]*$.(¶ˆëâıÿÿÿÿ
+ipython:S117Q"MRename this parameter "Q" to match the regular expression ^[_a-z][a-z0-9_]*$.(¶ˆëâıÿÿÿÿ
+ipython:S117Q"MRename this parameter "V" to match the regular expression ^[_a-z][a-z0-9_]*$.(¶ˆëâıÿÿÿÿ
+jpython:S117s"SRename this parameter "input_K" to match the regular expression ^[_a-z][a-z0-9_]*$.(É¢ãÈ
+jpython:S117s"SRename this parameter "input_Q" to match the regular expression ^[_a-z][a-z0-9_]*$.(É¢ãÈ
+jpython:S117s"SRename this parameter "input_V" to match the regular expression ^[_a-z][a-z0-9_]*$.(É¢ãÈ
+`python:S1763‹"GDelete this unreachable code or refactor the code to make it reachable.(ÃÓôÅ
+epython:S1763"GDelete this unreachable code or refactor the code to make it reachable.(°ßøÿÿÿÿÿ
