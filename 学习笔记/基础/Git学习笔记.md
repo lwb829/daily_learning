@@ -67,6 +67,27 @@ $ git status
 
 
 
+### 撤销操作
+
+#### 撤销commit、不撤销git add .
+
+```
+git reset --soft HEAD^
+```
+
+`HEAD^` 意思是上一个版本，也可以写成 `HEAD~1`
+如果进行了 2 次 commit，都想撤回，可以使用 `HEAD~2`
+
+
+
+#### 撤销 commit、撤销 git add .
+
+```
+ git reset --hard HEAD^
+```
+
+
+
 ## 分支相关操作
 
 ### 创建分支
