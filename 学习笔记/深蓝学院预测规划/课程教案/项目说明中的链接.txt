@@ -1,0 +1,8 @@
+pychram
+https://developer.aliyun.com/article/1025132
+https://www.jetbrains.com/help/pycharm/conda-support-creating-conda-virtual-environment.html
+https://www.jetbrains.com/help/pycharm/debugging-your-first-python-application.html
+
+vscode
+https://code.visualstudio.com/docs/python/debugging
+https://www.cnblogs.com/macroxu-1982/p/16284960.html
