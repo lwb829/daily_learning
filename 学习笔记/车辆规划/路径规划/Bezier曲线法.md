@@ -30,7 +30,7 @@ $$
 
 - python实现
 
-一阶Besier的python实现及结果：[一阶Besier曲线](代码/Besier曲线)
+一阶Bezier的python实现及结果：[一阶Bezier曲线](代码/Bezier曲线)
 
 
 
@@ -52,7 +52,7 @@ $$
 
 - python实现
 
-二阶Besier的python实现及结果：[二阶Besier曲线](代码/Besier曲线)
+二阶Bezier的python实现及结果：[二阶Bezier曲线](代码/Bezier曲线)
 
 
 
@@ -78,11 +78,11 @@ $$
 
 - python实现
 
-三阶Besier的python实现及结果：[三阶Besier曲线](代码/Besier曲线)
+三阶Bezier的python实现及结果：[三阶Bezier曲线](代码/Bezier曲线)
 
 
 
-### 2.4 $n$阶Besier曲线
+### 2.4 $n$阶Bezier曲线
 
 通过上面一阶到三阶的贝塞尔曲线，可以发现贝塞尔点的求解满足递归的性质
 
@@ -96,12 +96,12 @@ $$
 $$
 推导步骤在此省略，具体可以参考[局部路径规划算法———贝塞尔曲线法（含python实现 | c++实现）](https://blog.csdn.net/weixin_42301220/article/details/125167672) 式中$i \geq 1$. 当$i=0$时，$B_{0,n}(t) = (1-t)^n$，$B_{0,n}(t)^{'} = -n(1-t)^{n-1} = -nB_{0,n-1}(t)$。进一步，贝塞尔点求导为： $$ p_n(t)^{'} = n\sum_{i=0}^{n}B_{i-1,n-1}(t) \cdot (P_i - P_{i-1}) $$
 
-- 普通方式实现 $n$阶贝塞尔曲线：[n阶Besier曲线](代码/Besier曲线)
-- 递归方式实现 $n$阶贝塞尔曲线：[n阶Besier曲线](代码/Besier曲线)
+- 普通方式实现 $n$阶贝塞尔曲线：[n阶Bezier曲线](代码/Bezier曲线)
+- 递归方式实现 $n$阶贝塞尔曲线：[n阶Bezier曲线](代码/Bezier曲线)
 
 
 
-### 2.5 Besier曲线的特殊性质
+### 2.5 Bezier曲线的特殊性质
 
 贝塞尔曲线具有许多性质，这里就列举几个在自动驾驶运动规划中的常见性质
 
@@ -116,7 +116,7 @@ $$
 
 ### 3. python代码实现
 
-python实现代码及结果：[Besier曲线](代码/Besier曲线)
+python实现代码及结果：[Bezier曲线](代码/Bezier曲线)
 
 
 
