@@ -154,6 +154,8 @@
 
 - [在Autoware中使用带GPS的仿真模型](学习笔记/仿真/在Autoware中使用带GPS的仿真模型.md)
 
+- [在Autoware中使用openPlanner进行路径规划](学习笔记/仿真/在Autoware中使用openPlanner进行路径规划.md)
+
 
 
 ## 其它
