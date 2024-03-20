@@ -52,7 +52,7 @@ roslaunch runtime_manager runtime_manager.launch
 
 
 
-## 二、使用ndt_matching进行定位并使用A×算法进行路径规划
+## 二、使用ndt_matching进行定位并使用A*算法进行路径规划
 
 ### 前提
 
@@ -82,18 +82,20 @@ roslaunch vehicle_gazebo_simulation_launcher  world_test.launch
 
 
 
-### 2.使用A×算法进行路径规划
+### 2.使用A*算法进行路径规划
 
 - 加载传感器：跟ndt建图中的配置相同**（这里本电脑对加载vlp16.yaml操作报错，但并不影响后续操作，所以这一步未必需要）**
 
-- 对激光雷达生成的点云进行降采样和预处理：
+- 对激光雷达生成的点云进行**降采样**和**预处理**：
   1. 勾选 `Points Downsampler->voxel_grid_filter`，注意在其 `app` 中选择话题为 `/points_raw` 
   
   2. 勾选 `Points Preprocessor->ray_ground_filter` ， 注意在其 `app` 中选择话题为 `/points_raw` （也可以选择voxel_grid_filter节点输出的`/filtered_points`，但这样生成的`/points_no_ground`会非常稀疏！）
   
+     **解析：对降采样后的点云进行点云地面过滤，将地面点和非地面点进行过滤**
+  
   3. 勾选 `Points Preprocessor->ring_ground_filter` ， 注意在其 `app` 中选择话题为 `/points_raw` ，并且**传感器模型选择与前面加载的相同，这里选择 16**
   
-     注意：如果使用该滤除地面的节点`ring_ground_filter`，那么必须勾选上`Points Downsampler->ring_filter`。**否则直接勾选`ring_ground_filter`不仅会报错，而且不会产生有效的`/points_no_ground`话题，那么进而影响到后续costmap生成的节点，进而无法利用A\*规划路径**
+     - **注意：**如果使用该滤除地面的节点`ring_ground_filter`，那么必须勾选上`Points Downsampler->ring_filter`。**否则直接勾选`ring_ground_filter`不仅会报错，而且不会产生有效的`/points_no_ground`话题，那么进而影响到后续costmap生成的节点，进而无法利用A*规划路径**
   
 - 使用 ndt_matching 进行点云匹配定位：
 
