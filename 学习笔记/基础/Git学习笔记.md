@@ -4,7 +4,7 @@
 
 ### 关联
 
-1.**通用方法**：先建立Github远程仓库，再建立相关联的本地库
+1. **通用方法**：先建立Github远程仓库，再建立相关联的本地库
 
 ```
 # 1、在github上创建项目（需要包括README.md，即不要创建空项目）
@@ -12,7 +12,7 @@
 # 2、使用git clone https://github.com/xxxxxxx/xxxxx.git 克隆到本地
 ```
 
-2.一般方法：先建立本地库，再关联远程库
+2. 一般方法：先建立本地库，再关联远程库
 
 ```
 # 1. 先本地新建仓库
@@ -24,7 +24,7 @@ git init
 
 ### 同步
 
-1.本地库更新到远程库
+1. 本地库更新到远程库
 
 ```
 git add -A  # -A表示将本地的所有更改都添加到暂存区，也可以指定某个文件
@@ -35,9 +35,9 @@ git push origin main
 git push -u origin main
 ```
 
-注：此处的origin为远程库的main分支，main就是本地的main分支
+**注：此处的origin为远程库的main分支，main就是本地的main分支**
 
-2.远程库更新到本地库
+2. 远程库更新到本地库
 
 ```
 git pull origin main
@@ -45,14 +45,26 @@ git pull origin main
 
 
 
-### 文件删除
+### 文件（夹）删除
 
 Github仓库中的**某一分支可以直接删除**，但是某一分支中的**某一文件无法直接删除**，必须经过clone到本地库中进行操作
 
-本地删除操作：
+1. 查看远程仓库所有文件夹
 
 ```
-$ rm ××  # ××为当前分支中要删除的文件名
+dir
+```
+
+2. 删除远程仓库某文件夹
+
+```
+git rm -r --cached ××
+```
+
+3. 本地删除操作：
+
+```
+$ git rm ××  # ××为当前分支中要删除的文件名
 ```
 
 
@@ -90,11 +102,13 @@ git reset --soft HEAD^
 
 ## 分支相关操作
 
-### 创建分支
+### 创建本地分支
 
 ```
 git branch [branchname]
 ```
+
+
 
 ### 查看分支
 
@@ -105,11 +119,21 @@ git branch
 git branch -a
 ```
 
-### 切换分支
+
+
+### 切换本地分支
 
 ```
 git checkout [branchname]
 ```
+
+- 可以创建分支与切换分支同步操作
+
+  ```
+  git checkout -b [branchname]
+  ```
+
+
 
 ### 删除本地分支
 
@@ -117,9 +141,20 @@ git checkout [branchname]
 git branch -d [branchname]
 ```
 
+如果分支尚未合并，您可能需要使用 -D 标志来强制删除本地分支
+
+```
+git branch -D [branchname]
+```
+
+
+
 ### 删除远程分支
 
+**确保本地分支已经被删除**
+
 ```
-git push --delete origin [branchname]
+git push origin --delete [branchname]
 ```
 
+其中，origin 是远程仓库的名称，branch_name 是要删除的分支的名称
