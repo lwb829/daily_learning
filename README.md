@@ -168,3 +168,5 @@
 - [ubuntu录屏](学习笔记/其它/ubuntu录屏.md)
 
 - [Foxglove studio可视化工具](学习笔记/其它/foxglove.md)
+
+- [Jet和Git教育认证](学习笔记/其它/Jet和Git教育认证.md)
