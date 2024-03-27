@@ -151,7 +151,7 @@ git branch -D [branchname]
 
 ### 删除远程分支
 
-**确保本地分支已经被删除**
+**确保本地分支已经被删除，若先删除远程分支，可能会导致本地源文件被删除**
 
 ```
 git push origin --delete [branchname]
