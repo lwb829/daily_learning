@@ -555,3 +555,34 @@ class LightningModuleWrapper(pl.LightningModule):
 ```
 
 在函数training_step中实际上调用了内部函数_step，其进行了整个训练的流程，从batch中取出特征features和目标targets，然后用于后续的前向传播，损失函数计算和指标计算
+
+
+
+## 5. 车辆模型代码理解
+
+### `abstract_motion_model.py`
+
+路径为：`nuplan/planning/simulation/controller/motion_model/abstract_motion_model.py`
+
+**定义了一个名为 `AbstractMotionModel` 的抽象基类**：即作为一个接口，强制要求任何继承此基类的子类都必须实现 `get_state_dot` 和 `propagate_state` 这两个方法
+
+使用 Python 的 `abc` 模块（Abstract Base Classes，抽象基类模块）来定义，确保所有派生自此基类的子类都必须实现定义的抽象方法
+
+- **函数`get_state_dot`**：求子类实现计算车辆状态导数的逻辑，状态导数是指车辆当前状态（位置、速度、加速度等）随时间的变化率
+
+  接受参数为`state`：一个 `EgoState` 类型的对象，**表示车辆的当前状态**
+
+  返回值为`EgoStateDot` 类型的对象，**表示给定状态的导数**
+
+- **函数`propagate_state`**：实现根据当前状态和理想动态状态，以及给定的时间间隔，预测车辆未来状态的逻辑。
+
+  接受参数为：
+
+  1. `state`：`EgoState` 类型的对象，表示要传播的初始状态。
+  2. `ideal_dynamic_state`：`DynamicCarState` 类型的对象，表示预期的动态状态，用于预测未来状态。
+  3. `sampling_time`：`TimePoint` 类型，表示预测的时间范围。
+
+  返回值为 `EgoState` 类型的对象，**表示预测的未来车辆状态**。
+
+
+
