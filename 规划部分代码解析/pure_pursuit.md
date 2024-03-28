@@ -408,7 +408,7 @@ bool PurePursuit::canGetCurvature(double* output_kappa)
 
 ### 总览
 
-- 订阅话题（输入）
+- **订阅话题（输入）**
 
   ```c++
   sub1_ = nh_.subscribe("final_waypoints", 10,
@@ -423,7 +423,7 @@ bool PurePursuit::canGetCurvature(double* output_kappa)
 
   包含了由规划模块输出的waypoints，以及当前车辆的位置current_pose与速度current_velocity
 
-- 发布话题（输出）
+- **发布话题（输出）**
 
   ```c++
   pub1_ = nh_.advertise<geometry_msgs::TwistStamped>("twist_raw", 10);
@@ -433,7 +433,7 @@ bool PurePursuit::canGetCurvature(double* output_kappa)
 
   为控制信号ctrl_cmd，包括车辆的线速度、线加速度与转向角；twist_raw应该是用于仿真中车辆的控制
 
-  - 剩下均为一些可视化的内容
+  - 剩下一些均为在rviz中可视化的内容
 
     ```c++
     pub11_ = nh_.advertise<visualization_msgs::Marker>("next_waypoint_mark", 0);
