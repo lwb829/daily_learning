@@ -79,6 +79,33 @@ $ git status
 
 
 
+### 忽略某目录或文件上传
+
+1. 先查看能被上传的文件
+
+   ```
+   git status
+   ```
+
+2. **在总目录创建一个`.gitignore`文件**
+
+   ```
+   touch .gitignore
+   ```
+
+3. 此时在目录中新建了一个`.gitignore`文件，在其中加入你要忽略的文件，忽略规则举例如下：
+
+   ```
+   target //忽略这个target目录
+   angular.json //忽略这个angular.json文件
+   log/* //忽略log下的所有文件
+   css/*.css //忽略css目录下的所有.css文件
+   ```
+
+4. 保存退出，此时再执行`git status`，就查看不到上述文件了
+
+
+
 ### 撤销操作
 
 #### 撤销commit、不撤销git add .
