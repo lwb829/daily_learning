@@ -144,6 +144,7 @@
 ## 归控部分代码分析
 
 - [pure_pursuit节点](规划部分代码解析/pure_pursuit.md)
+- [mpc节点](规划部分代码解析/mpc.md)
 
 
 
