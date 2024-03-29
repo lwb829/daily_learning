@@ -353,35 +353,127 @@ mpc_waypoints将被用于真正mpc控制的参考轨迹，同时还需要输入�
 
 ### 2.`mpc_follower_core.cpp`
 
+**所有的param参数含义均在launch文件中标明**
 
 
 
+#### 车辆模型选择
+
+```c++
+  pnh_.param("vehicle_model_type", vehicle_model_type_, std::string("kinematics"));
+  if (vehicle_model_type_ == "kinematics")
+  {
+    double steer_tau;
+    pnh_.param("vehicle_model_steer_tau", steer_tau, double(0.1));
+
+    vehicle_model_ptr_ = std::make_shared<KinematicsBicycleModel>(wheelbase_, amathutils::deg2rad(steer_lim_deg_), steer_tau);
+    ROS_INFO("[MPC] set vehicle_model = kinematics");
+  }
+  else if (vehicle_model_type_ == "kinematics_no_delay")
+  {
+    vehicle_model_ptr_ = std::make_shared<KinematicsBicycleModelNoDelay>(wheelbase_, amathutils::deg2rad(steer_lim_deg_));
+    ROS_INFO("[MPC] set vehicle_model = kinematics_no_delay");
+  }
+  else if (vehicle_model_type_ == "dynamics")
+  {
+    double mass_fl, mass_fr, mass_rl, mass_rr, cf, cr;
+    pnh_.param("mass_fl", mass_fl, double(600));
+    pnh_.param("mass_fr", mass_fr, double(600));
+    pnh_.param("mass_rl", mass_rl, double(600));
+    pnh_.param("mass_rr", mass_rr, double(600));
+    pnh_.param("cf", cf, double(155494.663));
+    pnh_.param("cr", cr, double(155494.663));
+
+    vehicle_model_ptr_ = std::make_shared<DynamicsBicycleModel>(wheelbase_, mass_fl, mass_fr, mass_rl, mass_rr, cf, cr);
+    ROS_INFO("[MPC] set vehicle_model = dynamics");
+  }
+  else
+  {
+    ROS_ERROR("[MPC] vehicle_model_type is undefined");
+  }
+
+```
+
+使用的车辆模型类型可以是“kinematics”（运动学模型）、“kinematics_no_delay”（无延迟的运动学模型）、或者“dynamics”（动力学模型）。
+
+**运动学模型（Kinematics）**：
+
+- 如果车辆模型类型是“kinematics”，则获取附加参数 `vehicle_model_steer_tau`（转向系统的时间常数），默认值为0.1。
+- 接着，使用 `wheelbase_`（车辆轴距）、`steer_lim_deg_`（转向限制，以度为单位）和 `steer_tau` 初始化 `KinematicsBicycleModel` 对象。
+
+**无延迟的运动学模型（Kinematics No Delay）**：
+
+- 如果车辆模型类型是“kinematics_no_delay”，则直接初始化 `KinematicsBicycleModelNoDelay` 对象，使用 `wheelbase_` 和 `steer_lim_deg_`（转换为弧度）作为参数。
+
+**动力学模型（Dynamics）**：
+
+- 如果车辆模型类型是“dynamics”，则获取动力学模型需要的附加参数（前后左右轮的质量 `mass_fl`, `mass_fr`, `mass_rl`, `mass_rr` 和前后轮侧偏刚度 `cf`, `cr`），默认值分别为600和155494.663。
 
 
 
+#### 函数`calculateMPC`
+
+- 发布话题（输出）
+
+  ```c++
+    pub_twist_cmd_ = nh_.advertise<geometry_msgs::TwistStamped>(out_twist, 1);
+    pub_steer_vel_ctrl_cmd_ = nh_.advertise<autoware_msgs::ControlCommandStamped>(out_vehicle_cmd, 1);
+  ```
+
+  
+
+```c++
+const int N = mpc_param_.prediction_horizon;
+const double DT = mpc_param_.prediction_sampling_time;
+const int DIM_X = vehicle_model_ptr_->getDimX();  
+const int DIM_U = vehicle_model_ptr_->getDimU();  
+const int DIM_Y = vehicle_model_ptr_->getDimY();   
+```
+
+- 首先获取MPC配置，包括前向预测的状态次数N；采样时间DT；状态量、输入与输出的维度DIM_X、DIM_U、DIM_Y**（这三项数值根据模型不同而不同，在autoware中默认使用kinematics，数值分别为3，1，2，通过构造函数初始化写死）**
 
 
+```c++
+  const double err_x = vehicle_status_.pose.position.x - nearest_pose.position.x;
+  const double err_y = vehicle_status_.pose.position.y - nearest_pose.position.y;
+  const double sp_yaw = tf2::getYaw(nearest_pose.orientation);
+  const double err_lat = -sin(sp_yaw) * err_x + cos(sp_yaw) * err_y;
+
+  /* get steering angle */
+  const double steer = vehicle_status_.tire_angle_rad;
+
+  /* define initial state for error dynamics */
+  Eigen::VectorXd x0 = Eigen::VectorXd::Zero(DIM_X);
+  if (vehicle_model_type_ == "kinematics")
+  {
+    x0 << err_lat, yaw_err, steer;
+  }
+```
+
+- 根据当前位姿与最近点p_nearest的位姿作差，转换到frenet坐标系下，作为误差的初始状态x0，在kinematics模型下，**三个状态量分别为：横向距离误差、朝向角误差与当前的方向盘(车轮)角**
 
 
+```c++
+    /* get discrete state matrix A, B, C, W */
+    vehicle_model_ptr_->setVelocity(v);
+    vehicle_model_ptr_->setCurvature(k);
+    vehicle_model_ptr_->calculateDiscreteMatrix(Ad, Bd, Cd, Wd, ctrl_period_);
+    Eigen::MatrixXd ud = Eigen::MatrixXd::Zero(DIM_U, 1);
+    ud(0, 0) = input_buffer_.at(i); // for steering input delay
+    x_curr = Ad * x_curr + Bd * ud + Wd;
+    mpc_curr_time += ctrl_period_;
+  }
+  x0 = x_curr; // set delay compensated initial state
+```
 
+- **设置车辆模型参数**：
+  - `vehicle_model_ptr_->setVelocity(v);`：设置车辆的当前速度。
+  - `vehicle_model_ptr_->setCurvature(k);`：设置当前路径点的曲率。
+- **计算离散状态矩阵**：
+  - `vehicle_model_ptr_->calculateDiscreteMatrix(Ad, Bd, Cd, Wd, ctrl_period_);`：基于当前车辆速度和曲率，以及控制周期 `ctrl_period_`，计算离散时间状态空间模型的矩阵（A, B, C, W）。这些矩阵描述了车辆动态，用于预测下一时间步的状态。
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+- **状态预测**：
+  - `x_curr = Ad * x_curr + Bd * ud + Wd;`：使用状态空间方程计算下一时间步的状态。这里 `x_curr` 表示当前状态向量，`Ad`、`Bd` 和 `Wd` 分别是系统动态矩阵、控制输入矩阵和扰动矩阵。通过这个方程，可以考虑车辆动力学和控制输入，预测下一时间步的状态。
 
 
 
