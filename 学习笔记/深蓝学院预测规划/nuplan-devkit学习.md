@@ -344,7 +344,7 @@ use_distributed: false  # Whether to use the built-in distributed mode of ray
 
 #### 3.3.4 Nuplan举例
 
-python run_training运行参数中的**+training=training_vector_model**，这里表示新加的配置文件，即**表示training文件夹下的training_vector_model.yaml文件**
+python run_training运行参数中的**+training=training_vector_model**，这里表示新加的配置文件，即**表示experiments/training文件夹下的training_vector_model.yaml文件**
 
 - 因为当前搜索run_training对应路径下没有，所以会去default_training.yaml另外两个search_path中寻找，发现在pkg://nuplan.planning.script.experiments文件下
 

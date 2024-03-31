@@ -48,26 +48,32 @@ cd naplan-devkit
 #最好用以下命令配置环境，可以避免因依赖包数量大，从而出现终端卡顿
 pip install -r requirements_torch.txt
 pip install -r requirements.txt
+
+#虚拟环境卸载
+conda remove -n ××× --all
 ```
 
 
 
 - 官方文档中的关于“数据集路径”的说明，必须严格遵守。**即如果数据集不放在`~/nuplan/`下，就要在`~/.bashrc`中，添加环境变量，指明数据集路径**。
 
-  通常这是必须的，因为Ubuntu的用户目录下，往往没有足够的空间来存放数据集。例如，本人将数据集放在电脑的机械盘，而ubuntu的用户目录是在另一块固态，那么就需要在`~/.bashrc`中添加参考路径
+  通常这是必须的，因为Ubuntu的用户目录下，往往没有足够的空间来存放数据集。例如，本人将数据集放在移动硬盘中，而ubuntu的用户目录是在另一块固态，那么就需要在`~/.bashrc`中添加参考路径；同时，需要确保该硬盘由读写权限，所以至少需要去文件夹侧栏中点击一下，才能挂载
 
   - **注意：**本人一开始尝试将数据集放在其它路径中，但是经过测试发现，`nuplan_scenario_tutorial.ipynb`和`nuplan_framework.ipynb`两个notebook无法跑通，**原因是无法找到`NUPLAN_MAPS_ROOT`这个环境变量（尽管我已经按照要求将`NUPLAN_MAPS_ROOT`,`NUPLAN_DATA_ROOT`,`NUPLAN_DB_ROOT`三者的路径在`.bashrc`文件中正确表达），经过网上查找后试了几个方法均不太行**
-  
-  最后我将数据集放在home目录下，能够跑通那几个ipynb文件，即需要在bashrc文件中写入如下内容
+  - **补充记录：该电脑在更改环境变量并进行source后，虽然在终端使用echo命令可以得到修改后的环境变量路径，但是在代码中测试发现并无改变；经过多次尝试，发现可能是由于电脑环境的原因，需要重新启动电脑一次，才能够在代码的`getenv`命令下得到正确结果**
+
+  最后我将数据集放在移动硬盘中，即需要在.bashrc文件中写入如下内容
 
   ```
   # 在.bashrc文件中写入
-  export NUPLAN_DATA_ROOT="$HOME/nuplan/dataset"
-  export NUPLAN_MAPS_ROOT="$HOME/nuplan/dataset/maps"
-  export NUPLAN_DB_FILES="$HOME/nuplan/dataset/nuplan-v1.1/splits/mini"
+  export NUPLAN_DATA_ROOT="media/.../nuplan/dataset"
+  export NUPLAN_MAPS_ROOT="media/.../nuplan/dataset/maps"
+  export NUPLAN_DB_FILES="media/.../nuplan/dataset/nuplan-v1.1/splits/mini"
   
   # 在终端中刷新环境变量
   source ~/.bashrc
+  
+  #重启电脑
   ```
 
 - 数据集的结构，参考`nuplan-devkit/docs/dataset_setup.md`，即： **sensor_blobs下的传感器原始数据，暂时没有get到使用方法，如果只是按照`nuplan-devkit/tutorials`中notebook的训练方式，可以不用管sensor_blobs下的数据**
@@ -165,7 +171,7 @@ python nuplan/planning/script/run_training.py \
 
 
 
-
+## 三、使用经验
 
 
 
