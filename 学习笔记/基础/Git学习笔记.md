@@ -12,6 +12,14 @@
 # 2、使用git clone https://github.com/xxxxxxx/xxxxx.git 克隆到本地
 ```
 
+注意：当选取某仓库中的**特定分支**进行clone时，需在命令中加入分支信息如下
+
+```
+git clone -b [branch name] git@github.com:...
+```
+
+
+
 2. 一般方法：先建立本地库，再关联远程库
 
 ```
@@ -21,6 +29,8 @@ git init
 # 3. 根据github提示关联本地库
 # 待下次新建仓库时更新
 ```
+
+
 
 ### 同步
 
