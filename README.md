@@ -69,15 +69,25 @@
 ## 深蓝学院预测规划
 
 - 理论基础
+  
   - [CNN](学习笔记/深蓝学院预测规划/CNN.md)
+  
   - [RNN](学习笔记/深蓝学院预测规划/RNN.md)
+  
   - [Embedding](学习笔记/深蓝学院预测规划/Embedding.md)
+  
   - [Transformer](学习笔记/深蓝学院预测规划/Transformer.md)
+  
   - [nuPlan](学习笔记/深蓝学院预测规划/nuPlan.md)
+  
     -  [nuPlan-devkit学习](学习笔记/深蓝学院预测规划/nuPlan-devkit学习.md)
+  
     -  [课程project的nuPlan_develop](学习笔记/深蓝学院预测规划/nuplan_develop.md)
+
 - [第2章：基于模型的预测方法](学习笔记/深蓝学院预测规划/第2章：基于模型的预测方法.md)
+
 - [第3章：路径与轨迹规划](学习笔记/深蓝学院预测规划/第3章：路径与轨迹规划.md)
+
 - [第4章：时空联合规划](学习笔记/深蓝学院预测规划/第4章：时空联合规划.md)
 
 
