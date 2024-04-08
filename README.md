@@ -82,7 +82,7 @@
   
   - [nuPlan](学习笔记/深蓝学院预测规划/nuPlan.md)
   
-    -  [nuPlan-devkit学习](学习笔记/深蓝学院预测规划/nuPlan-devkit学习.md)
+    -  [nuPlan_devkit学习](学习笔记/深蓝学院预测规划/nuPlan-devkit学习.md)
   
     -  [课程project的nuPlan_develop](学习笔记/深蓝学院预测规划/nuplan_develop.md)
 
@@ -183,5 +183,8 @@
 ## 其它
 
 - [ubuntu录屏](学习笔记/其它/ubuntu录屏.md)
+
 - [Foxglove studio可视化工具](学习笔记/其它/foxglove.md)
+
 - [Jet和Git教育认证](学习笔记/其它/Jet和Git教育认证.md)
+
