@@ -81,11 +81,10 @@
   - [Transformer](学习笔记/深蓝学院预测规划/Transformer.md)
   
   - [nuPlan](学习笔记/深蓝学院预测规划/nuPlan.md)
+  -  [nuPlan_devkit学习](学习笔记/深蓝学院预测规划/nuPlan_devkit学习.md)
+    
+  -  [课程project的nuPlan_develop](学习笔记/深蓝学院预测规划/nuplan_develop.md)
   
-    -  [nuPlan_devkit学习](学习笔记/深蓝学院预测规划/nuPlan-devkit学习.md)
-  
-    -  [课程project的nuPlan_develop](学习笔记/深蓝学院预测规划/nuplan_develop.md)
-
 - [第2章：基于模型的预测方法](学习笔记/深蓝学院预测规划/第2章：基于模型的预测方法.md)
 
 - [第3章：路径与轨迹规划](学习笔记/深蓝学院预测规划/第3章：路径与轨迹规划.md)
