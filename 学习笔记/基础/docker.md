@@ -533,27 +533,39 @@ $ docker container prune
 
 
 
+## 5. 仓库
+
+仓库是**集中存放镜像的地方**
+
+仓库可以被认为是一个具体的项目或目录。例如对于仓库地址 `docker.io/ubuntu` 来说，`docker.io` 是注册服务器地址，`ubuntu` 是仓库名
 
 
 
+可以在[Docker Hub](https://hub.docker.com/)上免费注册一个账号，可以非常便捷地利用一条命令将build好的镜像push到Docker Hub
 
 
 
+### 5.1 拉取镜像
+
+可以通过 `docker search` 命令来查找官方仓库中的镜像，并利用 `docker pull` 命令来将它下载到本地
+
+根据是否是官方提供，可将镜像分为两类。
+
+一种是类似 `centos` 这样的镜像，被称为基础镜像或根镜像。这些基础镜像由 Docker 公司创建、验证、支持、提供。这样的镜像往往使用单个单词作为名字。
+
+还有一种类型，比如 `ansible/centos7-ansible` 镜像，它是由 Docker Hub 的注册用户创建并维护的，往往带有用户名称前缀。可以通过前缀 `username/` 来指定使用某个用户提供的镜像，比如 ansible 用户。
+
+例如，下载官方`centos`镜像到本地，命令为
+
+```
+$ docker pull centos
+```
 
 
 
+### 5.2 推送镜像
 
-
-
-
-
-
-
-
-
-
-
-
+可以在登录Docker Hub后通过 `docker push` 命令来将自己的镜像推送到上面 
 
 
 
