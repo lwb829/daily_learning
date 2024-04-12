@@ -6,7 +6,7 @@
 
 1、launch文件：
 
-```
+```xml
 <launch>
   <arg name="pathDensity"           default="0.5" /> <!-- 两个路径点之间的距离为0.5-->
   <arg name="enableSmoothing"         default="true" /> <!-- 1 or 0 -->
@@ -46,7 +46,7 @@
 
 2、主函数。都在GlobalPlanningNS namespace下。
 
-```
+```c++
   ros::init(argc, argv, "op_global_planner");
   GlobalPlanningNS::GlobalPlanner global_planner;
   global_planner.MainLoop();
