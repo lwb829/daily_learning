@@ -1,4 +1,4 @@
-# Pytorch学习笔记(图像)
+# Pytorch学习笔记
 
 ## Python四大常用库
 
@@ -220,13 +220,13 @@ dataloader = DataLoader(image_dataset, batch_size=32, shuffle=True)
 
 
 
-## Tensor数据类型与存储结构
+## ==Tensor数据类型与存储结构==
 
 ### 数据类型
 
 - 一共包括9种数据类型，3大类
 
-![img](imgs/2cff07b7ed0145deab79c096edb3e0d7.png)
+![img](../imgs/2cff07b7ed0145deab79c096edb3e0d7.png)
 
 `torch.LongTensor`常用在深度学习中的标签值 ，比如分类任务中的类别标签0，1，2等；`torch.FloatTenso`r常用做深度学习中可学习参数或者输入数据的类型
 
@@ -290,9 +290,9 @@ print(y.type())  # torch.LongTensor
 
 
 
-### torch.cat拼接
+### `torch.cat`用法
 
-是一个用于在指定的维度上拼接（concatenate）张量的函数
+**是一个用于在指定的维度上拼接（concatenate）张量的函数**
 
 - 基本原理
   - **确定拼接维度：** 用户通过 `dim` 参数指定希望在哪个维度上进行拼接。例如，如果 `dim=0`，则在第一个维度上拼接
@@ -319,6 +319,384 @@ print(result)
 - 主要优点
   - **连接不同来源的特征：** 在一些网络结构中，可能需要将来自不同层或分支的特征连接在一起，以提供更丰富的信息给后续的层
   - **拼接不同通道的特征：** 在卷积神经网络 (CNN) 中，可以使用 `torch.cat` 将不同通道的特征图连接在一起，以构建更复杂的特征表示
+
+
+
+### `torch.unsqueeze`用法
+
+用来增加张量的维度，对于调整张量形状以适应某些需要特定维度输入的操作或模型非常有用
+
+- 示例：增加一位张量的维度
+
+  ```python
+  a = torch.tensor([1, 2, 3, 4])
+  print(a.shape)  # 输出: torch.Size([4])
+  
+  # 在第0维添加新的维度
+  b = torch.unsqueeze(a, 0)
+  print(b.shape)  # 输出: torch.Size([1, 4])
+  
+  # 在第1维添加新的维度
+  c = torch.unsqueeze(a, 1)
+  print(c.shape)  # 输出: torch.Size([4, 1])
+  
+  # 输出b，c
+  tensor([[1, 2, 3, 4]])
+  tensor([[1],
+          [2],
+          [3],
+          [4]])
+  ```
+
+  **注意：当使用负数索引时，维度是从张量的末尾开始计算的**
+
+
+
+### `torch.squeeze`用法
+
+用来移除张量中所有维度为1的维度，尤其是在处理那些由于前面的操作而具有多余单维度的张量时用处很大
+
+`torch.squeeze` 自动移除张量中所有大小为1的维度。如果你指定了 `dim` 参数，那么只有当该维度的大小是1时，它才会被移除
+
+- 示例1：移除所有单一维度
+
+  ```python
+  a = torch.rand(1, 5, 1)  # 形状为 [1, 5, 1]
+  print(a.shape)  # 输出: torch.Size([1, 5, 1])
+  
+  # 移除所有单一维度
+  b = torch.squeeze(a)
+  print(b.shape)  # 输出: torch.Size([5])
+  ```
+
+- 示例2：指定维度压缩，可以通过设置`dim`来实现
+
+  ```python
+  a = torch.rand(1, 5, 1)  # 形状为 [1, 5, 1]
+  print(a.shape)  # 输出: torch.Size([1, 5, 1])
+  
+  # 只移除第0维（如果它是单一的）
+  c = torch.squeeze(a, 0)
+  print(c.shape)  # 输出: torch.Size([5, 1])
+  
+  # 尝试移除第1维（不是单一的，因此形状不变）
+  d = torch.squeeze(a, 1)
+  print(d.shape)  # 输出: torch.Size([1, 5, 1])
+  
+  # 只移除第2维（如果它是单一的）
+  e = torch.squeeze(a, 2)
+  print(e.shape)  # 输出: torch.Size([1, 5])
+  ```
+
+
+
+### `torch.stack`用法
+
+**创建一个新的维度，并将输入的张量序列按顺序堆叠在这个新的维度上**
+
+- 示例
+
+  ```python
+  # 创建几个形状相同的张量
+  t1 = torch.tensor([1, 2])
+  t2 = torch.tensor([3, 4])
+  t3 = torch.tensor([5, 6])
+  
+  # 使用 torch.stack 将它们堆叠在一个新的维度上
+  result1 = torch.stack((t1, t2, t3), dim=0)
+  result2 = torch.stack((t1, t2, t3), dim=1)
+  
+  print(result1)
+  print(result2)
+  
+  # 结果
+  tensor([[1, 2],
+          [3, 4],
+          [5, 6]])
+  
+  tensor([[1, 3, 5],
+          [2, 4, 6]])
+  ```
+
+- 与`torch.cat`对比
+
+  `torch.cat`：用于沿着一个已存在的维度连接多个张量，**所有参与连接的张量必须在非连接维度上具有相同的形状；不增加新维度，只是扩展已有的维度**
+
+  `torch.stack`：用于沿着一个新的维度堆叠多个张量，**所有堆叠的张量必须有完全相同的形状；增加了一个额外的维度**
+
+- **`dim` 参数指定了新维度插入的位置**
+
+  - `dim=0` 会把新的维度放在最前面。
+  - `dim=1` 会把新的维度插入到第二的位置，依此类推。
+  - 可以使用负数作为 `dim`，例如`dim=-1` 会把新的维度放在最后
+
+
+
+### `torch.fmod`用法
+
+该函数对于每个元素执行操作，返回的张量是除法运算后的余数。这与传统的 `torch.remainder` 相似，但在处理负数时行为不同
+
+- 用法
+
+  ```python
+  # 创建一个张量
+  a = torch.tensor([3.5, -2.5, 4.0, -3.0])
+  
+  # 计算每个元素与2.0的模
+  b = torch.fmod(a, 2.0)
+  
+  print(b)  # 输出: tensor([ 1.5000, -0.5000,  0.0000, -1.0000])
+  ```
+
+  - 在这个例子中，每个元素通过`torch.fmod`与2进行模运算，结果中可以看到负数的处理方式，`-2.5 % 2.0` 结果为 `-0.5`
+
+- 与`torch.remainder`对比
+
+  `torch.fmod` 与 `torch.remainder` 的主要区别在于对负数的处理
+
+  - `torch.remainder` 始终返回非负结果
+
+  -  `torch.fmod` 可以返回负结果
+
+  ```python
+  # 使用 fmod 和 remainder 比较
+  negatives = torch.tensor([-3.0, -6.5, -2.0])
+  mod_fmod = torch.fmod(negatives, 4)
+  mod_remainder = torch.remainder(negatives, 4)
+  
+  print("fmod:", mod_fmod) # 输出: tensor([-3.0000, -2.5000, -2.0000])
+  print("remainder:", mod_remainder) # 输出: tensor([1.0000, 1.5000, 2.0000])
+  ```
+
+
+
+### `torch.clamp`用法
+
+用于将输入张量的每个元素限制在某个范围内，如果元素值超出这个范围，就会被限制在范围的边界值上，**通常用于神经网络中的梯度裁剪，以防止梯度过大导致训练不稳定**
+
+- 用法
+
+  ```python
+  torch.clamp(input, min=None, max=None, out=None) -> Tensor
+  ```
+
+  - **input** (Tensor) – 输入张量
+  - **min** (Number, 可选) – 下限。如果未指定，则不应用下限
+  - **max** (Number, 可选) – 上限。如果未指定，则不应用上限
+  - **out** (Tensor, 可选) – 结果张量
+
+- 示例
+
+  ```python
+  # 创建一个张量
+  t = torch.tensor([0.5, 2.0, -1.0, -0.5, 3.0])
+  
+  # 将张量的值限制在区间[0, 1]
+  clamped_t = torch.clamp(t, min=0, max=1)
+  
+  print(clamped_t)
+  
+  # 输出
+  tensor([0.5000, 1.0000, 0.0000, 0.0000, 1.0000])
+  ```
+
+  - 这里，小于0的值被设为0，大于1的值被设为1，其余值保持不变
+
+
+
+### `torch.hypot`用法
+
+函数接受两个张量作为输入，这两个张量通常代表直角三角形的两个直角边的长度，输出张量的每个元素是输入张量对应元素的斜边长度
+
+- 示例1
+
+  ```python
+  # 定义两个张量，分别代表三角形的两个直角边
+  a = torch.tensor([3, 5, 8])
+  b = torch.tensor([4, 12, 15])
+  
+  # 使用torch.hypot计算斜边长度
+  c = torch.hypot(a, b)
+  
+  print(c)
+  
+  # 输出
+  tensor([ 5.0000, 13.0000, 17.0000])
+  ```
+
+  - 这个输出是根据勾股定理计算得到的
+
+- 示例2
+
+  ```python
+  # 定义两个多维张量
+  x = torch.tensor([[3.0, 5.0], [8.0, 7.0]])
+  y = torch.tensor([[4.0, 12.0], [6.0, 24.0]])
+  
+  # 计算多维张量的斜边长度
+  hypotenuse = torch.hypot(x, y)
+  print(hypotenuse)
+  
+  # 输出
+  tensor([[ 5.0000, 13.0000],
+          [10.0000, 25.0000]])
+  ```
+
+
+
+### `torch.cumsum`用法
+
+用于计算张量的累积和（cumulative sum），即**对给定维度上的元素进行逐步累加**
+
+它的基本用法涉及指定输入张量和你希望进行累积求和的维度
+
+- **一维张量的累积求和**
+
+  ```python
+  # 创建一维张量
+  a = torch.tensor([1, 2, 3, 4])
+  
+  # 计算累积和
+  cumulative_sum = torch.cumsum(a, dim=0)
+  
+  print(cumulative_sum)
+  
+  # 输出
+  tensor([ 1,  3,  6, 10 ])
+  ```
+
+  - 在这个示例中，`cumsum` 计算了一维张量的累积和，每个位置的值是该位置之前所有元素的总和（包括当前位置的元素）
+
+- **二维张量的累积求和**
+
+  可以选择沿行（dim=0）或列（dim=1）进行累积求和
+
+  ```python
+  # 创建二维张量
+  b = torch.tensor([[1, 2], 
+                    [3, 4]])
+  
+  # 计算每列的累积和
+  col_cumsum = torch.cumsum(b, dim=0)
+  
+  # 计算每行的累积和
+  row_cumsum = torch.cumsum(b, dim=1)
+  
+  print(col_cumsum)
+  print(row_cumsum)
+  
+  # 输出
+   tensor([[1, 2],
+           [4, 6]])
+      
+   tensor([[ 1,  3],
+           [ 3,  7]])
+  ```
+
+  在这里，`Column-wise cumulative sum` 显示了沿着列（向下）的累积和，而 `Row-wise cumulative sum` 显示了沿着行（向右）的累积和
+
+
+
+### 张量索引和维度拓展（增加新轴）
+
+#### 维度拓展（增加新轴）
+
+- 示例
+
+  ```python
+  a = torch.tensor([1, 2, 3])
+  b = a[:, None]
+  print(b.shape)  # 输出: torch.Size([3, 1])
+  ```
+
+  -  `:` 表示选取这个维度上所有元素，`None` 则在第二维增加一个新的轴，使每个元素都变成一个单独的数组
+
+  - `a[:, None]`与`a.unsqueeze(1)`的含义相同
+
+  - 对于`[..., :N]`这种，表示在最后一个维度上选择**从开始到索引N（不包括N）的元素**
+
+    - 示例
+
+      ```python
+      a = torch.tensor([[1, 2，3],
+                        [3, 4，5]，
+                        [5, 6, 7]])
+      b = a[..., :1]
+      c = a[..., :2]
+      
+      print(b)
+      print(b.shape)
+      print(c)
+      print(c.shape)
+      
+      # 输出
+      tensor([[1]，
+              [3],
+              [5]])
+      tensor.Size([3, 1])
+      
+      tensor([[1，2]，
+              [3, 4],
+              [5, 6]])
+      tensor.Size([3, 2])
+      ```
+
+      
+
+  **注意：如果 `a` 是一个形状为 `[2, 2]` 的张量，`a[..., None]` 会将其变为形状为 `[2, 2, 1]`**
+
+  这个索引使用了一个省略号 `...`，它代表了选择所有前面的维度，不用明确指定它们的数量，`...` 特别有用在处理具有未知或变化维度数的张量时
+
+  - 示例
+
+    ```python
+    a = torch.tensor([[1, 2], [3, 4]])
+    b = a[..., None]
+    print(b.shape)  # 输出: torch.Size([2, 2, 1])
+    ```
+
+
+
+#### 选择特定维度的数据
+
+- 示例
+
+  ```python
+  a = torch.tensor([[1, 2，3],
+                    [3, 4，5]，
+                    [5, 6, 7]])
+  b = a[..., 1]
+  print(b)
+  print(b.shape)
+  
+  # 输出
+  tensor([2, 4, 6])
+  torch.Size([3])
+  ```
+
+  - 这里表示选取索引为1的数组
+
+- 结合上述的维度增加，示例如下
+
+  ```python
+  a = torch.tensor([[1, 2，3],
+                    [3, 4，5]，
+                    [5, 6, 7]])
+  b = a[..., 2]
+  c = a[:,None,2]
+  print(b)
+  print(b.shape)
+  print(c)
+  print(c.shape)
+  
+  # 输出
+  tensor([3, 5, 7])
+  torch.Size([3])
+  tensor([[3], 
+         [5], 
+         [7]])
+  torch.Size([3,1])
+  ```
 
 
 
