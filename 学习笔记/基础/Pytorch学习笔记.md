@@ -290,6 +290,164 @@ print(y.type())  # torch.LongTensor
 
 
 
+### `torch.arange`用法
+
+用来生成一个按指定开始、结束和步长参数间隔的**一维张量**
+
+**注意：`torch.arange` 不包括结束值 `end` 在内的序列，这与 Python 的 `range` 和 NumPy 的 `arange` 函数一致**
+
+- 示例1
+
+  ```python
+  # 从0到9
+  a = torch.arange(10)
+  print(a)
+  
+  # 输出
+  tensor([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+  ```
+
+- 示例2
+
+  ```python
+  # 从5到14
+  b = torch.arange(5, 15)
+  print(b)
+  
+  # 输出
+  tensor([ 5,  6,  7,  8,  9, 10, 11, 12, 13, 14])
+  ```
+
+- 示例3
+
+  ```python
+  # 从10到50，步长为10
+  c = torch.arange(10, 51, 10)
+  print(c)
+  
+  # 输出
+  tensor([10, 20, 30, 40, 50])
+  ```
+
+
+
+### `torch.view`用法
+
+用于**在不改变张量数据本身的前提下重新调整张量的形状**，这是通过重新解释给定张量的内存布局来实现的，而不实际复制任何数据
+
+**注意：使用 `view` 时，新形状的总元素数量必须与原始张量相同；如果遇到形状错误或者数据不连续的错误，确保形状参数正确，并且在必要时调用 `.contiguous()`**
+
+- 示例
+
+  ```python
+  x = torch.arange(16).reshape(4, 4)  # 创建一个4x4的张量
+  
+  # 此时输出为： 
+  tensor([[ 0,  1,  2,  3],
+          [ 4,  5,  6,  7],
+          [ 8,  9, 10, 11],
+          [12, 13, 14, 15]])
+  
+  y = x.view(16)  # 重塑为一维张量
+  
+  # 此时输出为：
+  tensor([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15])
+  ```
+
+- 使用 `-1` 自动计算维度
+
+  如果不确定某个维度的具体大小，可以使用 `-1` 让 PyTorch 自动计算它
+
+  ```python
+  z = x.view(-1, 8)  # 自动计算第一个维度，使得总元素数量为16
+  
+  # 此时输出为：
+   tensor([[ 0,  1,  2,  3,  4,  5,  6,  7],
+          [ 8,  9, 10, 11, 12, 13, 14, 15]])
+  ```
+
+  
+
+
+
+
+
+### `torch.reshape`用法
+
+是 PyTorch 中用于**改变张量形状**的函数。它可以将一个张量重塑成新的形状，而不改变张量的数据。
+
+- 基本用法：
+
+  ```python
+  reshaped_tensor = torch.reshape(input_tensor, new_shape)
+  ```
+
+  其中：
+
+  - `input_tensor` 是要重塑的输入张量
+  - `new_shape` 是一个元组，表示目标形状
+
+  **注意**：修改的shape必须满足原来的tensor和reshape的tensor**元素个数相等**。比如原来tensor的shape为（2，2，3），元素个数为12，那么要进行reshape必须满足元素个数为12，如（4，3，1），（3，2，2）等等。
+
+- 示例
+
+  ```python
+  import torch
+  
+  # 创建一个形状为 (2, 3) 的张量
+  original_tensor = torch.tensor([[1, 2, 3], [4, 5, 6]])
+  
+  # 使用 reshape 将其转换为形状为 (3, 2) 的张量
+  reshaped_tensor = torch.reshape(original_tensor, (3, 2))
+  
+  # 打印结果
+  print("Original Tensor:")
+  print(original_tensor)
+  
+  print("\nReshaped Tensor:")
+  print(reshaped_tensor)
+  ```
+
+  其结果为：
+
+  ```python
+  Original Tensor:
+  tensor([[1, 2, 3],
+          [4, 5, 6]])
+  
+  Reshaped Tensor:
+  tensor([[1, 2],
+          [3, 4],
+          [5, 6]])
+  ```
+
+  `original_tensor` 是一个形状为 (2, 3) 的张量，使用 `torch.reshape` 将其转换为形状为 (3, 2) 的张量。（**注意**：新张量的元素顺序与原始张量相同，只是形状发生了改变）
+
+- **特殊情况**
+
+  在`reshape` 的参数中使用 `-1` 时，**这表示让 PyTorch 自动计算该维度的大小，以保证元素总数与原始张量相同**
+
+  - 注意：**只能有一个维度设置为 `-1`**，因为多个未知维度会导致计算上的歧义
+
+  示例:
+
+  ```python
+  a = torch.tensor([[1, 2, 3],
+                    [3, 4, 5],
+                    [5, 6, 7]])
+  b = a.reshape(-1,9)
+  print(b)
+  print(b.shape)
+  
+  # 输出
+  tensor([[1, 2, 3, 3, 4, 5, 5, 6, 7]])
+  torch.Size([1, 9])
+  ```
+
+  这里可以看到经过自动计算后，成为形状[1,9]
+
+
+
 ### `torch.cat`用法
 
 **是一个用于在指定的维度上拼接（concatenate）张量的函数**
@@ -712,7 +870,6 @@ print(result)
 
 
 
-
 ### Transforms.ToTensor用法
 
 实际上是在**多维数组**，在pytorch中，它是基本的数据结构，是**进行计算的基本数据类型**，用于存储和处理数据。
@@ -743,57 +900,6 @@ print(result)
     `"Tensor"`对象具有自动求导（Autograd）功能，pytorch能够跟踪这些操作，构建计算图，并允许用户对图进行反向传播，从而自动计算梯度。
 
 
-
-### torch.reshape用法
-
-是 PyTorch 中用于**改变张量形状**的函数。它可以将一个张量重塑成新的形状，而不改变张量的数据。
-
-- 基本用法：
-
-  ```python
-  reshaped_tensor = torch.reshape(input_tensor, new_shape)
-  ```
-
-  其中：
-
-  - `input_tensor` 是要重塑的输入张量
-  - `new_shape` 是一个元组，表示目标形状
-
-  **注意**：修改的shape必须满足原来的tensor和reshape的tensor**元素个数相等**。比如原来tensor的shape为（2，2，3），元素个数为12，那么要进行reshape必须满足元素个数为12，如（4，3，1），（3，2，2）等等。
-
-- 举例：
-
-  ```python
-  import torch
-  
-  # 创建一个形状为 (2, 3) 的张量
-  original_tensor = torch.tensor([[1, 2, 3], [4, 5, 6]])
-  
-  # 使用 reshape 将其转换为形状为 (3, 2) 的张量
-  reshaped_tensor = torch.reshape(original_tensor, (3, 2))
-  
-  # 打印结果
-  print("Original Tensor:")
-  print(original_tensor)
-  
-  print("\nReshaped Tensor:")
-  print(reshaped_tensor)
-  ```
-
-  其结果为：
-
-  ```python
-  Original Tensor:
-  tensor([[1, 2, 3],
-          [4, 5, 6]])
-  
-  Reshaped Tensor:
-  tensor([[1, 2],
-          [3, 4],
-          [5, 6]])
-  ```
-
-  `original_tensor` 是一个形状为 (2, 3) 的张量，使用 `torch.reshape` 将其转换为形状为 (3, 2) 的张量。（**注意**：新张量的元素顺序与原始张量相同，只是形状发生了改变）
 
 
 
