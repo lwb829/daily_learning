@@ -366,10 +366,6 @@ print(y.type())  # torch.LongTensor
           [ 8,  9, 10, 11, 12, 13, 14, 15]])
   ```
 
-  
-
-
-
 
 
 ### `torch.reshape`用法
@@ -445,6 +441,12 @@ print(y.type())  # torch.LongTensor
   ```
 
   这里可以看到经过自动计算后，成为形状[1,9]
+
+
+
+- **`torch.view`和`torch.reshape`对比**
+  - 相同：都可以用来改变张量的形状
+  - 不同：torch.view要求原始数据在内存中是连续的，若不连续则会抛出错误；而torch.reshape则可以处理连续和非连续的张量
 
 
 
@@ -545,6 +547,14 @@ print(result)
   e = torch.squeeze(a, 2)
   print(e.shape)  # 输出: torch.Size([1, 5])
   ```
+
+
+
+### `torch.permute`用法
+
+
+
+
 
 
 
