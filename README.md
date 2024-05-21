@@ -152,10 +152,10 @@
 ## 规划部分代码分析
 
 - [pure_pursuit节点](规划部分代码解析/pure_pursuit.md)
-
 - [mpc节点](规划部分代码解析/mpc.md)
-
 - [feature-sjtu规划控制数据流分析](规划部分代码解析/规划控制数据流.md)
+
+- [OpenPlanner主要参数解释](规划部分代码解析/op_common_params.md)
 
 
 
