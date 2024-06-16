@@ -135,7 +135,6 @@ $$
 
 
 #### Frenet转Cartesian
-
 $$
 \left\{\begin{array}{lc}x_x= & x_r-l \sin \left(\theta_r\right) \\ y_x= & y_r+l \cos \left(\theta_r\right) \\ \theta_x= & \arctan \left(\frac{l^{\prime}}{1-k_r l}\right)+\theta_r \in[-\pi, \pi] \\ v_x= & \sqrt{\left[\dot{s}\left(1-k_r l\right)\right]^2+\left(\dot{s} l^{\prime}\right)^2} \\ a_x= & \ddot{s} \frac{1-k_r l}{\cos \left(\theta_x-\theta_r\right)}+\frac{\dot{s}^2}{\cos \left(\theta_x-\theta_r\right)}\left[l^{\prime}\left(k_x \frac{1-k_r l}{\cos \left(\theta_x-\theta_r\right)}-k_r\right)-\left(k_r^{\prime} l+k_r l^{\prime}\right)\right] \\ k_x= & \left(\left(l^{\prime \prime}+\left(k_r^{\prime} l+k_r l^{\prime}\right) \tan \left(\theta_x-\theta_r\right)\right) \frac{\cos ^2\left(\theta_x-\theta_r\right)}{1-k_r l}+k_r\right) \frac{\cos \left(\theta_x-\theta_r\right)}{1-k_r l}\end{array}\right.
 $$
