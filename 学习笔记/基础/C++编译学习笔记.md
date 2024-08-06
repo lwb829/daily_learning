@@ -117,31 +117,30 @@ static Pool<UrlTableProperties>* pool;
 
 - 目的：防止头文件被多次包含而造成编译错误
 
-- 举例：
+- Include guards方法：标准化方法，所有标准兼容的编译器都支持
 
+  举例——头文件名称为：my_header.h
+  
   ```c++
-  #ifndef __XXX_H__
-  #define __XXX_H__
+  #ifndef MY_HEADER_H
+  #define MY_HEADER_H
   
-  int a=1;
+  // 头文件内容
   
-  #endif
+  #endif // MY_HEADER_H
+  ```
+  
+  问题：存在略显繁琐，需要三行代码，并且需要确保宏名的唯一性
+  
+  如果需要最大程度的可移植性和兼容性，使用 include guards 是更安全的选择
+  
+- 现常用如下方法，该方法非标准，但被大多数现代编译器支持
+
+  ```
+  #pragma once
   ```
 
-  其伪代码如下：
-
-  ```
-  如果(没有定义宏__XXX_H__)
-  {
-      那么直接定义宏__XXX_H__
-      定义变量a，并且赋值为1
-  }
-  结束程序
-  ```
-
-  总结：无论头文件被包含多少次，变量a只被定义一次，不会有重复包含重复定义的问题存在
-
-- ==<u>**现常用此方法：#pragma once**</u>== 
+​	简单，只有一行代码，在某些编译器上可能有性能优势
 
 
 
@@ -399,5 +398,253 @@ class 类名
 
 
 
+## 动态数组vector
 
+- 初始化
+
+  ```C++
+  #include <vector>
+  
+  std::vector<int> vec1;                  // 空的 vector
+  std::vector<int> vec2(10);              // 包含 10 个元素的 vector，初始值为默认值（int 为 0）
+  std::vector<int> vec3(10, 5);           // 包含 10 个元素的 vector，初始值为 5
+  std::vector<int> vec4 = {1, 2, 3, 4};   // 使用初始化列表
+  ```
+
+- 访问元素
+
+  ```C++
+  std::vector<int> vec = {1, 2, 3, 4};
+  
+  // 获取第一个（front）和最后一个元素（back）
+  int first = vec.front();
+  int last = vec.back();
+  ```
+
+- 修改元素
+
+  ```c++
+  vec.push_back(1);// 在末尾添加元素1
+  vec.push_back(2);// 在末尾添加元素2
+  
+  // 在特定位置插入元素
+  vec.insert(vec.begin(), 0);    // 在开头插入 0
+  vec.insert(vec.begin() + 1, 5); // 在第二个位置插入 5
+  ```
+
+- 删除元素
+
+  ```c++
+  // 删除最后一个元素
+  vec.pop_back();
+  
+  // 删除特定位置的元素
+  vec.erase(vec.begin() + 1); // 删除第二个元素，vec.end()
+  
+  // 清空所有元素
+  vec.clear();
+  ```
+
+- 大小和容量
+
+  ```c++
+  std::vector<int> vec = {1, 2, 3, 4};
+  size_t size = vec.size();       // 当前元素数量
+  size_t capacity = vec.capacity(); // 当前分配的存储容量
+  bool is_empty = vec.empty();    // 检查 vector 是否为空
+  
+  // 改变大小
+  vec.resize(6, 0); // 现在 vec 包含 6 个元素，多出来的用 0 填充
+  ```
+
+- 交换
+
+  ```c++
+  std::vector<int> vec1 = {1, 2, 3};
+  std::vector<int> vec2 = {4, 5, 6};
+  
+  // 交换 vec1 和 vec2 的内容
+  vec1.swap(vec2);
+  ```
+
+  
+
+## map键值对
+
+- 声明和初始化
+
+  ```C++
+  #include <map>
+  #include <string>
+  
+  std::map<int, std::string> map1;            // 空的 map
+  std::map<int, std::string> map2 = {         // 使用初始化列表初始化
+      {1, "one"},
+      {2, "two"},
+      {3, "three"}
+  };
+  ```
+
+- 修改元素
+
+  ```c++
+  std::map<int, std::string> map; //举例
+  
+  // 插入单个元素
+  map.insert({1, "one"});
+  
+  // 删除特定键的元素
+  map.erase(2); // 删除键为 2 的元素
+  
+  // 清空所有元素
+  map.clear();
+  ```
+
+- 大小和容量
+
+  ```c++
+  size_t size = map.size();       // 当前元素数量
+  bool is_empty = map.empty();    // 检查 map 是否为空
+  ```
+
+- **make_pair()函数（创建键值对）**
+
+  ```c++
+  // 创建一个 std::map
+  std::map<int, std::string> myMap;
+  
+  // 使用 std::make_pair 插入元素
+  myMap.insert(std::make_pair(1, "one"));
+  myMap.insert(std::make_pair(2, "two"));
+  myMap.insert(std::make_pair(3, "three"));
+  ```
+
+  - `std::pair`的访问
+
+    ```c++
+    // 通过first和second成员来访问
+    std::pair<int, std::string> p = std::make_pair(1, "one");
+    std::cout << p.first << ": " << p.second << std::endl;
+    ```
+
+
+
+## 与时间相关
+
+### `chrono`库
+
+```c++
+// 获取当前时间
+auto start = std::chrono::steady_clock::now();
+auto end = std::chrono::steady_clock::now();
+
+// 系统休眠
+std::this_shread::sleep_for(std::chrono::seconds(90));
+
+// 获取等待时间
+auto duration = std::chrono::duration_cast<std::chrono::minutes>(end-start).count()
+
+```
+
+
+
+### `std::tm`结构体
+
+- 结构体定义
+
+```c++
+struct tm {
+    int tm_sec;    // 秒，范围从 0 到 59
+    int tm_min;    // 分，范围从 0 到 59
+    int tm_hour;   // 小时，范围从 0 到 23
+    int tm_mday;   // 一月中的第几天，范围从 1 到 31
+    int tm_mon;    // 月份，范围从 0 到 11（0 表示一月）
+    int tm_year;   // 自 1900 年以来的年数
+    int tm_wday;   // 一周中的第几天，范围从 0 到 6（0 表示星期天）
+    int tm_yday;   // 一年中的第几天，范围从 0 到 365（0 表示一月一日）
+    int tm_isdst;  // 夏令时标识符，正值表示采用夏令时，零表示不采用夏令时，负值表示信息不可用
+};
+```
+
+- 具体使用
+
+```c++
+//获取当前时间
+std::time_t t = std::time(nullptr); // 获取当前时间点
+std::tm* now = std::localtime(&t);  // 分解为本地时间
+
+std::cout << "Year: " << (now->tm_year + 1900) << '\n';
+std::cout << "Month: " << (now->tm_mon + 1) << '\n';
+std::cout << "Day: " << now->tm_mday << '\n';
+std::cout << "Hour: " << now->tm_hour << '\n';
+std::cout << "Minute: " << now->tm_min << '\n';
+std::cout << "Second: " << now->tm_sec << '\n';
+```
+
+
+
+## to_string()函数
+
+- 用法：用于将数值转换为字符串
+
+```c++
+#include <iostream>
+#include <string>
+
+int num = 42;
+std::string str = std::to_string(num);
+```
+
+
+
+## printf()函数
+
+- 用法：用于进行格式化输出
+  - `%d`：十进制整数
+  - `%f`：浮点数（小数）
+  - `%c`：单个字符
+  - `%s`：字符串
+  - `%x`：十六进制整数
+
+```c
+int a = 10;
+float b = 3.14;
+char c = 'A';
+const char* str = "Hello, World!";
+
+printf("Integer: %d", a);        // 输出十进制整数
+printf("Float: %f", b);          // 输出浮点数
+printf("Character: %c", c);      // 输出字符
+printf("String: %s", str);       // 输出字符串
+printf("Hexadecimal: %x", a);    // 输出十六进制整数
+```
+
+
+
+## scanf()函数
+
+- 用法：用于进行格式化输入
+  - `%d`：读取十进制整数
+  - `%f`：读取浮点数
+  - `%c`：读取单个字符
+  - `%s`：读取字符串
+
+```C
+int a;
+float b;
+char c;
+char str[100];
+
+scanf("%d", &a);         // 读取整数
+printf("You entered: %d", a);
+
+scanf("%f", &b);         // 读取浮点数
+printf("You entered: %f", b);
+
+scanf("%c", &c);        // 读取字符
+printf("You entered: %c", c);
+
+scanf("%s", str);        // 读取字符串
+printf("You entered: %s", str);
+```
 
