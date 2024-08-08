@@ -648,3 +648,113 @@ scanf("%s", str);        // 读取字符串
 printf("You entered: %s", str);
 ```
 
+
+
+## 动态分配内存
+
+### malloc()函数
+
+- 用法：用于动态分配内存，返回指向分配内存的指针
+
+```c++
+void* malloc(size_t size); //size为所需要分配的字节数
+```
+
+- 示例
+
+  ```c++
+  #include <iostream>
+  #include <cstdlib>
+  
+  int main() {
+      // 动态分配一个 int 类型的内存
+      int* p = (int*)malloc(sizeof(int));
+  
+      // 检查内存分配是否成功
+      if (p != nullptr) {
+          *p = 42;  // 给动态分配的内存赋值
+          std::cout << "Value: " << *p << std::endl;
+  
+          free(p);  // 使用完后释放内存
+      } else {
+          std::cout << "Memory allocation failed" << std::endl;
+      }
+  
+      return 0;
+  }
+  ```
+
+  - `malloc` 返回的指针需要进行类型转换，因为它返回的是 `void*` 类型
+  - 使用 `malloc` 分配的内存需要手动调用 `free` 来释放，防止内存泄漏
+  - `malloc`不会调用构造函数，因此对于非基本类型的对象，建议使用`new` 操作符
+
+
+
+### new()函数
+
+- 用法：用于动态内存分配的操作符，它不仅分配内存，还会调用对象的构造函数
+- 优点：使用 `new` 操作符可以方便地在堆上创建单个对象或数组，并且在使用 `delete` 或 `delete[]` 释放内存时，自动调用对象的析构函数，进行内存清理。
+
+- 示例
+
+  - 分配单个对象
+
+    ```c++
+    int* p = new int(42); // 在堆上分配一个 int，初始值为 42
+    ```
+
+    代码等价于
+
+    ```c++
+    int* p = (int*)malloc(sizeof(int));
+    *p = 42;
+    ```
+
+  - 分配数组
+
+    ```c++
+    int* arr = new int[10]; // 在堆上分配一个包含 10 个 int 的数组
+    ```
+
+  - 释放单个对象
+
+    ```c++
+    delete p; // 释放 p 指向的内存，调用析构函数（如果存在）
+    ```
+
+    等价于
+
+    ```c++
+    free(p);
+    ```
+
+  - 释放数组
+
+    ```c++
+    delete[] arr; // 释放数组内存，调用每个元素的析构函数（如果存在）
+    ```
+
+    等价于
+
+    ```c++
+    free(arr);
+    ```
+
+
+
+###  malloc 与 new 的比较
+
+- malloc：
+
+  - 仅分配内存，不调用构造函数
+  - 必须手动释放内存（使用 `free`）
+
+- new：
+
+  - `new` 和 `delete` 必须匹配使用：使用 `new` 分配的内存必须用 `delete` 释放，而 `new[]` 分配的数组内存必须用 `delete[]` 释放
+
+  - 分配内存并调用构造函数
+
+  - 可以与 `delete` 一起使用以释放内存，且自动调用析构函数
+
+  
