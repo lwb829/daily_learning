@@ -398,7 +398,9 @@ class 类名
 
 
 
-## 动态数组vector
+## 动态数组
+
+### vector
 
 - 初始化
 
@@ -467,7 +469,96 @@ class 类名
   vec1.swap(vec2);
   ```
 
+
+
+
+### set
+
+`std::set` 是一种有序集合，它自动对元素进行排序，并且不允许有重复的元素，适用于需要保证元素唯一性和自动排序的场景。
+
+**主要功能与方法与vector相同**
+
+- 初始化
+
+  ```c++
+  std::set<int> s;              // 默认构造函数，空 set
+  std::set<int> s = {1, 2, 3};  // 使用列表初始化 set
+  ```
+
+- 元素访问和修改
+
+  ```c++
+  s.insert(4);        // 插入元素 4，如果 4 已存在，则不会插入
+  s.erase(2);         // 删除元素 2
+  s.clear();          // 清空 set，删除所有元素
+  s.find(3);          // 查找元素 3，返回一个迭代器，若未找到则返回 s.end()
+  s.count(3);         // 返回 3 是否存在，存在返回 1，不存在返回 0
+  ```
+
+- 查询和属性
+
+  ```c++
+  s.size();           // 返回元素数量
+  s.empty();          // 判断 set 是否为空
+  ```
+
+- 遍历
+
+  ```c++
+  for (auto it = s.begin(); it != s.end(); ++it) {
+      std::cout << *it << " ";  // 输出：set 中的元素按顺序排列
+  }
   
+  // 使用范围循环
+  for (int val : s) {
+      std::cout << val << " ";
+  }
+  
+  ```
+
+- **自定义排序**
+
+  **默认情况下，`std::set` 使用 `<` 运算符来比较元素并确定它们在集合中的顺序**然而，如果你需要自定义排序规则，可以通过传递一个自定义的比较函数来实现
+
+  假设现有一结构体为dds，自定义比较器函数对象可编写如下**（重载 `operator()`）**：
+
+  ```c++
+  struct dds {
+      int id;
+      std::string name;
+  };
+  
+  // 自定义比较器函数对象
+  struct Compare {
+      bool operator()(const dds& lhs, const dds& rhs) const {
+          return lhs.id < rhs.id;
+      }
+  };
+  ```
+
+  `lhs` 和 `rhs` 分别是要比较的两个 `dds` 对象；如果 `lhs` 应该排在 `rhs` 之前，返回 `true`；否则返回 `false`。
+
+  此时该set数组可定义为如下：
+
+  ```
+  std::set<dds, Compare> lwb;
+  ```
+
+
+
+### vector与set区别
+
+**顺序性**：
+
+- `std::vector` 是按插入顺序存储数据，不进行自动排序。
+- `std::set` 自动对元素进行排序，默认按升序排列。
+
+**唯一性**：
+
+- `std::vector` 允许有重复元素。
+- `std::set` 不允许有重复元素，如果插入重复元素，则该操作不会生效。
+
+
 
 ## map键值对
 
@@ -756,5 +847,73 @@ void* malloc(size_t size); //size为所需要分配的字节数
   - 分配内存并调用构造函数
 
   - 可以与 `delete` 一起使用以释放内存，且自动调用析构函数
+
+  
+
+### Lamda函数
+
+是一种匿名函数，能够在一行中定义并直接使用，它允许定义捕获列表、参数列表、返回类型，以及函数体
+
+- **基本语法**
+
+  ```c++
+  [capture](parameters) -> return_type { function_body };
+  ```
+
+  - `capture`：捕获列表，用于捕获上下文中的变量，可以按值（`=`）或按引用（`&`）捕获。
+
+  - `parameters`：参数列表，与普通函数的参数列表相同。
+
+  - `return_type`：返回类型，可选。如果省略，编译器会根据 `function_body` 推导返回类型。
+
+  - `function_body`：函数体，包含 Lambda 函数的逻辑。
+
+- **捕获列表**
+
+  用于指定 Lambda 函数中要使用的**外部变量**，捕获可以通过值或引用进行
+
+  - **按值捕获（=）：** 捕获外部变量的副本，Lambda 函数内部对变量的修改**不会影响外部**。
+
+  - **按引用捕获（&）：** 捕获外部变量的引用，Lambda 函数内部对变量的修改**会影响外部**。
+
+  示例：
+
+  ```c++
+  int x = 10;
+  int y = 20;
+  
+  // 按值捕获
+  auto lambda_by_value = [x]() { return x + 10; };
+  std::cout << "按值捕获 x: " << lambda_by_value() << std::endl; // 按值捕获 x: 20
+  
+  // 按引用捕获
+  auto lambda_by_ref = [&y]() { y += 10; };
+  lambda_by_ref();
+  std::cout << "按引用捕获 y: " << y << std::endl; // 按引用捕获 y: 30
+  
+  // 混合捕获
+  auto mixed_capture = [=, &y]() { y += x; };
+  ```
+
+- **参数列表**
+
+  Lambda 函数的参数列表（**内部变量**）与普通函数相同，允许传递参数。
+
+  ```c++
+  auto add = [](int a, int b) { return a + b; };
+  std::cout << "3 + 5 = " << add(3, 5) << std::endl; // 8
+  ```
+
+- **返回类型**
+
+  Lambda 函数的返回类型可以由编译器自动推导；如果推导不明确或需要指定不同的返回类型，可以显式指定。
+
+  ```c++
+  // 自动推导返回类型
+  auto lambda_auto = [](int a, int b) { return a + b; };
+  
+  // 显式指定返回类型
+  auto lambda_explicit = [](int a, int b) -> double { return a / double(b); };
+  ```
 
   
