@@ -81,10 +81,17 @@ $ git rm ××  # ××为当前分支中要删除的文件名
 
 ### 查看文件修改状态
 
-可查看当前代码状态，改动，所在分支，是否有代码冲突等
+- 可查看当前代码状态，改动，所在分支，是否有代码冲突等
+
 
 ```
 $ git status
+```
+
+- 查询当前文件修改内容
+
+```
+$ git diff
 ```
 
 
@@ -127,12 +134,18 @@ git reset --soft HEAD^
 `HEAD^` 意思是上一个版本，也可以写成 `HEAD~1`
 如果进行了 2 次 commit，都想撤回，可以使用 `HEAD~2`
 
-
-
-#### 撤销 commit、撤销 git add .
+或者也可以写成如下形式：
 
 ```
- git reset --hard HEAD^
+git reset --hard bbc6688
+```
+
+其中bbc6688为当前要恢复的commit id
+
+上述commit id可从github网页端查找，也可使用log命令查找
+
+```
+git log
 ```
 
 

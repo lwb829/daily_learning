@@ -469,6 +469,38 @@ class 类名
   vec1.swap(vec2);
   ```
 
+- 迭代器
+
+  `std::vector<int>::iterator` 是一个迭代器类型，用于遍历和操作 `std::vector<int>` 容器中的元素
+
+  作用：
+
+  1. **遍历 `vector` 元素**：通过迭代器，可以从 `vector` 的起始位置遍历到结束位置，访问每一个元素。
+  2. **访问和修改元素**：迭代器不仅能访问 `vector` 中的元素，还能修改这些元素的值。
+  3. **与算法结合**：迭代器可以与标准库中的算法（如 `std::sort`, `std::find`, `std::for_each` 等）结合使用，实现对 `vector` 中元素的操作。
+
+  ```c++
+  std::vector<int> vec = {1, 2, 3, 4, 5};
+  
+  // 使用 iterator 进行遍历
+  for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
+      std::cout << *it << " ";  // 通过解引用访问元素值，输出 1 2 3 4 5 
+  }
+  std::cout << std::endl;
+  
+  // 使用 iterator 修改元素
+  for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
+      *it = *it * 2;  // 将每个元素的值翻倍
+  }
+  
+  // 再次遍历，输出修改后的元素
+  for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); ++it) {
+      std::cout << *it << " ";  // 输出 2 4 6 8 10
+  }
+  std::cout << std::endl;
+  ```
+
+  - **解引用操作符 `*`**：用来访问迭代器指向的元素的值
 
 
 
@@ -562,6 +594,8 @@ class 类名
 
 ## map键值对
 
+### `std::map`
+
 - 声明和初始化
 
   ```C++
@@ -617,6 +651,161 @@ class 类名
     std::pair<int, std::string> p = std::make_pair(1, "one");
     std::cout << p.first << ": " << p.second << std::endl;
     ```
+
+- **自动排序**
+
+  `std::map` 会根据键（`key`）的值进行排序。默认情况下，`std::map` 使用 `<` 操作符（即 `std::less`）来比较键的大小，从而确定元素的顺序。因此，`std::map` 中的元素总是按键值从小到大自动排序。
+
+  - **内置类型**：对于像 `int`、`float`、`double`、`char` 等内置数据类型，C++ 已经定义了 `<` 操作符的行为，直接比较它们的值即可
+
+  - **字符串类型**：对于 `std::string` 类型，`<` 操作符比较的是字符串的字典顺序（lexicographical order）。这意味着比较是逐字符进行的，从字符串的第一个字符开始，如果第一个字符相同，则比较第二个字符，依此类推
+
+  - **自定义类型**：对于自定义类型（即用户定义的类或结构体），如果想要将它们作为 `std::map` 的键使用，并且希望 `std::map` 自动排序，你需要在该类型中定义 `<` 操作符，或者提供一个**自定义的比较器**
+
+    ```c++
+    struct MyKeyCompare {
+        bool operator()(const MyKey& lhs, const MyKey& rhs) const {
+            if (lhs.x != rhs.x) {
+                return lhs.x < rhs.x;
+            } else {
+                return lhs.y < rhs.y;
+            }
+        }
+    };
+    
+    std::map<MyKey, int, MyKeyCompare> myMap;
+    
+    ```
+
+
+
+### `std::unordered_map`
+
+与 `std::map` 不同，`std::unordered_map` 的**元素顺序是不可预测的，不保证插入顺序**，适用于频繁查找和不关心顺序的场景
+
+示例：
+
+```c++
+std::unordered_map<std::string, int> myMap;
+
+// 插入键值对
+myMap["apple"] = 1;
+myMap["banana"] = 2;
+myMap["orange"] = 3;
+
+// 访问元素
+std::cout << "apple: " << myMap["apple"] << std::endl;
+
+// 查找元素
+if (myMap.find("banana") != myMap.end()) {
+    std::cout << "banana exists with value: " << myMap["banana"] << std::endl;
+}
+
+// 遍历 unordered_map ！！！
+for (const auto &pair : myMap) {
+    std::cout << pair.first << ": " << pair.second << std::endl;
+}
+```
+
+其它用法与map均相同！！！
+
+
+
+## 结构体
+
+### 结构数组
+
+将同一类型的多个结构体存储在一个数组中
+
+示例：
+
+```c++
+// 定义一个结构体
+struct Student {
+    std::string name;
+    int age;
+    float grade;
+};
+
+// 创建一个结构体数组
+Student students[3];
+
+// 初始化结构体数组的元素
+students[0] = {"Alice", 20, 85.5f};
+students[1] = {"Bob", 21, 90.0f};
+students[2] = {"Charlie", 19, 88.0f};
+```
+
+- 访问与修改元素
+
+  ```
+  students[0].grade = 89.5f;  // 修改第一个学生的成绩
+  ```
+
+- 遍历结构数组
+
+  ```C++
+  for(int i = 0; i < 3; i++) {
+      std::cout << students[i].name << " is " << students[i].age << " years old." << std::endl;
+  }
+  ```
+
+- 动态分配结构数组
+
+  ```c++
+  Student* students = new Student[n];
+  
+  // 初始化动态数组的元素
+  for(int i = 0; i < n; i++) {
+      std::cout << "Enter name, age, and grade for student " << i+1 << ": ";
+      std::cin >> students[i].name >> students[i].age >> students[i].grade;
+  }
+  
+  // 访问动态数组的元素
+  for(int i = 0; i < n; i++) {
+      std::cout << students[i].name << " has a grade of " << students[i].grade << std::endl;
+  }
+  
+  // 释放动态分配的内存
+  delete[] students;
+  ```
+
+- 结构数组的排序
+
+  可以使用标准库中的 `std::sort` 函数对结构体数组进行排序，通常需要自定义排序规则
+
+  ```c++
+  // 自定义比较函数，按成绩排序
+  bool compareByGrade(const Student &a, const Student &b) {
+      return a.grade > b.grade;  // 降序排列
+  }
+  
+  // 排序结构体数组
+  std::sort(students, students + 3, compareByGrade);
+  
+  // 输出排序后的结果
+  for(int i = 0; i < 3; i++) {
+      std::cout << students[i].name << ": " << students[i].grade << std::endl;
+  }
+  ```
+
+- 结合`std::vector`使用结构体数组
+
+  ```C++
+  std::vector<Student> students;
+  
+  // 向 vector 中添加学生
+  students.push_back({"Alice", 20, 85.5f});
+  students.push_back({"Bob", 21, 90.0f});
+  // 遍历 vector
+  for(const auto& student : students) {
+      std::cout << student.name << " has a grade of " << student.grade << std::endl;
+  }
+  ```
+
+  
+
+
 
 
 
