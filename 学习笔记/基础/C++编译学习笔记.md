@@ -343,12 +343,68 @@ class 类名
 
 ### this指针
 
+`this` 指针是类的每个非静态成员函数中隐含的一个指针，指向调用成员函数的当前对象。
+
 - 用途：
-  - 为了区分成员和非成员，可通过：this-> 成员名 /（*this）.成员名
-  - 类的方法需要返回当前对象的引用  
-- 是一个由C＋＋编译器自动产生且较常用的一个隐含对象指针，不能被显式声明
-- 是一个局部变量，局部于某个对象
-- 是一个const指针，不能修改或给它赋值
+  - 通常用于在成员函数中访问调用该函数的对象的成员变量。当类的成员变量和函数参数同名时，`this` 指针可以帮助区分它们
+  
+    ```c++
+    class MyClass {
+    private:
+        int value;
+    
+    public:
+        // 构造函数
+        MyClass(int value) {
+            // 使用this指针来区分成员变量和构造函数参数
+            this->value = value;  // 左边的 value 是成员变量，右边的是参数
+        }
+    
+        // 显示成员变量的值
+        void display() {
+            cout << "Value: " << this->value << endl;  // 使用 this 指针访问成员变量
+        }
+    };
+    ```
+  
+  - 可以返回当前对象本身，实现链式调用
+  
+    ```c++
+    class MyClass {
+    private:
+        int value;
+    
+    public:
+        MyClass(int value) : value(value) {}
+    
+        // 修改值，并返回当前对象
+        MyClass& setValue(int newValue) {
+            this->value = newValue;  // 使用 this 指针修改成员变量
+            return *this;  // 返回当前对象
+        }
+    
+        void display() const {
+            cout << "Value: " << value << endl;
+        }
+    };
+    
+    int main() {
+        MyClass obj(10);
+        obj.setValue(20).setValue(30).setValue(40);  // 链式调用
+        obj.display();  // 输出：Value: 40
+        return 0;
+    }
+    ```
+  
+    `setValue` 函数返回 `*this`，即当前对象本身
+  
+- 特点：
+
+  - 静态成员函数没有 `this` 指针，因为它们不属于某个对象，而是属于整个类
+  - 是一个由C＋＋编译器自动产生且较常用的一个隐含对象指针，不能被显式声明
+  - 是一个局部变量，局部于某个对象
+  - 是一个const指针，不能修改或给它赋值
+
 
 
 
@@ -803,9 +859,77 @@ students[2] = {"Charlie", 19, 88.0f};
   }
   ```
 
-  
 
 
+
+## 枚举
+
+有两种类型：**传统枚举**(unscoped enum) 和 **强类型枚举**(scoped enum，也称为**enum class**)
+
+
+
+### 传统枚举
+
+传统枚举没有作用域限制，枚举成员可以在整个作用域内使用
+
+定义方式：
+
+```c++
+enum Color { Red, Green, Blue };
+```
+
+这里，`Red`、`Green`、`Blue` 是具名常量，它们的默认值分别是 `0`，`1`，`2`
+
+- 注：传统枚举的成员会自动转换为整数类型（`int`），这可能导致意外的错误。
+
+
+
+### 强类型枚举(enum class)
+
+与传统枚举不同，`enum class` 拥有自己的作用域，枚举成员**不会自动转换为整数类型**，从而提高了类型安全性
+
+定义方式：
+
+```c++
+enum class Color { Red, Green, Blue };
+
+int main() {
+    Color myColor = Color::Red;  // 必须使用作用域限定符
+    if (myColor == Color::Red) {
+        std::cout << "The color is Red" << std::endl;
+    }
+    return 0;
+}
+```
+
+在这个例子中，`myColor` 被赋值为 `Color::Red`，**必须使用作用域限定符 `Color::` 来访问枚举成员**，避免了传统枚举的隐式转换问题。
+
+- 由于 `enum class` 的类型安全特性，枚举成员不会自动转换为整数。如果需要将枚举值转换为整数，可以使用 `static_cast` 进行显式转换
+
+  ```c++
+  int value = static_cast<int>(Color::Red);  // value == 0
+  ```
+
+强类型枚举的遍历：
+
+```c++
+enum class Color { Red, Green, Blue, Last };
+
+int main() {
+    for (int i = static_cast<int>(Color::Red); i < static_cast<int>(Color::Last); i++) {
+        std::cout << "Color: " << i << std::endl;
+    }
+```
+
+
+
+### 基础类型指定
+
+默认情况下，枚举类型的底层类型是 `int`，但可以显式指定为其他整型类型，如 `char`、`short`、`unsigned int` 等
+
+```c++
+enum class Color : char { Red, Green, Blue };
+```
 
 
 
