@@ -1229,4 +1229,48 @@ void* malloc(size_t size); //size为所需要分配的字节数
   auto lambda_explicit = [](int a, int b) -> double { return a / double(b); };
   ```
 
+
+
+
+## `extern`用法
+
+`extern` 是一个关键字，用来声明变量或函数是在别的文件或作用域中定义的，表明它们的存储是在其他位置进行的，但可以在当前文件或作用域中使用
+
+- 声明外部变量：**只能在变量的定义处进行初始化，而不能在 `extern` 声明处初始化**
+
+  ```C++
+  // file1.cpp
+  // 定义一个全局变量
+  int globalVar = 42;
   
+  // file2.cpp
+  // 错误用法：extern int globalVar = 42; 
+  extern int globalVar;
+  std::cout << "globalVar = " << globalVar << std::endl;
+  ```
+
+  - `globalVar` 在 `file1.cpp` 中定义，但通过 `extern` 关键字，`file2.cpp` 中可以访问它
+
+- 函数声明：C++ 函数默认是 `extern` 的，因此你可以在多个文件中声明和使用同一个函数
+
+  ```c++
+  // file1.cpp
+  // 函数定义
+  void myFunction() {
+      std::cout << "This is myFunction!" << std::endl;
+  }
+  
+  // file2.cpp
+  // 函数声明（可以省略 extern，因为函数默认是 extern）
+  extern void myFunction();
+  int main() {
+      myFunction();  // 调用在另一个文件中定义的函数
+      return 0;
+  }
+  ```
+
+- 注意：`extern` 只做**声明**而不做**定义**，因此它不会为变量或函数分配内存，只是告诉编译器这个变量或函数在其他地方定义
+
+- 当使用 `extern` 声明全局变量时，确保在某个源文件中正确定义变量（初始化它）
+
+- 不能对 `extern` 声明的变量进行初始化
