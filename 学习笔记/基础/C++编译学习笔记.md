@@ -648,6 +648,158 @@ class 类名
 
 
 
+## `valarray`模板类
+
+专门设计用于处理**数值数组**，提供了一些用于数学运算和元素批量处理的操作符和函数，这使得 `valarray` 非常适合用于需要对大量数据进行数学计算的场景
+
+- 声明与初始化：与vector相同
+
+  ```c++
+  std::valarray<int> va = {1, 2, 3, 4, 5};
+  ```
+
+- 元素访问：和 `vector` 类似，`valarray` 也支持下标运算符 `[]` 进行元素访问
+
+  ```c++
+  std::valarray<int> va = {1, 2, 3, 4, 5};
+  std::cout << va[2] << std::endl;  // 输出 3
+  ```
+
+- 数学运算（函数）
+
+  ```c++
+  std::valarray<int> va1 = {1, 2, 3, 4, 5};
+  std::valarray<int> va2 = {10, 20, 30, 40, 50};
+  
+  // 加法运算符应用于所有元素
+  std::valarray<int> va3 = va1 + va2;
+  
+  // va1的每个元素乘以 2
+  std::valarray<int> va4 = va1 * 2;
+  
+  // 一元负号应用于所有元素
+  std::valarray<int> va5 = -va1;
+  
+  // 计算平方根
+  std::valarray<double> result = std::sqrt(va);
+  ```
+
+  - 支持的运算符包括：`+`、`-`、`*`、`/`、`%`、`&`、`|`、`^` 等
+
+  - 其他可用的数学函数包括：
+
+    - `std::abs()`：取绝对值
+
+    - `std::cos()`、`std::sin()`、`std::tan()`：三角函数
+
+    - `std::exp()`：指数函数
+
+    - `std::log()`：对数函数
+
+    - `std::pow()`：幂函数
+
+- `valarray`的切片（slice）与子数组：`valarray` 支持对数组的部分元素进行操作，可以通过 `std::slice` 和 `std::gslice` 访问部分数组
+
+  - `slice` ：可以从 `valarray` 中选择一部分元素，进行批量操作
+
+    ```c++
+    std::valarray<int> va = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    
+    // 创建切片，从索引1开始，选择5个元素，步长为2
+    std::slice my_slice(1, 5, 2);
+    
+    // 使用切片操作从 valarray 中提取对应的元素
+    std::valarray<int> sliced_va = va[my_slice];
+    
+    // 修改切片中的元素，将所有选中的元素加10
+    va[std::slice(1, 5, 2)] += 10;
+    ```
+
+    - `std::slice(start, size, stride)`：`start` 表示起始索引，`size` 表示选取的元素个数，`stride` 表示步长
+    - 通过切片直接对 `valarray` 中部分元素进行修改
+
+  - `gslice`：类似于 `slice`，同时允许从多维数组中选择元素，它不仅可以指定步长，还可以处理多个维度
+
+    ```c++
+    // 以 4x3 矩阵（即 12 个元素的数组）为例
+    std::valarray<int> matrix = {
+        1,  2,  3,    // 第1行
+        4,  5,  6,    // 第2行
+        7,  8,  9,    // 第3行
+        10, 11, 12    // 第4行
+    };
+    
+    // 定义每个维度的大小（例如，我们需要 2x2 子矩阵）
+    std::valarray<size_t> sizes = {2, 2};  // 2 行 2 列
+    // 定义步长，行之间步长为 3，列之间步长为 1
+    std::valarray<size_t> strides = {3, 1};
+    
+    // 提取子矩阵，从索引 0 开始
+    std::gslice my_gslice(0, sizes, strides);
+    
+    // 使用 gslice 操作提取子数组
+    std::valarray<int> sliced_matrix = matrix[my_gslice];
+    
+    matrix[std::gslice(0, sizes, strides)] += 10;
+    ```
+
+  - 区别：
+
+    - 维度：`slice` 只能处理一维数据，而 `gslice` 能处理多维数据（矩阵、张量等）
+    - 灵活性：`gslice` 提供更多灵活性，可以针对每个维度单独指定步长，而 `slice` 只支持一维数据的步长控制
+
+- 常用方法
+
+  - `sum()` ：用于计算 `valarray` 所有元素的和
+
+    ```c++
+    std::valarray<int> va = {1, 2, 3, 4, 5};
+    std::cout << va.sum() << std::endl;  // 输出 15
+    ```
+
+  - `min()` 和 `max()`： 用于返回 `valarray` 中的最小值和最大值
+
+    ```c++
+    std::valarray<int> va = {1, 2, 3, 4, 5};
+    std::cout << "Min: " << va.min() << ", Max: " << va.max() << std::endl;  // 输出 Min: 1, Max: 5
+    ```
+
+  - `apply()` ：函数可以对 `valarray` 中的每个元素应用自定义的函数
+
+    ```c++
+    std::valarray<int> va = {1, 2, 3, 4, 5};
+    
+    // 将每个元素乘以 2
+    std::valarray<int> result = va.apply([](int x) { return x * 2; });
+    ```
+
+  - `resize()` ：用于调整 `valarray` 的大小，并将新元素初始化为默认值
+
+    ```c++
+    std::valarray<int> va = {1, 2, 3};
+    va.resize(5, 0);  // 调整大小为5，新元素初始化为0
+    ```
+
+  - `shift()` ：用于将 `valarray` 中的元素向左或向右移动，空出的位置将填充默认值。`cshift()`： 是循环移位
+
+    ```c++
+    std::valarray<int> va = {1, 2, 3, 4, 5};
+    
+    // 左移2位，空位补0
+    std::valarray<int> shifted_va = va.shift(2);  // {3, 4, 5, 0, 0}
+    
+    // 右移2位，空位补0
+    std::valarray<int> shifted_va = va.shift(-2);  // {0, 0, 1, 2, 3}
+    
+    // 向左循环移动2位
+    std::valarray<int> cshifted_left = va.cshift(2);  // {3, 4, 5, 1, 2}
+    
+    // 向右循环移动2位
+    std::valarray<int> cshifted_right = va.cshift(-2);  // {4, 5, 1, 2, 3}
+    ```
+
+
+
 ## map键值对
 
 ### `std::map`
@@ -1274,3 +1426,67 @@ void* malloc(size_t size); //size为所需要分配的字节数
 - 当使用 `extern` 声明全局变量时，确保在某个源文件中正确定义变量（初始化它）
 
 - 不能对 `extern` 声明的变量进行初始化
+
+
+
+## 函数模板
+
+用于创建可以处理不同数据类型的通用函数
+
+- 基本用法：以 `template` 关键字开头，后面跟着模板参数列表，通常以尖括号 `<...>` 包裹，模板参数列表包含一个或多个类型参数或非类型参数
+
+  ```c++
+  template <typename T>
+  T add(T a, T b) {
+      return a + b;
+  }
+  ```
+
+  - `T`： 是一个占位符，表示将被实际的类型替换
+  - `T add(T a, T b)`：接受两个相同类型的参数并返回同类型的结果
+
+- 实例化：在使用模板函数时，编译器会根据传递的实际参数类型来**自动实例化函数模板**
+
+  ```c++
+  int x = 5, y = 10;
+  double a = 2.5, b = 3.7;
+  
+  // 调用 int 类型的 add 函数
+  std::cout << "int: " << add(x, y) << std::endl; // int: 15
+  
+  // 调用 double 类型的 add 函数
+  std::cout << "double: " << add(a, b) << std::endl; // double: 6.2
+  ```
+
+- 多类型参数：函数模板不仅可以有一个类型参数，还可以有多个，通过使用多个类型参数，你可以创建更灵活的模板
+
+  ```c++
+  template <typename T1, typename T2>
+  auto add(T1 a, T2 b) -> decltype(a + b) {
+      return a + b;
+  }
+  ```
+
+  - `template <typename T1, typename T2>`：定义了两个类型参数 T1 和 `T2`
+  - `auto` 和 `decltype`：这里使用 `auto` 和 `decltype` 推导返回类型，返回 `a + b` 的结果类型
+
+- 显示实例化：如果不想依赖编译器自动推导模板参数，可以在调用时显式指定模板参数
+
+  ```c++
+  int x = 5;
+  double y = 6.5;
+  
+  // 显式指定模板参数类型
+  std::cout << add<int, double>(x, y) << std::endl;
+  ```
+
+- 函数模板与函数重载：函数模板可以和普通函数进行重载，也可以和其他模板函数重载，编译器根据最匹配的参数类型选择合适的函数
+
+
+
+
+
+
+
+
+
