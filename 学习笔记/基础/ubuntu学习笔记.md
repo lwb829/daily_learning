@@ -12,6 +12,20 @@
 - mv：移动/重命名
 - rm：删除
 
+```c++
+ctrl + a #移动到行首
+ctrl + e(end) #移动到行尾
+
+ctrl + k #删除至末尾元素
+ctrl + u #删除至开头元素
+ctrl + w(word) #剪切左边第一个单词
+
+ctrl + y(yank) #粘贴剪切的单词
+
+alt + f(forward) #往后移动一个单词
+alt + b(backward) #往前移动一个单词
+```
+
 
 
 ## 解决ubuntu中各文件操作权限的巧妙方法
@@ -250,5 +264,74 @@ rostopic pub -r 10(可改为其它) [topic][msg_type]
 
 
 
-## Tab键补全功能
+## 压缩与解压缩文件夹
 
+**注：以 test 文件夹为例，压缩为 `test.tar` 压缩包**
+
+### .tar文件
+
+- 解压
+
+  ```
+  #格式：tar -vxf 打包后的文件名(xxx.tar)
+  tar -vxf test.tar
+  ```
+
+- 压缩
+
+  ```
+  # 格式：tar -vcf 打包后的文件名(xxx.tar) 需要打包的文件夹(xxx)
+  tar -vcf test.tar test
+  ```
+
+### .tar.gz文件
+
+- 解压
+
+  ```
+  #格式：tar -vxzf 打包压缩后的文件名(xxx.tar.gz)
+  tar -vxzf test.tar.gz
+  ```
+
+- 压缩
+
+  ```
+  #格式：tar -vczf 打包压缩后的文件名(xxx.tar.gz) 需要打包的文件夹(xxx)
+  tar -vczf test.tar.gz test
+  ```
+
+### .bz2文件
+
+- 解压
+
+  ```
+  bzip2 -d test.bz2
+  ```
+
+- 压缩
+
+  ```
+  bzip2 -z test
+  ```
+
+### .zip文件
+
+- 解压
+
+  ```
+  #格式： unzip xxxx.zip
+  unzip test.zip
+  
+  #使用 -d 命令解压到指定目录
+  unzip test.zip -d /target_folder 
+  ```
+
+- 压缩
+
+  ```
+  #格式：zip 打包压缩的文件名(xxx.zip) 需要打包的文件夹(xxx)
+  zip test.zip test
+  
+  #递归处理，即将子文件夹也一并压缩
+  zip -r test.zip test
+  ```
